@@ -32,89 +32,89 @@ import qualified Auxiliary                  as Aux
 import           Text.ParserCombinators.Parsec hiding ((<|>), many, State, getState)
 import           Control.Applicative
 
-data Expr =   IF Condition Expr Expr
-            | WHILE Expr
-            | SEQ [Expr]
-            | Forward
-            | TurnLeft
-            | TurnRight
-            | TERMINATE
-            | Empty 
-            | VOID 
-              deriving (Show, Eq, Ord)
+data Expr = IF Condition Expr Expr
+          | WHILE Expr
+          | SEQ [Expr]
+          | Forward
+          | TurnLeft
+          | TurnRight
+          | TERMINATE
+          | Empty 
+          | VOID 
+            deriving (Show, Eq, Ord)
 
 -- data ExprID = ExprID { expr::Expr, idT::IDTag} deriving (Show, Eq, Ord)
 
 data IDTag = I |W |S |F |L |R |T |E |V |PA |PL |PR| GR | Q deriving (Show, Eq, Ord, Enum) 
 
-extractCond :: Expr -> IDTag
+extractCond :: Expr ->                IDTag
 extractCond (IF PathAhead _ _)      = PA
 extractCond (IF PathLeft _ _)       = PL
 extractCond (IF PathRight _ _)      = PR
 -- extractCond (IF GoalReached _ _) = GR
 extractCond _                       = T
 
-exprCond :: Expr -> IDTag
-exprCond (IF PathAhead VOID VOID)      = PA
-exprCond (IF PathAhead VOID TERMINATE) = PA
-exprCond (IF PathLeft VOID VOID)       = PL
-exprCond (IF PathLeft VOID TERMINATE)  = PL
-exprCond (IF PathRight VOID VOID)      = PR
-exprCond (IF PathRight VOID TERMINATE) = PR
-exprCond x = exprID x 
+exprCond :: Expr                         -> IDTag
+exprCond    (IF PathAhead VOID VOID)      = PA
+exprCond    (IF PathAhead VOID TERMINATE) = PA
+exprCond    (IF PathLeft VOID VOID)       = PL
+exprCond    (IF PathLeft VOID TERMINATE)  = PL
+exprCond    (IF PathRight VOID VOID)      = PR
+exprCond    (IF PathRight VOID TERMINATE) = PR
+exprCond    x                             =  exprID x
 
-exprID :: Expr -> IDTag
-exprID (IF _ _ _) = I
-exprID (WHILE _)  = W
-exprID (SEQ _)    = S
-exprID Forward    = F
-exprID TurnLeft   = L
-exprID TurnRight  = R
-exprID TERMINATE  = T
-exprID Empty      = E
-exprID VOID       = V
+exprID :: Expr      -> IDTag
+exprID    (IF _ _ _) = I
+exprID    (WHILE _)  = W
+exprID    (SEQ _)    = S
+exprID    Forward    = F
+exprID    TurnLeft   = L
+exprID    TurnRight  = R
+exprID    TERMINATE  = T
+exprID    Empty      = E
+exprID    VOID       = V
 
 idExpr :: IDTag -> Expr
-idExpr I  = (IF GoalReached VOID VOID)
-idExpr W  = (WHILE VOID)
-idExpr S  = (SEQ [VOID])
-idExpr F  = Forward
-idExpr L  = TurnLeft
-idExpr R  = TurnRight
-idExpr T  = TERMINATE
-idExpr E  = Empty
-idExpr V  = VOID
-idExpr PA = IF PathAhead VOID TERMINATE
-idExpr PL = IF PathLeft VOID TERMINATE
-idExpr PR = IF PathRight VOID TERMINATE
-idExpr GR = WHILE VOID
+idExpr    I      = (IF GoalReached VOID VOID)
+idExpr    W      = (WHILE VOID)
+idExpr    S      = (SEQ [VOID])
+idExpr    F      = Forward
+idExpr    L      = TurnLeft
+idExpr    R      = TurnRight
+idExpr    T      = TERMINATE
+idExpr    E      = Empty
+idExpr    V      = VOID
+idExpr    PA     = IF PathAhead VOID TERMINATE
+idExpr    PL     = IF PathLeft VOID TERMINATE
+idExpr    PR     = IF PathRight VOID TERMINATE
+idExpr    GR     = WHILE VOID
 -- idExpr _ = TERMINATE
 
 
 idCond :: IDTag -> Condition
-idCond PA = PathAhead
-idCond PL = PathLeft
-idCond PR = PathRight
-idCond GR = GoalReached
+idCond    PA     = PathAhead
+idCond    PL     = PathLeft
+idCond    PR     = PathRight
+idCond    GR     = GoalReached
 
-condID :: Condition -> IDTag
-condID PathAhead    = PA
-condID PathLeft     = PL
-condID PathRight    = PR
-condID GoalReached  = GR
+condID :: Condition   -> IDTag
+condID    PathAhead    = PA
+condID    PathLeft     = PL
+condID    PathRight    = PR
+condID    GoalReached  = GR
 
-setCondition :: Expr -> Condition -> Expr
-setCondition (IF _ l r) x = IF x l r
-setCondition x _          = x
+setCondition :: Expr ->    Condition -> Expr
+setCondition    (IF _ l r) x          = IF x l r
+setCondition    x _                   = x
 
-data Condition =  PathAhead 
-                | PathLeft 
-                | PathRight 
-                | GoalReached 
+data Condition = PathAhead 
+               | PathLeft 
+               | PathRight 
+               | GoalReached 
                     deriving (Show, Eq, Ord, Enum)
 
-type Forward = String
-type TurnLeft = String
+type Forward   = String
+type TurnLeft  = String
 type TurnRight = String
 
 type StateExpr = (State,[Expr])
@@ -144,37 +144,37 @@ type Current    = Expr -- Focus
 type Child      = Expr
 type ExprZipper = (Expr,Expr)
 
-headExpr :: Expr -> ExprZipper
-headExpr (WHILE x)    = (WHILE VOID,x)
-headExpr (IF c l r)
-  | leaf l && leaf r = (IF c l r,VOID)
-  | leaf l           = (IF c l VOID,r)
-  | leaf r           = (IF c VOID r,l)
-  | otherwise        = (IF c VOID TERMINATE,SEQ [l,r])   -- [(IF c VOID r,l),(IF c l VOID,r)]
-headExpr (SEQ [x])    = (x,VOID) 
-headExpr (SEQ [x,y])  = (SEQ [x,VOID],SEQ [y]) 
-headExpr (SEQ (x:xs)) = (SEQ [x,VOID],SEQ xs)
-headExpr x            = (x,VOID)
+headExpr :: Expr        -> ExprZipper
+headExpr    (WHILE x)    = (WHILE VOID,x)
+headExpr    (IF c l r)
+  | leaf l && leaf r     = (IF c l r,VOID)
+  | leaf l               = (IF c l VOID,r)
+  | leaf r               = (IF c VOID r,l)
+  | otherwise            = (IF c VOID TERMINATE,SEQ [l,r])   -- [(IF c VOID r,l),(IF c l VOID,r)]
+headExpr    (SEQ [x])    = (x,VOID) 
+headExpr    (SEQ [x,y])  = (SEQ [x,VOID],SEQ [y]) 
+headExpr    (SEQ (x:xs)) = (SEQ [x,VOID],SEQ xs)
+headExpr    x            = (x,VOID)
 
-childrenExpr :: Expr -> [Expr]
-childrenExpr (WHILE x)  = [x]
-childrenExpr (IF c l r) = [IF c VOID VOID,l,r]
-childrenExpr (SEQ xs)   = xs
-childrenExpr x          = [x]
+childrenExpr :: Expr      -> [Expr]
+childrenExpr    (WHILE x)  = [x]
+childrenExpr    (IF c l r) = [IF c VOID VOID,l,r]
+childrenExpr    (SEQ xs)   = xs
+childrenExpr    x          = [x]
 
 childrenContain :: Expr -> IDTag -> Bool
-childrenContain inp idT = 
+childrenContain    inp     idT    = 
   let tmp x = exprID x == idT 
   in any tmp $ childrenExpr inp
 
-childrenSEQ :: Expr -> [Expr]
-childrenSEQ (SEQ xs) = xs
-childrenSEQ x        = [x]
+childrenSEQ :: Expr    -> [Expr]
+childrenSEQ    (SEQ xs) = xs
+childrenSEQ    x        = [x]
 
 type ExprHandler = [Expr] -> Expr
 
 handleChildren :: IDTag -> ([Expr] -> Expr) -> Expr -> Expr
-handleChildren i f e
+handleChildren    i        f                   e
   | i == (exprID e) = let children = (childrenExpr e) in case i of
     W -> WHILE VOID
     I -> IF PathAhead VOID VOID
@@ -182,61 +182,61 @@ handleChildren i f e
     _ -> VOID
   | otherwise = TERMINATE
 
-leaf :: Expr -> Bool
-leaf Forward    = True
-leaf TurnLeft   = True
-leaf TurnRight  = True
-leaf Empty      = True
-leaf _          = False
+leaf :: Expr      -> Bool
+leaf    Forward    = True
+leaf    TurnLeft   = True
+leaf    TurnRight  = True
+leaf    Empty      = True
+leaf    _          = False
 
 contains :: IDTag -> Expr -> Bool
-contains x xs = containsID x (map exprID $ tokenizer xs) where
+contains    x        xs    = containsID x (map exprID $ tokenizer xs) where
   containsID :: IDTag -> [IDTag] -> Bool
-  containsID x xs = x `elem` xs
+  containsID    x        xs       = x `elem` xs
 
 
-tokenizer :: Expr -> [Expr]
-tokenizer (WHILE x)  = (WHILE VOID) : tokenizer x
-tokenizer (IF c l r) = (IF c VOID r) : (tokenizer l) ++ (IF c l VOID) : (tokenizer r)
-tokenizer (SEQ xs)   = tk xs where
+tokenizer :: Expr      -> [Expr]
+tokenizer    (WHILE x)  = (WHILE VOID) : tokenizer x
+tokenizer    (IF c l r) = (IF c VOID r) : (tokenizer l) ++ (IF c l VOID) : (tokenizer r)
+tokenizer    (SEQ xs)   = tk xs where
   tk []                = [SEQ []]
   tk [x]               = (SEQ [] ) : tokenizer (x)
   tk (x:xs)            = (SEQ [] ) : tokenizer (x) ++ tk (xs)
-tokenizer x          = [x]
+tokenizer    x          = [x]
 
-flattenSEQ :: Expr -> Expr
-flattenSEQ (SEQ (x:[])) = flattenSEQ x
-flattenSEQ (SEQ s)      = SEQ $ flattenSEQ' (SEQ s) where
-  flattenSEQ' :: Expr -> [Expr]
-  flattenSEQ' (SEQ (x:[])) = [x]
-  flattenSEQ' (SEQ xs)     = concatMap flattenSEQ' xs
-  flattenSEQ' (WHILE x)    = [flattenSEQ (WHILE x)]
-  flattenSEQ' (IF c x y)   = [IF c (flattenSEQ x) (flattenSEQ y)]
-  flattenSEQ' (x)          = [x]
-flattenSEQ (WHILE x)    = WHILE (flattenSEQ x)
-flattenSEQ (IF c x y)   = IF c (flattenSEQ x) (flattenSEQ y)
-flattenSEQ x            = x
+flattenSEQ :: Expr        -> Expr
+flattenSEQ    (SEQ (x:[])) = flattenSEQ x
+flattenSEQ    (SEQ s)      = SEQ $ flattenSEQ' (SEQ s) where
+  flattenSEQ' :: Expr        -> [Expr]
+  flattenSEQ'    (SEQ (x:[])) = [x]
+  flattenSEQ'    (SEQ xs)     = concatMap flattenSEQ' xs
+  flattenSEQ'    (WHILE x)    = [flattenSEQ (WHILE x)]
+  flattenSEQ'    (IF c x y)   = [IF c (flattenSEQ x) (flattenSEQ y)]
+  flattenSEQ'    (x)          = [x]
+flattenSEQ    (WHILE x)    = WHILE (flattenSEQ x)
+flattenSEQ    (IF c x y)   = IF c (flattenSEQ x) (flattenSEQ y)
+flattenSEQ    x            = x
 
-exprCounter :: Expr -> Int
-exprCounter (WHILE x) = 1 + (exprCounter x)
-exprCounter (IF _ l r)= 1 + exprCounter l + exprCounter r
-exprCounter (SEQ xs)  = sum $ map exprCounter xs
-exprCounter _         = 1
+exprCounter :: Expr      -> Int
+exprCounter    (WHILE x)  = 1 + (exprCounter x)
+exprCounter    (IF _ l r) = 1 + exprCounter l + exprCounter r
+exprCounter    (SEQ xs)   = sum $ map exprCounter xs
+exprCounter    _          = 1
 
 ---------------------------------------------------------------------
 -- Distance calculater
 ---------------------------------------------------------------------
 
 exprSize :: Expr -> Int
-exprSize = sum . fmap (\x -> 1) . exprToTree
+exprSize          = sum . fmap (\x -> 1) . exprToTree
 
 -- | Naive way of measuring distance by serializing the tree and leving the strings
 distance :: Expr -> Expr -> Int
-distance x y = Aux.lev (stripEncoding $ encodeExpr x ) (stripEncoding $ encodeExpr y)
+distance    x       y     = Aux.lev (stripEncoding $ encodeExpr x ) (stripEncoding $ encodeExpr y)
 
 -- | Very crude distance metric for our expressions
 distanceSp :: Expr -> Expr -> Int
-distanceSp in1 in2 = case (in1,in2) of
+distanceSp    in1     in2   = case (in1,in2) of
   (SEQ xs, y)                   -> sum $ map (distanceSp y) xs
   (x, SEQ ys)                   -> sum $ map (distanceSp x) ys
   (WHILE x, WHILE y)            -> distanceSp x y
@@ -248,22 +248,22 @@ distanceSp in1 in2 = case (in1,in2) of
   (x,y)                         -> distance x y
 
 -- | Measures the distance between IF expr. Compares the expr in true with true en false with false
-distanceIF :: Expr -> Expr -> Int
-distanceIF (IF c1 l1 r1) (IF c2 l2 r2) = Aux.lev (encodeCond c1) (encodeCond c2) + distance l1 l2 + distance r1 r2
-distanceIF x y = distance x y 
+distanceIF :: Expr ->       Expr         -> Int
+distanceIF    (IF c1 l1 r1) (IF c2 l2 r2) = Aux.lev (encodeCond c1) (encodeCond c2) + distance l1 l2 + distance r1 r2
+distanceIF    x             y             = distance x y 
 
 minSubDistance :: Expr -> Expr -> (Expr,Int)
-minSubDistance crnt sol = head (minSubDistances crnt sol)
+minSubDistance    crnt    sol   = head (minSubDistances crnt sol)
 
 {-| returns the subtrees with lowest distance to solution  -}
 minSubDistances :: Expr -> Expr -> [(Expr,Int)]
-minSubDistances crnt sol = Aux.getMinFromTuple $ 
+minSubDistances    crnt    sol   = Aux.getMinFromTuple $ 
   map (\(x,y,z) -> (x,(y-z))) $ subDistances crnt sol -- !!!! SCORE: (y-z)
 
 subDistances :: Expr -> Expr -> [(Expr,Distance,Depth)]
-subDistances e sol = go e sol 0 where
+subDistances    e       sol   = go e sol 0 where
   go :: Expr -> Expr -> Depth -> [(Expr,Distance,Depth)]
-  go e s d = case e of
+  go    e       s       d      = case e of
     crnt@(WHILE x)  -> (crnt,(distance crnt s),d) : (go x s (d+1))
     crnt@(IF c l r) -> (crnt,(distance crnt s),d) : (go l s (d+1)) ++ (go r s (d+1))
     crnt@(SEQ xs)   -> (crnt,(distance crnt s),d) : concatMap (\x-> go x s (d+1)) xs
@@ -277,19 +277,19 @@ data Tree a = Null | Node a [Tree a] deriving (Show)
 
 type Trees a = [Tree a]
 
-mergeTree :: Tree IDTag -> Tree IDTag -> Tree IDTag
-mergeTree tree@(Node crnt crnts) newTree@(Node new news)
+mergeTree :: Tree IDTag ->          Tree IDTag              -> Tree IDTag
+mergeTree    tree@(Node crnt crnts) newTree@(Node new news)
   | tLeaf tree = if 
     | crnt == V -> (Node new news)
     | otherwise -> tree
   | otherwise = Node crnt (map (\x-> mergeTree x newTree) crnts )
 
-tLeaf :: Tree a -> Bool
-tLeaf (Null)      = False
-tLeaf (Node x xs) = null xs
+tLeaf :: Tree a     -> Bool
+tLeaf    (Null)      = False
+tLeaf    (Node x xs) = null xs
 
-cat :: (a -> [b] -> b) -> Tree a -> b
-cat f (Node root children) = f root (map (cat f) children)
+cat :: (a -> [b] -> b) -> Tree a              -> b
+cat    f                  (Node root children) = f root (map (cat f) children)
 
 instance Foldable Tree where
   foldMap f (Node x ts) = f x `mappend` foldMap (foldMap f) ts
@@ -302,43 +302,43 @@ instance Functor Tree where
 
 treeMap f (Node a xs) = Node (f a) (map (treeMap f) xs)
 
-treeScanDown :: (a -> b -> a) -> a -> Tree b -> Tree a
-treeScanDown f x (Node y subtrees) = Node g (fmap (treeScanDown f g) subtrees)
+treeScanDown :: (a -> b -> a) -> a -> Tree b           -> Tree a
+treeScanDown    f                x    (Node y subtrees) = Node g (fmap (treeScanDown f g) subtrees)
     where g = f x y
 
-treeScanUp :: (a -> [a] -> a) -> Tree a -> Tree a
-treeScanUp f (Node x []) = Node x []
-treeScanUp f (Node x subtrees) = Node (f x (fmap tNode g)) g
+treeScanUp :: (a -> [a] -> a) -> Tree a           -> Tree a
+treeScanUp    f                  (Node x [])       = Node x []
+treeScanUp    f                  (Node x subtrees) = Node (f x (fmap tNode g)) g
     where g = fmap (treeScanUp f) subtrees
 
 
 
 exprToTree :: Expr -> Tree IDTag
-exprToTree x = go x where
+exprToTree    x     = go x where
   go (WHILE x)  = (Node (W) [go x])
   go (IF c l r) = (Node (I) [Node (condID c) [], go l, go r])
   go (SEQ xs)   = (Node (S) (map go xs))
   go x          = (Node (exprID x) [])  
 
-treeToExpr :: Tree IDTag -> Expr
+treeToExpr :: Tree IDTag       -> Expr
 -- treeToExpr (Node (PA) l@(x:xs)) = (Conds PathAhead)
-treeToExpr (Node n l@(x:xs)) = let 
-      getCond (Node x _) = idCond x 
+treeToExpr    (Node n l@(x:xs)) = 
+  let getCond (Node x _) = idCond x 
       getExpr (Node x _) = idExpr x 
-      in case n of
-  W -> WHILE (treeToExpr x)
-  I -> IF (getCond x) (treeToExpr (xs!!0)) (treeToExpr (xs!!1))
-  S -> SEQ (map treeToExpr l)
-treeToExpr (Node x []) = (idExpr x)
+  in case n of
+    W -> WHILE (treeToExpr x)
+    I -> IF (getCond x) (treeToExpr (xs!!0)) (treeToExpr (xs!!1))
+    S -> SEQ (map treeToExpr l)
+treeToExpr    (Node x [])       = (idExpr x)
 
 elemOf :: IDTag -> Tree IDTag -> Bool
-elemOf i t = any id $ treeMap (==i) t
+elemOf    i        t           = any id $ treeMap (==i) t
 
 idInExpr :: IDTag -> Expr -> Bool
-idInExpr i e = elemOf i (exprToTree e)
+idInExpr    i        e     = elemOf i (exprToTree e)
 
-pathsToNode :: Eq a => a -> Tree a -> [[a]]
-pathsToNode x (Node y ns) = [[x] | x == y] ++ map (y:) (pathsToNode x =<< ns)
+pathsToNode :: Eq a => a -> Tree a     -> [[a]]
+pathsToNode            x    (Node y ns) = [[x] | x == y] ++ map (y:) (pathsToNode x =<< ns)
 
 -- treeSplit :: Eq a => a -> Tree a -> (Tree a, Tree a)
 -- treeSplit input crnt@(Node x xs)
@@ -355,11 +355,11 @@ pathsToNode x (Node y ns) = [[x] | x == y] ++ map (y:) (pathsToNode x =<< ns)
 
 
 treeF :: Eq a => (a -> Bool) -> ([Tree a] -> [Tree a]) -> Tree a -> Tree a
-treeF cond procedure input = go cond procedure input where
+treeF            cond           procedure                 input   = go cond procedure input where
   go c p i = i
 
-deleteLastError :: Eq a => [Bool] -> [a] -> [Tree a] -> [Tree a]
-deleteLastError preConditions erroneousExprs input = go preConditions erroneousExprs input where
+deleteLastError :: Eq a => [Bool] -> [a] ->   [Tree a] -> [Tree a]
+deleteLastError            preCond   errExprs input     = go preCond errExprs input where
   go preC ers i 
     | all id preC = deleteXSTree' tNode ers (reverse i)--map tNode (reverse i)
     | otherwise   = error "error"
@@ -367,28 +367,28 @@ deleteLastError preConditions erroneousExprs input = go preConditions erroneousE
 -- [IDTag] -> [Tree IDTag] -> [Tree IDTag]
 
 deleteXSTree :: [IDTag] -> [Tree IDTag] -> [Tree IDTag]
-deleteXSTree tags [] = []
-deleteXSTree tags (t:trees) 
+deleteXSTree    tags       []            = []
+deleteXSTree    tags       (t:trees) 
   | elem (tNode t) tags = trees
   | otherwise = t : (deleteXSTree tags trees)
 
 deleteXSTree' :: Eq a => (Tree a -> a) -> [a] -> [Tree a] -> [Tree a]
-deleteXSTree' _ _ [] = []
-deleteXSTree' f tags (t:trees) 
+deleteXSTree'            _                _      []        = []
+deleteXSTree'            f                tags   (t:trees) 
   | elem (f t) tags = trees
   | otherwise       = t : (deleteXSTree' f tags trees)
 
 deleteXS :: Eq a => [a] -> [a] -> [a]
-deleteXS xs [] = []   
-deleteXS xs (y:ys)
+deleteXS            xs     []   = []   
+deleteXS            xs     (y:ys)
   | (elem y xs) = ys
   | otherwise   = y:(deleteXS xs ys)
     
-tNode :: Tree a -> a
-tNode (Node x xs) = x
+tNode :: Tree a     -> a
+tNode    (Node x xs) = x
 
-tChildren :: Tree a -> Trees a
-tChildren (Node x xs) = xs
+tChildren :: Tree a     -> Trees a
+tChildren    (Node x xs) = xs
 
 ---------------------------------------------------------------------
 -- Pretty Printer
@@ -398,7 +398,7 @@ prettyPrint = printExprTree
 prettyPrintLn x = mapM prettyPrint x
 
 printExprTree :: Expr -> IO ()
-printExprTree x = putStrLn $ printExpr' x 0 "\n"
+printExprTree    x     = putStrLn $ printExpr' x 0 "\n"
   where 
     printExpr' x depth b = case x of
       (WHILE x)  -> (replicate (2 * depth) ' ') ++ "WHILE" ++ b ++  (printExpr' x (depth+1) b)
@@ -413,7 +413,7 @@ printExprTree x = putStrLn $ printExpr' x 0 "\n"
       -- Empty -> (replicate (2 * depth) ' ') ++ "Empty" 
 
 printExpr :: Expr -> IO ()
-printExpr x = putStrLn $ printExpr' x 0
+printExpr    x     = putStrLn $ printExpr' x 0
   where 
     printExpr' x depth  = case x of
       (WHILE x)  -> "WHILE (" ++ (printExpr' x (depth+1) ) ++ ")"
@@ -430,40 +430,40 @@ printExpr x = putStrLn $ printExpr' x 0
 ------------------------------------------------------------------
 
 stripEncoding :: String -> String
-stripEncoding s = stripChars "(,)" s where
+stripEncoding    s       = stripChars "(,)" s where
   stripChars :: String -> String -> String
-  stripChars = filter . flip notElem
+  stripChars                      = filter . flip notElem
 
-encodeExpr :: Expr -> String
-encodeExpr Forward     = "F"
-encodeExpr TurnLeft    = "L"
-encodeExpr TurnRight   = "R"
-encodeExpr Empty       = "E"
-encodeExpr TERMINATE   = "T"
-encodeExpr VOID        = "V"
+encodeExpr :: Expr      -> String
+encodeExpr    Forward    = "F"
+encodeExpr    TurnLeft   = "L"
+encodeExpr    TurnRight  = "R"
+encodeExpr    Empty      = "E"
+encodeExpr    TERMINATE  = "T"
+encodeExpr    VOID       = "V"
 -- encodeExpr (SEQ []) = "()"
-encodeExpr (SEQ x)     = "(" ++ encodeExpr' (SEQ x) ++ ")" where
-  encodeExpr' :: Expr -> String
-  encodeExpr' (SEQ []) = ""
-  encodeExpr' (SEQ (e:es)) 
+encodeExpr    (SEQ x)    = "(" ++ encodeExpr' (SEQ x) ++ ")" where
+  encodeExpr' :: Expr     -> String
+  encodeExpr'    (SEQ [])  = ""
+  encodeExpr'    (SEQ (e:es)) 
     | es == []  = encodeExpr e -- ++ encodeExpr (SEQ es) ++ ")"
     | otherwise = encodeExpr e ++ "," ++ encodeExpr' (SEQ es)
 -- encodeExpr (SEQ (e:es)) 
 --     | es == [] = encodeExpr e -- ++ encodeExpr (SEQ es) ++ ")"
 --     | otherwise = "(" ++ encodeExpr e ++ "," ++ encodeExpr (SEQ es) ++ ")"
-encodeExpr (WHILE x) = "w" ++ encodeExpr x -- ++ ")"
-encodeExpr (IF condition true false) = 
-    encodeCond condition ++ encodeExpr true ++ encodeExpr false -- ++ ")"
+encodeExpr    (WHILE x)  = "w" ++ encodeExpr x -- ++ ")"
+encodeExpr    (IF c t f) = 
+    encodeCond c ++ encodeExpr t ++ encodeExpr f -- ++ ")"
 -- encodeExpr _ = ""
 
-encodeCond :: Condition -> String
-encodeCond PathAhead    = "a"
-encodeCond PathLeft     = "l"
-encodeCond PathRight    = "r"
-encodeCond GoalReached  = "g"
+encodeCond :: Condition   -> String
+encodeCond    PathAhead    = "a"
+encodeCond    PathLeft     = "l"
+encodeCond    PathRight    = "r"
+encodeCond    GoalReached  = "g"
 
 decodeExpr :: String -> Expr
-decodeExpr s = case parsed of 
+decodeExpr    s       = case parsed of 
   Left _ -> Empty
   Right x -> x
   where parsed = parse exprParser "test" s
@@ -471,7 +471,7 @@ decodeExpr s = case parsed of
 -- WHILE (SEQ [Forward,IF PathLeft (SEQ [TurnLeft,Forward]) Forward])
 -- "w(F,l(L,F)F)"
 exprParser :: Parser Expr
-exprParser = exprForward <|> exprTurnLeft <|> exprTurnRight <|> exprEmpty <|> exprSEQ <|> exprWHILE <|> exprIF
+exprParser  = exprForward <|> exprTurnLeft <|> exprTurnRight <|> exprEmpty <|> exprSEQ <|> exprWHILE <|> exprIF
 
 matchSEQ, matchForward, matchTurnLeft, matchTurnRight,matchWHILE, matchEmpty :: Parser String
 matchForward    = string "F"
@@ -510,9 +510,6 @@ exprEmpty = matchEmpty *> (pure Empty)
 exprTurnRight :: Parser Expr
 exprTurnRight = matchTurnRight *> (pure TurnRight)
 
--- sWHILE :: Parser Expr
--- sWHILE = matchWHILE *> expr
-
 exprWHILE :: Parser Expr
 exprWHILE = WHILE <$> (matchWHILE *> exprParser)
   -- WHILE <$> (matchWHILE *> 
@@ -540,7 +537,7 @@ exprSEQ = SEQ <$> sSEQ
 
 
 parseAST :: AST -> Expr
-parseAST AST{astID, children, typeM} 
+parseAST    AST{astID, children, typeM} 
     | typeM == "maze_ifElse" = IF (parseCondition (head children) ) 
                                   (parseAST (children !! 1) ) 
                                   (parseAST (children !! 2))
@@ -559,7 +556,7 @@ parseAST AST{astID, children, typeM}
     --   failSafe children = if null inp then Empty else parseAST inp 
 
 parseCondition :: AST -> Condition
-parseCondition AST{astID, children, typeM}
+parseCondition    AST{astID, children, typeM}
     | typeM == "isPathForward" = PathAhead
     | typeM == "isPathLeft" = PathLeft
     | typeM == "isPathRight" = PathRight
@@ -572,8 +569,8 @@ class Display a where
 instance Display State where
     display State{pL, pO} = mapM_ putStrLn $ L.chunksOf 5 (map printGridTile (G.toList $gridMap ) ) 
 
-displayTiles :: State -> IO ()
-displayTiles State{pL, pO} = mapM_ (putStrLn . concat) (L.chunksOf 8 (map showTile (getAllTiles gridMap)))
+displayTiles :: State        -> IO ()
+displayTiles    State{pL, pO} = mapM_ (putStrLn . concat) (L.chunksOf 8 (map showTile (getAllTiles gridMap)))
 -- displayTiles State{pL, pO} = mapM_ putStrLn $ map concat $ L.chunksOf 5 (map showTile (getAllTiles gridMap))
 
 
@@ -581,83 +578,83 @@ displayTiles State{pL, pO} = mapM_ (putStrLn . concat) (L.chunksOf 8 (map showTi
 
 
 getGrid :: GridMapType-- State -> GridMapType
-getGrid = gridMap
+getGrid  = gridMap
 
 
 -- moveForwardState :: State -> State 
 
 moveForward :: State -> Maybe State
-moveForward (State pL pO)
+moveForward    (State pL pO)
     | G.lookup (addPoints pL pO) gridMap == Just Path = Just (State (addPoints pL pO) pO)
     | G.lookup (addPoints pL pO) gridMap == Just Goal = Just (State (addPoints pL pO) pO)
     | otherwise = Nothing
 
 moveForwardState :: State -> State
-moveForwardState (State pL pO) 
+moveForwardState    (State pL pO) 
     | G.lookup (addPoints pL pO) gridMap == Just Path = State (addPoints pL pO) pO
     | G.lookup (addPoints pL pO) gridMap == Just Goal = State (addPoints pL pO) pO
     | otherwise = State pL pO
 
-rotateLeft :: Point -> Point
-rotateLeft (pOx, pOy) = (-pOy,pOx)
+rotateLeft :: Point     -> Point
+rotateLeft    (pOx, pOy) = (-pOy,pOx)
 
-rotateRight :: Point -> Point
-rotateRight (pOx, pOy) = (pOy,-pOx)
+rotateRight :: Point     -> Point
+rotateRight    (pOx, pOy) = (pOy,-pOx)
 
-turnLeft :: State -> State
-turnLeft (State pl (pOx, pOy) ) = State pl (newX, newY) where
+turnLeft :: State                 -> State
+turnLeft    (State pl (pOx, pOy) ) = State pl (newX, newY) where
     newX = -pOy
     newY = pOx
 
-turnRight :: State -> State
-turnRight (State pl (pOx, pOy) ) = State pl (newX, newY) where
+turnRight :: State                 -> State
+turnRight    (State pl (pOx, pOy) ) = State pl (newX, newY) where
     newX = pOy
     newY = -pOx
 
 
-pathLeft :: State -> Bool
-pathLeft (State pl (pox,poy) ) = G.lookup (addPoints pl (-poy,pox)) gridMap == Just Path
+pathLeft :: State                -> Bool
+pathLeft    (State pl (pox,poy) ) = G.lookup (addPoints pl (-poy,pox)) gridMap == Just Path
 
-pathRight :: State -> Bool
-pathRight (State pl (pox,poy) ) = G.lookup (addPoints pl (poy,-pox)) gridMap == Just Path
+pathRight :: State                -> Bool
+pathRight    (State pl (pox,poy) ) = G.lookup (addPoints pl (poy,-pox)) gridMap == Just Path
 
-goalReached :: State -> Bool
-goalReached (State pl _ ) = G.lookup pl gridMap == Just Goal
+goalReached :: State        -> Bool
+goalReached    (State pl _ ) = G.lookup pl gridMap == Just Goal
 
 
 addPoints :: (Int, Int) -> (Int,Int) -> (Int,Int)
-addPoints (x1, y1) (x2, y2) = (x1+x2, y1+y2) 
+addPoints    (x1, y1)      (x2, y2)   = (x1+x2, y1+y2) 
 
 subtractPoints :: (Int, Int) -> (Int,Int) -> (Int,Int)
-subtractPoints (x1, y1) (x2, y2) = (x1-x2, y1-y2) 
+subtractPoints    (x1, y1)      (x2, y2)   = (x1-x2, y1-y2) 
 
 ---------------------Conversion-----------------------------------
 fromChar :: Char -> Expr
-fromChar 'f' = Forward
-fromChar 'r' = TurnRight 
-fromChar 'l' = TurnLeft 
-fromChar  _  = Empty
+fromChar    'f'   = Forward
+fromChar    'r'   = TurnRight 
+fromChar    'l'   = TurnLeft 
+fromChar     _    = Empty
 
-toChar :: Expr -> Char
-toChar Forward = 'f'
-toChar TurnRight = 'r'
-toChar TurnLeft = 'l'
-toChar _ = 'e'
+toChar :: Expr     -> Char
+toChar    Forward   = 'f'
+toChar    TurnRight = 'r'
+toChar    TurnLeft  = 'l'
+toChar    _         = 'e'
 
 fromString :: String -> Expr
-fromString [] = Empty
-fromString xs = SEQ $ map fromChar xs
+fromString    []      = Empty
+fromString    xs      = SEQ $ map fromChar xs
 
 toString :: Expr -> String
-toString Empty = ""
-toString xs = case xs of
+toString    Empty = ""
+toString    xs    = case xs of
     SEQ x -> map toChar x
     -- _ -> map toChar xs
 
 -------------------------------------------------------------------------------
 
 solutionFinder :: Expr
-solutionFinder = exprSeq ( findPathToGoal gridMap18 (playerLocation gridMap18) ) getState  
+solutionFinder  = exprSeq ( findPathToGoal gridMap18 (playerLocation gridMap18) ) getState  
 
 currentState = State (3,2) (-1,0) -- (G.lazyGridMap (G.rectSquareGrid 5 5) [Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Path,Goal,Wall,Wall,Start,Path,Wall,Wall,Wall,Wall,Wall,Wall,Wall]) )
 
