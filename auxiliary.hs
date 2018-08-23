@@ -56,7 +56,7 @@ lcs             xs    ys   = a!(0,0) where
 --                                             levMemo ! (u-1, v-1)] 
 
 lev' :: (Eq a) => [a] -> [a] -> Int
-lev' xs ys = levMemo ! (n, m)
+lev'              xs     ys  =  levMemo ! (n, m)
   where levMemo = array ((0,0),(n,m)) [((i,j),lev' i j) | i <- [0..n], j <- [0..m]]
         n        = length xs
         m        = length ys
@@ -72,7 +72,7 @@ lev' xs ys = levMemo ! (n, m)
 
 -- | medVecFinal
 levFast :: String -> String -> Int
-levFast s1 = V.last . V.ifoldl' scanS1 costs_i . V.fromList
+levFast    s1 = V.last . V.ifoldl' scanS1 costs_i . V.fromList
     where vs1 = V.fromList s1
           costs_i =  V.enumFromN 1 $ V.length vs1 -- [0.. length s1]
           scanS1 costs_W costSW_i c2 = 
@@ -84,37 +84,38 @@ levFast s1 = V.last . V.ifoldl' scanS1 costs_i . V.fromList
                in snd $ V.unzip v'
 
 lev :: String -> String -> Int
-lev s1 s2 = restrictedDamerauLevenshteinDistance newCosts s1 s2
+lev    s1        s2     = 
+  restrictedDamerauLevenshteinDistance newCosts s1 s2
 
 varSubCost :: (Char,Char) -> Int
-varSubCost    ('F','R')   =  2
-varSubCost    ('F','L')   =  2
-varSubCost    ('F','E')   =  1
-varSubCost    ('F','w')   =  4
-varSubCost    ('F',_)     =  100
-varSubCost    ('R','F')   =  2
-varSubCost    ('R','L')   =  1
-varSubCost    ('R','E')   =  1
-varSubCost    ('R',_)     =  100
-varSubCost    ('L','F')   =  2
-varSubCost    ('L','R')   =  1
-varSubCost    ('L','E')   =  1
-varSubCost    ('L',_)     =  100
-varSubCost    ('E','F')   =  1
-varSubCost    ('E','R')   =  1
-varSubCost    ('E','L')   =  1
-varSubCost    ('E',_)     =  100
-varSubCost    ('w','E')   =  3
-varSubCost    ('w',_)     =  100
-varSubCost    ('a','l')   =  1
-varSubCost    ('a','r')   =  1
-varSubCost    ('a',_)     =  100
-varSubCost    ('l','r')   =  1
-varSubCost    ('l','a')   =  1
-varSubCost    ('l',_)     =  100
-varSubCost    ('r','l')   =  1
-varSubCost    ('r','a')   =  1
-varSubCost    ('r',_)     =  100
+varSubCost    ('F', 'R')  =  2
+varSubCost    ('F', 'L')  =  2
+varSubCost    ('F', 'E')  =  1
+varSubCost    ('F', 'w')  =  4
+varSubCost    ('F', _)    =  100
+varSubCost    ('R', 'F')  =  2
+varSubCost    ('R', 'L')  =  1
+varSubCost    ('R', 'E')  =  1
+varSubCost    ('R', _)    =  100
+varSubCost    ('L', 'F')  =  2
+varSubCost    ('L', 'R')  =  1
+varSubCost    ('L', 'E')  =  1
+varSubCost    ('L', _)    =  100
+varSubCost    ('E', 'F')  =  1
+varSubCost    ('E', 'R')  =  1
+varSubCost    ('E', 'L')  =  1
+varSubCost    ('E', _)    =  100
+varSubCost    ('w', 'E')  =  3
+varSubCost    ('w', _)    =  100
+varSubCost    ('a', 'l')  =  1
+varSubCost    ('a', 'r')  =  1
+varSubCost    ('a', _)    =  100
+varSubCost    ('l', 'r')  =  1
+varSubCost    ('l', 'a')  =  1
+varSubCost    ('l', _)    =  100
+varSubCost    ('r', 'l')  =  1
+varSubCost    ('r', 'a')  =  1
+varSubCost    ('r', _)    =  100
 
 
 varDelCost :: Char -> Int
@@ -154,18 +155,20 @@ main = do
                              (V.fromList "flfrf")
 
 levL :: String -> String -> Int
-levL s1 s2 = getCost $ fst $ Vd.leastChanges str (V.fromList s1) (V.fromList s2) where
-  getCost (Sum x) = (x)
+levL    s1        s2     = 
+  getCost $ fst $ Vd.leastChanges str (V.fromList s1) (V.fromList s2) 
+  where
+    getCost (Sum x) = (x)
 
 changeLocation :: String -> String -> Int
-changeLocation s1 s2 = snd3.head.snd $ Vd.leastChanges str (V.fromList s1) (V.fromList s2)                             
+changeLocation    s1        s2     = snd3.head.snd $ Vd.leastChanges str (V.fromList s1) (V.fromList s2)                             
 -----------------------------------------------------------
 --			MIN / MAX search in Map
 -----------------------------------------------------------
 
 
 getMinFromMap :: Ord a => Map a1 a -> [a1]
-getMinFromMap m = go [] Nothing (Map.toList m)
+getMinFromMap             m        =  go [] Nothing (Map.toList m)
   where
     go ks _        []           = ks 
     go ks Nothing  ((k,v):rest) = go (k:ks) (Just v) rest
@@ -175,7 +178,7 @@ getMinFromMap m = go [] Nothing (Map.toList m)
         | otherwise = go (k:ks) (Just v) rest
 
 getMinFromMap' :: Ord a => Map a1 a -> [(a1,a)]
-getMinFromMap' m = go [] Nothing (Map.toList m)
+getMinFromMap'             m        =  go [] Nothing (Map.toList m)
   where
     go ks _        []           = ks 
     go ks Nothing  ((k,v):rest) = go ((k,v):ks) (Just v) rest
@@ -185,7 +188,7 @@ getMinFromMap' m = go [] Nothing (Map.toList m)
         | otherwise = go ((k,v):ks) (Just v) rest
 
 getMaxFromMap :: Ord a => Map a1 a -> [a1]
-getMaxFromMap m = go [] Nothing (Map.toList m)
+getMaxFromMap             m        =  go [] Nothing (Map.toList m)
   where
     go ks _        []           = ks 
     go ks Nothing  ((k,v):rest) = go (k:ks) (Just v) rest
@@ -195,7 +198,7 @@ getMaxFromMap m = go [] Nothing (Map.toList m)
         | otherwise = go (k:ks) (Just v) rest
 
 getMaxFromMap' :: Ord a => Map a1 a -> [(a1,a)]
-getMaxFromMap' m = go [] Nothing (Map.toList m)
+getMaxFromMap'             m        =  go [] Nothing (Map.toList m)
   where
     go ks _        []           = ks 
     go ks Nothing  ((k,v):rest) = go ((k,v):ks) (Just v) rest
@@ -207,7 +210,7 @@ getMaxFromMap' m = go [] Nothing (Map.toList m)
 
 -- getMaxFromTuple
 getMinFromTuple :: Ord a => [(a1, a)] -> [(a1,a)]
-getMinFromTuple m = go [] Nothing m
+getMinFromTuple             m         =  go [] Nothing m
   where
     go ks _        []           = ks 
     go ks Nothing  ((k,v):rest) = go ((k,v):ks) (Just v) rest
@@ -217,7 +220,7 @@ getMinFromTuple m = go [] Nothing m
         | otherwise = go ((k,v):ks) (Just v) rest
 
 getMaxFromTuple :: Ord a => [(a1, a)] -> [(a1,a)]
-getMaxFromTuple m = go [] Nothing m
+getMaxFromTuple             m         =  go [] Nothing m
   where
     go ks _        []           = ks 
     go ks Nothing  ((k,v):rest) = go ((k,v):ks) (Just v) rest
@@ -233,11 +236,11 @@ getMaxFromTuple m = go [] Nothing m
 -- > Aux.applY ssE (fst $ initCompSE (decodeExpr "w(aFF,wF)")) 5
 -----------------------------------------------------------
 
-applY :: ( a -> a ) -> a -> Int -> [a]
-applY f x n = take n $ iterate f x
+applY :: (a -> a) -> a -> Int -> [a]
+applY    f           x    n   =  take n $ iterate f x
 
-applX :: Eq b => Num b => (a->a) -> a -> b -> a
-applX f x n = go f x n where
+applX :: Eq b => Num b => (a -> a) -> a -> b -> a
+applX                     f           x    n =  go f x n where
   go f x 0 = f x 
   go f x d = f (go f x (d-1))
 
@@ -247,15 +250,15 @@ applX f x n = go f x n where
 
 -- From Maybe tuples
 catMaybesTuple :: [(b, Maybe a)] -> [(b,a)]
-catMaybesTuple ls = [(y,x) | (y, Just x) <- ls]
+catMaybesTuple    ls             =  [(y,x) | (y, Just x) <- ls]
 
 frequencies :: (Ord a) => [a] -> [(a, Int)]
-frequencies xs = Map.toList (Map.fromListWith (+) [(x,1) | x <- xs])
+frequencies               xs  =  Map.toList (Map.fromListWith (+) [(x,1) | x <- xs])
 
 listDifference :: (Ord a) => [a] -> [a] -> [a]
-listDifference a b = go initHist a
-  where
-    initHist = MapS.fromListWith (+) [ (x, 1 :: Int) | x <- b ]
+listDifference               xs     ys   =  go initHist xs
+  where 
+    initHist = MapS.fromListWith (+) [ (x, 1 :: Int) | x <- ys ]
 
     go _    []     = []
     go hist (x:xs) = case MapS.lookup x hist of
@@ -263,64 +266,61 @@ listDifference a b = go initHist a
       _              -> x : go hist                      xs
 
 listIntersect :: (Ord a) => [a] -> [a] -> [a]
-listIntersect a b = filter (`Set.member` bSet) a
-  where
-    bSet = Set.fromList b
+listIntersect               xs     ys  =  filter (`Set.member` bSet) xs
+  where bSet = Set.fromList ys
 
 fst3 :: (a,b,c) -> a
-fst3 (x,_,_) = x
+fst3    (x,_,_) =  x
 
 snd3 :: (a,b,c) -> b
-snd3 (_,x,_) = x
+snd3    (_,x,_) =  x
 
 trd3 :: (a,b,c) -> c
-trd3 (_,_,x) = x
-
-
+trd3    (_,_,x) =  x
 
 fsts :: [(a,b)] -> [a]
-fsts = map fst
+fsts            =  map fst
 
 snds :: [(a,b)] -> [b]
-snds = map snd
+snds            =  map snd
 
 takeFirstOccurenceTuples :: (Eq a) => (a -> Bool) -> [(b,a)] -> Maybe (b,a)
-takeFirstOccurenceTuples _func [] = Nothing
-takeFirstOccurenceTuples func (y@(yb,ya):ys)
+takeFirstOccurenceTuples              _func          []      =  Nothing
+takeFirstOccurenceTuples               func       (y@(yb,ya):ys)
   | func ya  = Just y
   | otherwise = takeFirstOccurenceTuples func ys
 
 safeTail :: String -> String
-safeTail s 
+safeTail    s 
   | s == "" = ""
   | otherwise = tail s
 
 safeHead :: [a] -> Maybe a
-safeHead [] = Nothing
-safeHead x  = Just $ head x
+safeHead    []  =  Nothing
+safeHead    xs  =  Just $ head xs
 
 -- splitted :: String -> [(String,String)]
 
 -- recS 1 ==> [1,2,0]
 recursiveSearch :: [(String,String)] -> String  -> [(String,String)]
-recursiveSearch g s = case lookup s g of
+recursiveSearch    g                    s       =  case lookup s g of
     Nothing  -> []
     Just res -> (s, res) : recursiveSearch g res
 
 
 
-lookupRight :: (Eq a) => a -> [(a,b)] -> [(a,b)]
-lookupRight i tupleList = [(x,y) | (x,y) <- tupleList, x == i]
+lookupRight :: (Eq a) => a -> [(a,b)]   -> [(a,b)]
+lookupRight              i    tupleList =  [(x,y) | (x,y) <- tupleList, x == i]
 
-lookupLeft :: (Eq b) => b -> [(a,b)] -> [(a,b)]
-lookupLeft i tupleList = [(x,y) | (x,y) <- tupleList, y == i]
+lookupLeft :: (Eq b) => b -> [(a,b)]   -> [(a,b)]
+lookupLeft              i    tupleList =  [(x,y) | (x,y) <- tupleList, y == i]
 
 
 exclusion :: Ord a => a -> [a] -> [a]
-exclusion s ss = MB.fromMaybe [] $ Map.lookup s $ Map.fromList $ selections ss where
-  selections :: [a] -> [(a,[a])]
-  selections []     = []
-  selections (x:xs) = (x,xs) : [ (y,x:ys) | (y,ys) <- selections xs ]
+exclusion             s    ss  =  MB.fromMaybe [] $ Map.lookup s $ Map.fromList $ selections ss where
+  selections :: [a]    -> [(a,[a])]
+  selections    []     =  []
+  selections    (x:xs) =  (x,xs) : [ (y,x:ys) | (y,ys) <- selections xs ]
 
 
 -- obtains all segments when the last char is deleted (init)
@@ -328,26 +328,26 @@ subListL :: [String]
 subListL = ["flfrf","flfr","flf","fl","f",""]
 
 ordNub :: (Ord a) => [a] -> [a]
-ordNub = go Set.empty
+ordNub                   =  go Set.empty
   where
     go _ [] = []
     go s (x:xs) = if x `Set.member` s then go s xs
                                       else x : go (Set.insert x s) xs
 
 -- | \merge' takes a list of list of elements and 
-merge :: [[a]] -> [a] -> [[a]]
-merge xs     []     = xs
-merge []     ys     = [ys]
-merge (x:xs) (y:ys) = (y : x) : merge xs ys
+merge :: [[a]] -> [a]    -> [[a]]
+merge    xs       []     =  xs
+merge    []       ys     =  [ys]
+merge    (x:xs)   (y:ys) =  (y : x) : merge xs ys
 
 
 subList :: [a] -> [[a]]
-subList []  = [[]]
-subList [s] = [[s]]
-subList s   = s : subList (init s)
+subList    []  =  [[]]
+subList    [s] =  [[s]]
+subList    s   =  s : subList (init s)
 
 insertAt :: Int -> a -> [a] -> [a]
-insertAt i val ls
+insertAt    i      val  ls
     | i<0 = ls
     | otherwise = go i ls
     where
@@ -356,120 +356,111 @@ insertAt i val ls
         go _ [] = []
 
 replace :: Eq a => [a] -> [a] -> [a] -> [a]
-replace needle replacement haystack
-  = case begins haystack needle of
-      Just remains -> replacement ++ remains
-      Nothing      -> case haystack of
-                        []     -> []
-                        x : xs -> x : replace needle replacement xs
-    where begins :: Eq a => [a] -> [a] -> Maybe [a]
-          begins haystack []                = Just haystack
-          begins (x : xs) (y : ys) | x == y = begins xs ys
-          begins _        _                 = Nothing
+replace            ns     rs     hs  =  case begins hs ns of
+  Just remains -> rs ++ remains
+  Nothing      -> case hs of
+                    []     -> []
+                    x : xs -> x : replace ns rs xs
+  where begins :: Eq a => [a] ->   [a]               -> Maybe [a]
+        begins            hs       []                =  Just hs
+        begins            (x : xs) (y : ys) | x == y =  begins xs ys
+        begins            _        _                 =  Nothing
 
 
 fastContains :: Eq a => [a] -> [a] -> Bool
-fastContains [] []     = False
-fastContains _ []      = False
-fastContains [] _      = False
-fastContains (x:xs) ys = (x `elem` ys) || fastContains xs ys
+fastContains            []     []  =  False
+fastContains            _      []  =  False
+fastContains            []     _   =  False
+fastContains            (x:xs) ys  =  (x `elem` ys) || fastContains xs ys
 
 tmp :: String -> String -> Bool
-tmp [_] _ = False
-tmp _ [_] = False
-tmp _ _   = True
+tmp    [_]       _      =  False
+tmp    _         [_]    =  False
+tmp    _         _      =  True
 
-checkIfSame :: Eq a => [a] -> [a] -> [Bool]
-checkIfSame [] []  = [True]
-checkIfSame [_] [] = [False]
-checkIfSame [] [_] = [False]
--- checkIfSame [] (_:_:_) = [False]
--- checkIfSame (_:_:_) [] = [False]
-checkIfSame (x:xs) (y:ys) = (x==y): checkIfSame xs ys
+checkIfSame :: Eq a => [a] -> [a]    -> [Bool]
+checkIfSame            []     []     =  [True]
+checkIfSame            [_]    []     =  [False]
+checkIfSame            []     [_]    =  [False]
+checkIfSame            (x:xs) (y:ys) =  (x==y): checkIfSame xs ys
 
-checkIfSame' :: Eq a => [a] -> [a] -> [Bool]
-checkIfSame' [] []         = [True]
-checkIfSame' [_] []        = [False]
-checkIfSame' [] [_]        = [False]
-checkIfSame' (x:xs) (y:ys) = (x==y): checkIfSame' xs ys
+checkIfSame' :: Eq a => [a] -> [a]    -> [Bool]
+checkIfSame'            []     []     =  [True]
+checkIfSame'            [_]    []     =  [False]
+checkIfSame'            []     [_]    =  [False]
+checkIfSame'            (x:xs) (y:ys) =  (x==y): checkIfSame' xs ys
 
-allEqual :: Eq a => [a] -> Bool
-allEqual []           = True
-allEqual (first:rest) = all (\elem -> elem == first) rest
+allEqual :: Eq a => [a]          -> Bool
+allEqual            []           =  True
+allEqual            (first:rest) =  all (\elem -> elem == first) rest
 
 -- Tuple and [Tuple] manipultation
 
 showTup :: (String,String) -> String
-showTup (x,y) = x ++ "," ++ y
+showTup    (x, y)          =  x ++ "," ++ y
 
 stringify :: [(String,String)] -> String
-stringify s = unlines $ map showTup s
+stringify    ss                =  unlines $ map showTup ss
 
 splitted :: String -> [(String,String)]
-splitted s = map splitter (lines s)
+splitted    s      =  map splitter (lines s)
 
 splitter :: String -> (String,String)
-splitter s = toTuple $ splitOn "," s
+splitter    s       = toTuple $ splitOn "," s
 
 toTuple :: [String] -> (String, String)
-toTuple [a,b] = (a,b)
-toTuple _ = ("","")
+toTuple    [a,b]     = (a,b)
+toTuple    _         = ("","")
 
 fromTuple :: (a, a) -> [a]
-fromTuple (a,b) = [a,b]
+fromTuple    (a, b) =  [a,b]
 -- fromTuple _ = []
 
-goesToX :: Int -> (String,String) -> Bool
-goesToX int (_,y) = (read y::Int) == int
+goesToX :: Int -> (String, String) -> Bool
+goesToX    int    (_, y)            = (read y::Int) == int
 
 astIDsToX :: Int -> [(String,String)] -> [String]
-astIDsToX x combs = map fst $ filter (goesToX x) combs
+astIDsToX    x      combs             =  map fst $ filter (goesToX x) combs
 
 allThatPointToX :: Int -> [(String,String)] -> [(String,String)]
-allThatPointToX x = filter (goesToX x)
+allThatPointToX    x                         = filter (goesToX x)
 
 
 ----- LOGIC -------
 xor :: Bool -> Bool -> Bool
-xor a b = a /= b
+xor    a       b    =  a /= b
 
 
 ------ ZIP ------
 
 
-zip3' :: [(a,b)] -> [c] -> [(a,b,c)]
+zip3' :: [(a,b)] -> [c]                              -> [(a,b,c)]
+zip3'    ((a,b):bs) (c:cs)                           =  (a,b,c) : zip3' bs cs
+zip3'    _          _                                =  []
 
-zip3' ((a,b):bs) (c:cs)                           = (a,b,c) : zip3' bs cs
-zip3'   _      _                                  = []
+zip4'' :: [a] -> [b] -> [(c,d)]                      -> [(a,b,c,d)]
+zip4''    (a:as) (b:bs) ((c,d):cs)                   =  (a,b,c,d) : zip4'' as bs cs
+zip4''   _          _   _                            =  []
 
-zip4'' :: [a] -> [b] -> [(c,d)] -> [(a,b,c,d)]
-zip4'' (a:as) (b:bs) ((c,d):cs)                   = (a,b,c,d) : zip4'' as bs cs
-zip4''   _      _     _                           = []
+zip4' :: [(a,b)] -> [c] -> [d]                       -> [(a,b,c,d)]
+zip4'    ((a,b):bs) (c:cs) (d:ds)                    =  (a,b,c,d) : zip4' bs cs ds
+zip4'    _          _       _                        =  []
 
-zip4' :: [(a,b)] -> [c] -> [d] -> [(a,b,c,d)]
--- Specification
-zip4' ((a,b):bs) (c:cs) (d:ds)                    = (a,b,c,d) : zip4' bs cs ds
-zip4'   _      _     _                            = []
+zip5' :: [(a,b)] -> [(c,d)] -> [e]                   -> [(a,b,c,d,e)]
+zip5'    ((a,b):bs) ((c,d):ds) (e:es)                =  (a,b,c,d,e) : zip5' bs ds es
+zip5'    _          _          _                     =  []
 
-zip5' :: [(a,b)] -> [(c,d)] -> [e] -> [(a,b,c,d,e)]
--- Specification
-zip5' ((a,b):bs) ((c,d):ds) (e:es)                = (a,b,c,d,e) : zip5' bs ds es
-zip5'   _      _     _                            = []
+zip6' :: [(a,b)] -> [(c,(d,e))] -> [f]               -> [(a,b,d,c,e,f)]
+zip6'    ((a,b):bs) ((c,(d,e)):ds) (f:es)            =  (a,b,d,c,e,f) : zip6' bs ds es
+zip6'    _          _              _                 =  []
 
-zip6' :: [(a,b)] -> [(c,(d,e))] -> [f] -> [(a,b,d,c,e,f)]
--- Specification
-zip6' ((a,b):bs) ((c,(d,e)):ds) (f:es)            = (a,b,d,c,e,f) : zip6' bs ds es
-zip6'   _      _     _                            = []
+zip7' :: [(a,b)] -> [(c,(d,e))] -> [f] -> [g]        -> [(a,b,d,c,e,f,g)]
+zip7'    ((a,b):bs) ((c,(d,e)):ds) (f:fs) (g:gs)     =  (a,b,d,c,e,f,g) : zip7' bs ds fs gs
+zip7'    _          _              _      _          =  []
 
-zip7' :: [(a,b)] -> [(c,(d,e))] -> [f] -> [g] -> [(a,b,d,c,e,f,g)]
--- Specification
-zip7' ((a,b):bs) ((c,(d,e)):ds) (f:fs) (g:gs)     = (a,b,d,c,e,f,g) : zip7' bs ds fs gs
-zip7'   _      _     _  _                         = []
-
-zip8' :: [(a,b)] -> [(c,(d,e))] -> [(f,g)] -> [h] -> [(a,b,d,c,e,f,g,h)]
--- Specification
-zip8' ((a,b):bs) ((c,(d,e)):ds) ((f,g):fs) (h:hs) = (a,b,d,c,e,f,g,h) : zip8' bs ds fs hs
-zip8'   _      _     _  _                         = []
+zip8' :: [(a,b)] -> [(c,(d,e))] -> [(f,g)] -> [h]    -> [(a,b,d,c,e,f,g,h)]
+zip8'    ((a,b):bs) ((c,(d,e)):ds) ((f,g):fs) (h:hs) =  (a,b,d,c,e,f,g,h) : zip8' bs ds fs hs
+zip8'    _          _              _          _      =  []
 
 
 -----------------------------------------------------------
@@ -479,36 +470,42 @@ zip8'   _      _     _  _                         = []
 type ListZipper a = ([a],[a])
 
 goForward :: ListZipper a -> ListZipper a  
-goForward ([],x)     = ([],x)
-goForward (x:xs, bs) = (xs, x:bs)
+goForward    ([],x)       =  ([],x)
+goForward    (x:xs, bs)   =  (xs, x:bs)
   
 goBack :: ListZipper a -> ListZipper a  
-goBack (y,[])        = (y,[])
-goBack (xs, b:bs)    = (b:xs, bs)
+goBack    (y,[])        = (y,[])
+goBack    (xs, b:bs)    = (b:xs, bs)
 
 
 printList ss = mapM putStrLn ss
-boolTo10 s = if s then 1 else 0
+
+boolTo10  s = if s then 1 else 0
 
 -----------------------------------------------------------
 --      PRINTER
 -----------------------------------------------------------
 
 printTuplesLn   :: (Show a, Show b)                         => [(a,b)]       -> IO [()]
-printTuplesLn xs   = mapM (\(x,y) -> putStrLn ("(" ++(show x)++" , " ++ (show y)++ ")")) xs
+printTuplesLn                                                  xs             = 
+  mapM (\(x,y) -> putStrLn ("(" ++(show x)++" , " ++ (show y)++ ")")) xs
 
 printTuples3Ln' :: (Show a, Show b, Show c)                 => [(a,(b,c))]   -> IO [()]
-printTuples3Ln' xs = mapM (\(x,(y,z)) -> putStrLn ((show x)++":" ++ (show y) ++ ": " ++ (show z))) xs
+printTuples3Ln'                                                xs             = 
+  mapM (\(x,(y,z)) -> putStrLn ((show x)++":" ++ (show y) ++ ": " ++ (show z))) xs
 
 printTuples3Ln  :: (Show a, Show b, Show c)                 => [(a,b,c)]     -> IO [()]
-printTuples3Ln xs  = mapM (\(x,y,z) -> putStrLn ((show x)++":" ++ (show y) ++ ": " ++ (show z))) xs
+printTuples3Ln                                                 xs             = 
+  mapM (\(x,y,z) -> putStrLn ((show x)++":" ++ (show y) ++ ": " ++ (show z))) xs
 
 
 printTuples4Ln  :: (Show a, Show b, Show c, Show d)         => [(a,(b,c),d)] -> IO [()]
-printTuples4Ln xs  = mapM (\(x,(y,z),zz) -> putStrLn ((show x)++" (" ++ (show y) ++ "," ++ (show z) ++ ") : " ++ (show zz))) xs
+printTuples4Ln                                                 xs             = 
+  mapM (\(x,(y,z),zz) -> putStrLn ((show x)++" (" ++ (show y) ++ "," ++ (show z) ++ ") : " ++ (show zz))) xs
 
 printTuples5Ln  :: (Show a, Show b, Show c, Show d, Show e) => [(a,b,c,d,e)] -> IO [()]
-printTuples5Ln xs  = mapM (\(x,y,z,zz,zzz) -> putStrLn ((show x)++" :" ++ (show y) ++ ": " ++ (show z) ++ " " ++ show zz ++ " " ++ show zzz)) xs
+printTuples5Ln                                                 xs             = 
+  mapM (\(x,y,z,zz,zzz) -> putStrLn ((show x)++" :" ++ (show y) ++ ": " ++ (show z) ++ " " ++ show zz ++ " " ++ show zzz)) xs
 
 
 -----------------------------------------------------------
@@ -516,7 +513,7 @@ printTuples5Ln xs  = mapM (\(x,y,z,zz,zzz) -> putStrLn ((show x)++" :" ++ (show 
 -----------------------------------------------------------
 
 writeLines :: Show a => FilePath -> [a] -> IO ()
-writeLines fp xs = writeFile fp $ intercalate "\n" $ map (\x -> show x) xs 
+writeLines              fp          xs   = writeFile fp $ intercalate "\n" $ map (\x -> show x) xs 
 
 
 -----------------------------------------------------------
