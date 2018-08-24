@@ -51,12 +51,12 @@ strExprTex s = tree id (convertE (E.decodeExpr s))
 
 convertE :: E.Expr      -> Tree LaTeX --String
 convertE    (E.WHILE x)  = Node (Just $ "repeat") [convertE x]
-convertE    (E.IF c l r) = Node (Just $ fromString $ show c) [convertE l, convertE r]
-convertE    (E.SEQ xs)   = Node (Just $ "repeat") $map convertE xs
-convertE    E.Forward    = Leaf "Forward"
-convertE    E.TurnLeft   = Leaf "TurnLeft"
-convertE    E.TurnRight  = Leaf "TurnRight"
-convertE    E.Empty      = Leaf "Empty"
+convertE    (E.IF c l r) = Node (Just $ textit $ fromString $ show c) [convertE l, convertE r]
+convertE    (E.SEQ xs)   = Node (Just $ "list") $map convertE xs
+convertE    E.Forward    = Leaf "F"
+convertE    E.TurnLeft   = Leaf "L"
+convertE    E.TurnRight  = Leaf "R"
+convertE    E.Empty      = Leaf "E"
 
 theBody :: LaTeX
 theBody =
