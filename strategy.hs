@@ -652,7 +652,7 @@ mainResult :: [(Bool, (String, String), String, Int)]
 mainResult  = 
   let t x      = getHintFromSE' (sRun $ initCompSE (decodeExpr x)) 
       dataSet  = Aux.hoc18SingleEdit
-      output   = remDups $ Aux.zip4''
+      output   = {-remDups $-} Aux.zip4''
               equality 
               (dataSet) 
               (map (\(inp, gs)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)

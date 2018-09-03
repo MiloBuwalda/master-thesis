@@ -4,6 +4,7 @@ import qualified Expressions as E
 
 import Text.LaTeX.Base
 import Text.LaTeX.Packages.Trees.Qtree
+import qualified Forest as F
 import Text.LaTeX.Packages.Inputenc
 
 -- treeExample1 :: Tree String
@@ -29,7 +30,27 @@ treeShortened = Node
     ]
 
 
+forestTMP :: F.Tree LaTeX
+forestTMP = Node 
+  (Just $ "repeat")
+  [ Node (Just $ textit "(PathAhead)")
+    [ Leaf "Forward", Leaf "TurnLeft"
+    ]
+  ]
 -- Main
+
+-- concat multiple Results 
+resultsPrinter :: [(Bool,Int,(String,String),String)] -> IO ()
+resultsPrinter xs = renderFile "tree.tex" $ mconcat $ map resultToTrees xs
+
+resultPrinter :: (Bool,Int,(String,String),String) -> IO ()
+resultPrinter x = renderFile "tree.tex" (resultToTrees x)
+
+resultToTrees :: (Bool,Int,(String,String),String) -> LaTeX
+resultToTrees (_,_,(a,b),c) = (ress) where
+  ress :: LaTeX
+  ress = fff (strExprTex a) <> fff (strExprTex b) <> fff (strExprTex c) where
+    fff x = raw "\\" <> "fff" <> raw "{" <> x <> raw "} " <> raw "&" <> "\n" 
 
 main :: IO ()
 main = renderFile "tree.tex" example
@@ -47,16 +68,27 @@ expressionTex :: E.Expr -> LaTeX
 expressionTex e = tree id (convertE e)
 
 strExprTex :: String -> LaTeX
-strExprTex s = tree id (convertE (E.decodeExpr s))
+strExprTex s = F.tree id (convertE' (E.decodeExpr s))
 
 convertE :: E.Expr      -> Tree LaTeX --String
 convertE    (E.WHILE x)  = Node (Just $ "repeat") [convertE x]
-convertE    (E.IF c l r) = Node (Just $ textit $ fromString $ show c) [convertE l, convertE r]
+convertE    (E.IF c l r) = Node (Just $ aBlock $ show c) [convertE l, convertE r] where
+  aBlock x = mconcat [ "if " , textit $ fromString x] 
 convertE    (E.SEQ xs)   = Node (Just $ "list") $map convertE xs
-convertE    E.Forward    = Leaf "F"
-convertE    E.TurnLeft   = Leaf "L"
-convertE    E.TurnRight  = Leaf "R"
-convertE    E.Empty      = Leaf "E"
+convertE    E.Forward    = Leaf "Forward"
+convertE    E.TurnLeft   = Leaf "TurnLeft"
+convertE    E.TurnRight  = Leaf "TurnRight"
+convertE    E.Empty      = Leaf "Empty"
+
+convertE' :: E.Expr      -> F.Tree LaTeX --String
+convertE'    (E.WHILE x)  = Node (Just $ "repeat") [convertE' x]
+convertE'    (E.IF c l r) = Node (Just $ aBlock $ show c) [convertE' l, convertE' r] where
+  aBlock x = mconcat [ "if " , textit $ fromString x] 
+convertE'    (E.SEQ xs)   = Node (Just $ "list") $map convertE' xs
+convertE'    E.Forward    = Leaf "Forward"
+convertE'    E.TurnLeft   = Leaf "TurnLeft"
+convertE'    E.TurnRight  = Leaf "TurnRight"
+convertE'    E.Empty      = Leaf "Empty"
 
 theBody :: LaTeX
 theBody =
