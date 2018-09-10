@@ -4,6 +4,7 @@ import qualified Expressions as E
 import Auxiliary
 import Data.List
 
+import Data.Text (pack)
 import Text.LaTeX.Base
 import Text.LaTeX.Packages.Trees.Qtree
 import qualified Forest as F
@@ -67,23 +68,41 @@ resultDirPrinter x = renderFile "dirtree.tex" (resultToTrees x)
 
 
 resultToDirtree :: (Bool,Int,(String,String),String) -> LaTeX
-resultToDirtree (_,_,(a,b),c) = (ress) where
+resultToDirtree (_,_,(a,b),c) = (tableEnc) where
+  tableEnc = tablePre <> ress <> tablePost
   ress :: LaTeX
   ress = dirtree a <> raw "&" <> "\n"  <> dirtree b <> raw "&" <> "\n"  <> dirtree c <> (raw "&&\\\\") <> "\n\n" where
-    dirtree x = encapsulateWith ["minipage", "4cm"] $ raw "\\" <> "dirtree" <> raw "{%\\{" <> "\n" <> strExprTex' x <> raw "\n} "
+    dirtree x = dtSetlength <> "\n" <> (encapsulateWith ["minipage", "[t]", raw ".15\\textwidth"] True $ raw "\\" <> "dirtree" <> raw "{%\\{" <> "\n" <> strExprTex' x <> raw "\n} ")
 
 
-setOptions :: [String] -> LaTeX
-setOptions args = raw "\\" <> fromString (head args) <> mconcat $ map opt (tail args) where
-  opt x = raw "{" <> fromString x <> raw "}" 
+dtSetlength :: LaTeX
+dtSetlength = command ["DTsetlength","0.2em",".4em","0.1em",".3pt","1.5pt"] False
 
-encapsulateWith :: [String] -> LaTeX -> LaTeX
-encapsulateWith args inp = raw "\\" <> "begin" <> raw "{" <> fromString (head args) <> raw "}" <> options <> "\n" <> inp <> "\n" <> raw "\\" <> "end" <> raw "{" <> fromString (head args) <> raw "}\n" where
-  options = mconcat $ map option' (tail args)
-  option :: Int -> LaTeX
-  option' x = raw "{" <> fromString x <> raw "}"
-  option x = if (not . null) (get x) then raw "{" <> fromString (get x) <> raw "}" else fromString ""
-  get x = safeIndex args x []
+tablePre :: LaTeX
+tablePre = raw "\\begin{table*}[t]\n\\centering\n\\caption{Internal inconsistencies}\n\\label{tab:ass8-internal-incons}\n% \n\\footnotesize\n\\begin{tabularx}{\\textwidth}{lllXS[table-format=2.0]}\n\\hspace{1em}\\textit{Input} & \\hspace{1em}\\textit{GS hint} & \\hspace{1em}\\textit{Our hint} & \\hspace{1em}\\textit{Comment} & \\hspace{1em}\\textit{Internal inconsistencies} \\\\[1ex] \\hline \\\\[-1.5ex]\n"
+
+tablePost :: LaTeX
+tablePost = raw "\\end{tabularx}\n\\end{table*}\n\n"
+
+-- first is the command rest are options
+command :: [LaTeX] -> Bool -> LaTeX
+command args bracketArg = raw "\\" <> (head args) <> 
+  if bracketArg 
+    then (safeIndex args 1 "") <> mconcat (map opt (tail (tail args)))
+    else mconcat (map opt (tail args)) where
+  opt :: LaTeX -> LaTeX
+  opt x = raw "{" <> x <> raw "}" 
+
+encapsulateWith :: [LaTeX] -> Bool -> LaTeX -> LaTeX
+encapsulateWith args bracketArg inp = raw "\\" <> "begin" <> raw "{" <> head args <> raw "}" <> options <> "\n" <> inp <> "\n" <> raw "\\" <> "end" <> raw "{" <> head args <> raw "}\n" where
+  options = 
+    if bracketArg 
+      then safeIndex args 1 "" <> mconcat (map opt (tail (tail args)))
+      else mconcat $ map opt (tail args)
+  opt x = raw "{" <> x <> raw "}"
+  -- option :: Int -> LaTeX
+  -- option x = if (not . null) (get x) then raw "{" <> fromString (get x) <> raw "}" else fromString ""
+  -- get x = safeIndex args x []
 
 dirTreeTMP :: D.Tree LaTeX
 dirTreeTMP = Node 
@@ -106,7 +125,7 @@ mainS :: String -> IO ()
 mainS s = renderFile "tree.tex" (strExprTex s)
 
 mainDS :: String -> IO ()
-mainDS s = renderFile "dirtree.tex" (encapsulateWith ["minipage", "4cm"] $ strExprTex' s)
+mainDS s = renderFile "dirtree.tex" (encapsulateWith ["minipage", "[t]", "4cm"] True $ strExprTex' s)
 
 example :: LaTeX
 example = {-document-} theBody

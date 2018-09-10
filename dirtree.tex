@@ -1,4 +1,937 @@
-\begin{minipage}{4cm}
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 Empty.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 Forward.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 Forward.
+		.2 TurnLeft.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 list.
+				.4 Forward.
+				.4 if \textit{PathAhead}.
+					.5 TurnLeft.
+					.5 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 list.
+				.4 Forward.
+				.4 repeat.
+					.5 if \textit{PathAhead}.
+						.6 TurnLeft.
+						.6 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 list.
+				.4 Forward.
+				.4 if \textit{PathLeft}.
+					.5 TurnLeft.
+					.5 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 list.
+				.4 Forward.
+				.4 if \textit{PathLeft}.
+					.5 TurnLeft.
+					.5 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 TurnLeft.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 Forward.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 Empty.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 Forward.
+		.2 repeat.
+			.3 Empty.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 TurnRight.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 TurnRight.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathLeft}.
+			.3 TurnLeft.
+			.3 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 if \textit{PathLeft}.
+			.3 TurnLeft.
+			.3 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 Forward.
+		.2 TurnLeft.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 list.
+				.4 Forward.
+				.4 TurnLeft.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 Empty.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 Empty.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 TurnLeft.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 Empty.
+				.4 TurnLeft.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 TurnLeft.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 if \textit{PathAhead}.
+				.4 Forward.
+				.4 TurnLeft.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 Forward.
+		.2 TurnLeft.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 TurnLeft.
+		.2 repeat.
+			.3 list.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 TurnLeft.
+		.2 repeat.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 list.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 TurnLeft.
+		.2 repeat.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 TurnLeft.
+		.2 TurnRight.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 Empty.
+		.2 TurnRight.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 TurnRight.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 TurnRight.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 Empty.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnRight.
+			.3 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 repeat.
+			.3 list.
+				.4 Forward.
+				.4 TurnLeft.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+		.2 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 if \textit{PathAhead}.
+		.2 repeat.
+			.3 Forward.
+		.2 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+			.3 if \textit{PathAhead}.
+				.4 Forward.
+				.4 Forward.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 Forward.
+				.4 Forward.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+			.3 if \textit{PathAhead}.
+				.4 Forward.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+			.3 if \textit{PathAhead}.
+				.4 Empty.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+			.3 if \textit{PathLeft}.
+				.4 Forward.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 TurnLeft.
+			.3 if \textit{PathAhead}.
+				.4 Forward.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 Forward.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
@@ -13,7 +946,8 @@
 } 
 \end{minipage}
 &
-\begin{minipage}{4cm}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
@@ -28,7 +962,8 @@
 } 
 \end{minipage}
 &
-\begin{minipage}{4cm}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
@@ -42,29 +977,41 @@
 \end{minipage}
 &&\\
 
-\begin{minipage}{4cm}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
 			.3 Forward.
 			.3 if \textit{PathAhead}.
-				.4 TurnRight.
-				.4 TurnRight.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 TurnRight.
 				.4 TurnLeft.
+				.4 TurnRight.
 } 
 \end{minipage}
 &
-\begin{minipage}{4cm}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 TurnRight.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
@@ -76,7 +1023,216 @@
 \end{minipage}
 &&\\
 
-\begin{minipage}{4cm}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 TurnRight.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 TurnLeft.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 Empty.
+				.4 TurnRight.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 Forward.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathLeft}.
+			.3 Forward.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 Forward.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 list.
+					.5 Forward.
+					.5 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 list.
+					.5 Forward.
+					.5 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+			.3 if \textit{PathLeft}.
+				.4 Empty.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
@@ -87,7 +1243,8 @@
 } 
 \end{minipage}
 &
-\begin{minipage}{4cm}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
@@ -98,7 +1255,8 @@
 } 
 \end{minipage}
 &
-\begin{minipage}{4cm}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
 		.2 list.
@@ -110,123 +1268,98 @@
 \end{minipage}
 &&\\
 
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 list.
-				.4 TurnRight.
-				.4 Forward.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 list.
-				.4 TurnLeft.
-				.4 Forward.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 TurnRight.
-} 
-\end{minipage}
-&&\\
+\end{tabularx}
+\end{table*}
 
-\begin{minipage}{4cm}
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
 \dirtree{%\{
 	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnRight.
-			.3 Forward.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 Forward.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 Empty.
-			.3 Forward.
-} 
-\end{minipage}
-&&\\
-
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathLeft}.
-			.3 TurnRight.
-			.3 TurnLeft.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathLeft}.
-			.3 TurnLeft.
-			.3 TurnLeft.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnRight.
-			.3 TurnLeft.
-} 
-\end{minipage}
-&&\\
-
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 TurnRight.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 TurnLeft.
-} 
-\end{minipage}
-&
-\begin{minipage}{4cm}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
+		.2 list.
 			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
 				.4 TurnRight.
+				.4 TurnLeft.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 if \textit{PathAhead}.
+				.4 Empty.
+				.4 TurnLeft.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnRight.
+			.3 TurnLeft.
 } 
 \end{minipage}
 &&\\
+
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
+\footnotesize
+\begin{tabularx}{\textwidth}{lllXS[table-format=2.0]}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \hspace{1em}\textit{Internal inconsistencies} \\[1ex] \hline \\[-1.5ex]
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 list.
+				.4 TurnRight.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 list.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.15\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 TurnRight.
+} 
+\end{minipage}
+&&\\
+
+\end{tabularx}
+\end{table*}
 
