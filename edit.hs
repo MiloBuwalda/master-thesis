@@ -55,6 +55,7 @@ findSubstitutions s o =
     where   expanded = mapM (const o) [1 .. (length s)]
 
 
+
 -- -- calcLengthSubpartSol :: String -> Int
 -- -- calcLengthSubpartSol s = length.filter (==True) $ map (`elem` Aux.subListL) (Aux.subList s)
 

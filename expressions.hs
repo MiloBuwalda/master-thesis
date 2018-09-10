@@ -127,7 +127,7 @@ data State = State {
     pL :: (Int,Int), -- 
     pO :: (Int,Int) -- playerOrientation
     -- grid :: GridMapType --[((Int,Int), GridType)]
-    } deriving Show
+    } deriving (Show, Eq)
 
 
 getState :: State -- (loc) (or) (grid)
@@ -246,6 +246,7 @@ distanceSp    in1     in2   = case (in1,in2) of
   (c1@(IF _ l r),y)             -> 3 + distanceSp l y + distanceSp r y
   (x, c2@(IF _ l r))            -> 3 + distanceSp x l + distanceSp x r
   (x,y)                         -> distance x y
+
 
 -- | Measures the distance between IF expr. Compares the expr in true with true en false with false
 distanceIF :: Expr ->       Expr         -> Int
@@ -595,6 +596,10 @@ moveForwardState    (State pL pO)
     | G.lookup (addPoints pL pO) gridMap == Just Goal = State (addPoints pL pO) pO
     | otherwise = State pL pO
 
+moveForwardState' :: State -> State
+moveForwardState'    (State pL pO)  = State (addPoints pL pO) pO
+
+
 rotateLeft :: Point     -> Point
 rotateLeft    (pOx, pOy) = (-pOy,pOx)
 
@@ -737,6 +742,15 @@ onWalkable Nothing = False
 onPath :: Expr -> Bool
 onPath x = (not.null) (eval x getState)
 
+
+
+pathDistanceToGoal :: Expr -> Int
+pathDistanceToGoal x = length (pathToGoal x) - 1
+
+pathToGoal :: Expr -> [(Int,Int)]
+pathToGoal x = findPathToGoal gridMap (pL $ eva x getState)
+
+
 correctOrientation :: Expr -> Bool
 correctOrientation x = correctOrientation' $ eval x getState where
   correctOrientation' :: Maybe State -> Bool
@@ -747,6 +761,21 @@ correctOrientation x = correctOrientation' $ eval x getState where
     Just Goal  -> True
     _          -> False
   correctOrientation' _ = False
+
+corOr :: Expr -> Bool
+corOr xp = corOr' $ eva xp getState where
+  crntState = eva xp getState
+  crntDist y = findPathToGoal gridMap (pL y)
+  corOr' :: State -> Bool
+  corOr' (crnt@(State pL pO)) =
+    let stepForward = addPoints pL pO
+        forwardState = moveForwardState crnt
+    in  case G.lookup stepForward gridMap of
+      Just Path -> (if ((crntDist crntState) > (crntDist forwardState)) then True else False)
+      Just Goal -> True
+      _         -> False
+
+optimalPaths = map reverse $ getOptimalPath gridMap [[(pL getState)]] (goalLocation gridMap)
 
 isTurn :: Expr -> Bool
 isTurn x = x == TurnLeft || x == TurnRight
@@ -807,6 +836,73 @@ evalState Empty (s,y)           = (s,[])
 --                         Nothing -> s
 -- evalState TurnRight s = turnRight s
 -- evalState TurnLeft s = turnLeft s
+
+-- may go if path distance works-------------
+-- eval' :: Expr -> State -> Maybe State
+-- eval' (SEQ []) s     = Just s
+-- eval' (SEQ (e:es)) s = case eval' e s of
+--     Just s' -> eval' (SEQ es) s'
+--     Nothing -> Just s
+-- eval' Forward s      = Just (moveForwardState s) -- case moveForward s of
+--   -- Nothing -> Just s
+--   -- Just x  -> Just x
+-- eval' TurnRight s    = Just $ turnRight s
+-- eval' TurnLeft s     = Just $ turnLeft s
+-- eval' (IF c t f) s   = if evalCondition c s then eval' t s else eval' f s
+-- eval' (WHILE e) s    = evalWhile' e 14 GoalReached s
+-- eval' Empty s        = Just s
+-- eval' _ s            = Just s
+
+-- evalWhile' :: Expr -> Int -> Condition -> State -> Maybe State
+-- evalWhile' e i c s    
+--     | (i == 0) = Just s
+--     | evalCondition c s = Just s
+--     -- | otherwise = evalWhile' e (i-1) c (eval e s)
+--     | otherwise = 
+--       let 
+--          dist x = length $ findPathToGoal gridMap (pL x) 
+--       in case eval' e s of
+--         Just s' | s == s' -> Just s
+--         -- Just s' | dist s' > dist s -> Just s
+--         -- Just s' | pL s' == pL s && pO s' == pO s -> Just s 
+--         Just s' -> evalWhile' e (i - 1) c s'
+--         Nothing -> Just s 
+
+eva :: Expr -> State -> State
+eva (SEQ []) s     = s
+eva (SEQ (e:es)) s = 
+  let s' = (eva e s)
+  in  if isWalkable (pL s')
+        then eva (SEQ es) s'
+        else s
+eva Forward s      = moveForwardState' s
+  -- in  if isWalkable (pL s')
+  --       then s'
+  --       else s
+eva TurnRight s    = turnRight s
+eva TurnLeft s     = turnLeft s
+eva (IF c t f) s   = if evalCondition c s then eva t s else eva f s
+eva (WHILE e) s    = evaWhile e s
+eva Empty s        = s
+eva _ s            = s
+
+evaWhile :: Expr -> State -> State
+evaWhile e s = go e s (False) 0 14 where
+  go e s True i _ = (State (-1,0) (0,0))   -- s
+  go e s _ 4 _ = s 
+  go e s _ _ 0 = s 
+  go e s b i c
+    -- | (i == 0) = Just s
+    | not $ isWalkable (pL s) = (State (0,0) (0,0))
+    | not $ isWalkable (pL s') = s -- (State (0,0) (0,0))
+    | evalCondition GoalReached s = s
+    -- | otherwise = evaWhile e (i-1) c (eval e s)
+    | otherwise = 
+      if isWalkable (pL s')
+        then if (pL s' == pL s) then (go e s' b (i+1) (c-1)) else (go e s' b 0 (c-1))
+        else go e s' (True) (-1) c
+    where s' = eva e s
+
 
 
 ----------------------------------------------

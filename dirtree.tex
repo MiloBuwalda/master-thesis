@@ -1,0 +1,232 @@
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 list.
+					.5 TurnLeft.
+					.5 Forward.
+				.4 list.
+					.5 TurnRight.
+					.5 Forward.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 list.
+					.5 TurnLeft.
+					.5 Forward.
+				.4 list.
+					.5 TurnLeft.
+					.5 Forward.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 Forward.
+				.4 list.
+					.5 TurnRight.
+					.5 Forward.
+} 
+\end{minipage}
+&&\\
+
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 TurnRight.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 TurnLeft.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 Empty.
+				.4 TurnRight.
+} 
+\end{minipage}
+&&\\
+
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnRight.
+				.4 TurnRight.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 TurnRight.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 TurnRight.
+} 
+\end{minipage}
+&&\\
+
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 list.
+				.4 TurnRight.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 list.
+				.4 TurnLeft.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 Forward.
+			.3 TurnRight.
+} 
+\end{minipage}
+&&\\
+
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnRight.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 Forward.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 Empty.
+			.3 Forward.
+} 
+\end{minipage}
+&&\\
+
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathLeft}.
+			.3 TurnRight.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathLeft}.
+			.3 TurnLeft.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 repeat.
+		.2 if \textit{PathAhead}.
+			.3 TurnRight.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&&\\
+
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 TurnRight.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 if \textit{PathAhead}.
+			.3 TurnLeft.
+			.3 TurnLeft.
+} 
+\end{minipage}
+&
+\begin{minipage}{4cm}
+\dirtree{%\{
+	.1 list.
+		.2 Forward.
+		.2 repeat.
+			.3 if \textit{PathAhead}.
+				.4 TurnLeft.
+				.4 TurnRight.
+} 
+\end{minipage}
+&&\\
+
