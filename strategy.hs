@@ -39,10 +39,11 @@ masterProjectPath = "Dropbox\\Study\\E-Learning\\Master Thesis\\Project\\Assignm
 outFile = pcDropboxPath++ masterProjectPath ++ "output\\"
 
 data Strategy = 
-    ExprNotInCorrectLocation IDTag  -- IncorrectStart
-  | ExprNonOccurring IDTag          -- SEQ []
-  | OnTrack
-  | HappySwapping
+    OnTrack
+  | SingleEdit
+  | DelErr
+  | InsStart
+  | SubstErr
     deriving (Show, Eq, Ord)
 
 data Edit = 
@@ -123,6 +124,7 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
     
     nearSol inp                         = filter (\x-> distance inp x ==1 ) intermediaryCorrect
 
+    -- continue another cycle and take the hint with you
     continue h c                        = sRun (new, new:trace) 
       where
         new = (inp, child, ds', hist', h, c)
@@ -132,6 +134,7 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
       where
         new = (inp, child, ds', hist', sba [hint,h], c)
     
+    -- goto is a specifix form of continue where you skip some cycles and go to a specific location
     goto h i c                          =
       if i >= (size expr)
         then error "Too Large " -- ((inp, expr, ds, hist, hint, c),(inp, expr, ds, hist, hint, c):trace)
@@ -141,6 +144,7 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
             (_, expr'', newDs'', hist'', _, _) = stepWhile (inp, expr, newDs, hist, hint, c) newDs
             new                                = (inp, expr'', newDs'', hist'', h, c)
 
+    -- final exits the loop and outputs the hint. 
     final h c                           = (new, new:trace) 
       where
         new = (inp, child, ds', hist', h, c)
@@ -155,46 +159,26 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
     res x                               = updateE inp (ds) x
     hintRes h x                         = updateE h ds x
 
-
-    calcNext                            = if
-      | parentID == S -> continue (hint)
-      | parentID == I -> continue (hint)
-      -- | parentID == I && (distanceSp inp (getClosestInterMedCorr inp) < 2) -> continue (findInIF (getClosestInterMedCorr inp)) 
-      | hist /= []    -> final (hint)
-      | otherwise     -> final (Empty)
-
     k                                   = length trace
 
+  -- there is sweetspot at max 15 cycles. There exist cases of infinite loops, which is a bit probablematic. 
   in if k > 15 then se else case expr of
     VOID        -> (crnt, trace)  -- end of run produces the output
     
-    x | distanceSp solution inp == 1 -> final solution (-1)
+    -- x | distanceSp solution inp == 1 -> final solution (-1)
 
 
     WHILE wExpr -> handleWHILE wExpr where 
       handleWHILE :: Expr -> (CompSE,[CompSE])
       handleWHILE    wExpr
-        | contains I inp 
-        && contains S inp 
-        && (sel inp) /= VOID
-        = final (sba [sel inp,hint]) (-1)
-        | wExpr == Forward 
-        && (hist == [] || head hist == S)
-        = final (res (WHILE Empty))                                                    0
-        | wExpr == Forward
-        && partialCorrect (expr) 
-        && (last ds == 0)                              
-        = continue (res $ Forward)                                                     55
-        | wExpr == Forward
-        && partialCorrect (expr)
-        = continue (res $ WHILE Empty)                                                 1
-        | wExpr == Empty
-        = final (res $ WHILE (IF PathAhead Empty Empty))                               2
-        | leaf wExpr 
-        = final (res $ WHILE Empty)                                                    3
+       | wExpr == Forward 
+        && (hist == [] || head hist == S || head hist == I)
+          = final (res (WHILE Empty))                                                 10 -- DelErr 10
+       | leaf wExpr 
+          = final (res $ WHILE Empty)                                                 11 -- DelErr 8
         | otherwise 
-        = continue (res (WHILE Empty))                                                 4
-        where sel x = selectSingleEdit $ genPoss x
+          = continue (res (WHILE Empty))                                              110 -- {-DelErr-} 0/167
+          where sel x = selectSingleEdit $ genPoss x
    
     IF c l r    -> handleIF expr where
       handleIF :: Expr -> (CompSE,[CompSE])
@@ -204,117 +188,105 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
         && condID c /= PR
         && (not . contains S) expr
         && distanceSp crntIF (getClosestInterMedCorr crntIF) == 1
-          = final (res $ getClosestInterMedCorr crntIF)                                            98
+          = final (res $ getClosestInterMedCorr crntIF)                               20 -- SingleEdit 1/1 
         | parentID == W 
         && condID c /= PA 
-          = final (res $ IF PathAhead l r)                                            99
+          = final (res $ IF PathAhead l r)                                            21 -- SubstErr 17/17
         | c == PathLeft && contains S l && contains S r 
-          = final (deleteToNextShortDistance inp (ds++[1]) )                          101
+          = final (deleteToNextShortDistance inp (ds++[1]) )                          22 -- DelErr 2/2
         |  hist == []
         && parentID /= S
         && (not . contains W) expr
         && not (idInExpr (condID c) solution) 
         && (not . contains S) crntIF
         && partialCorrect crntIF
-          = final (res (WHILE crntIF))                                                102
+          = final (res (WHILE crntIF))                                                23 -- InsStart 1
         |  hist == []
         && not (contains W expr)
         && not (idInExpr (condID c) solution) && (not $ contains S crntIF)
-          = final (res (IF PathAhead l r))                                            103
+          = final (res (IF PathAhead l r))                                            24 -- SubstErr 9
         | contains S l && contains S r 
-          = final (deleteToNextShortDistance inp (ds++[0]) )                          104
+          = final (deleteToNextShortDistance inp (ds++[0]) )                          25 -- DelErr 3
         | parentID == S && partialCorrect crntIF 
-          = continue (hint)                                                           105
+          = continue (hint)                                                           250 -- {-PREVIOUS-} 0/16
         | c == PathRight
-          = final (res $ IF PathAhead l r )                                           106
+          = final (res $ IF PathAhead l r )                                           26 -- SubstErr 10
         | distanceSp crntIF (getClosestInterMedCorr crntIF) == 1 
-          = final (res $ getClosestInterMedCorr crntIF)                               107 {- Single edit from partial soluiton-}
+          = final (res $ getClosestInterMedCorr crntIF)                               27 -- SingleEdit 26
         |  parentID /= S && hist == [] 
         && not (contains W expr) -- && notElem W (map exprID $ tokenizer expr) 
         && (not $ contains S crntIF)
-          = final (res $ WHILE (crntIF))                                              11
+          = final (res $ WHILE (crntIF))                                              28 -- InsStart 8
         | (first inp == S 
         && startsCorrect inp) 
         && (size parentExpr) == 2
         && not (contains W expr)
-          = final (res $ WHILE (crntIF))                                              115
-        | parentID == S 
-        && partialCorrect crntIF 
-          = final (hint)                                                              12
+          = final (res $ WHILE (crntIF))                                              29 -- InsStart 6
         | parentID == S 
         && (Aux.xor (contains S l) (contains S r))
         && contains R crntIF 
-          = final (deleteToNextShortDistance inp (ds ++ [findInIF crntIF S]))         125
+          = final (deleteToNextShortDistance inp (ds ++ [findInIF crntIF S]))         30 -- DelErr 3
 {-spcl-}| not $ idInExpr (condID c) solution 
-          = final (res (IF PathAhead l r))                                            13
+          = final (res (IF PathAhead l r))                                            31 -- SubstErr 12
         | l /= Forward 
         && not ( partialCorrect l )
-          = continue (res (IF PathAhead Empty r))                                     14
+          = continue (res (IF PathAhead Empty r))                                     310 -- {-DelErr-} <- actually does 11/57
         -- | not (correctOrientation r)
         | r == TurnRight
-          = goto (res (IF c l TurnLeft)) 1                                            145
-        | r /= TurnLeft 
-          = continue (res (IF PathAhead Forward Empty))                               15
+          = final (res (IF c l TurnLeft))                                             32 -- SubstErr 1
+         | r /= TurnLeft 
+          = continue (res (IF PathAhead Forward Empty))                               320 -- {DelErr} 2 /16
         | otherwise 
-          = final (res (IF PathAhead Forward TurnLeft) )                              16
+          = final (res (IF PathAhead Forward TurnLeft) )                              33 -- DelErr awFL -> aFL 1
 
     (SEQ xs)    -> handleSEQonebyone expr where
       handleSEQonebyone :: Expr -> (CompSE,[CompSE])
       handleSEQonebyone    (SEQ xs)
         | Aux.safeHead hist V == W -- programStartsCorrect-- starts correct 
         && leaf (last xs) 
-          = final (deleteToNextPath inp ds)                                           20
+          = final (deleteToNextPath inp ds)                                           40  -- DelErr 49
         | length (filter (not.leaf) xs) == 2 
-          = goto (res $ flattenSEQ $ SEQ []) (findLocFirstNonLeaf xs)                 211
-
+          = goto (res $ flattenSEQ $ SEQ []) (findLocFirstNonLeaf xs)                 400 -- {-DelErr-} 0/23
         | slStartsCorrect
         && first inp == W
         && not (startsCorrect (xs!!1))
         && partialCorrect (xs!!1) 
-          = final (updateE inp (ds ++ [1]) (fixStartIF (xs!!1)))                        22  -- 2 cases
+          = final (updateE inp (ds ++ [1]) (fixStartIF (xs!!1)))                      41  -- SubstErr 2
         | slStartsCorrect
         && partialCorrect (xs!!1) 
-          = final (deleteToNextPath inp ds)                                           221
+          = final (deleteToNextPath inp ds)                                           42 -- DelErr 8
         | slStartsCorrect
         && (not $ leaf $ xs!!1) 
         && onPath inp 
-          = goto (deleteToNextPath inp ds) 1                                          222
+          = goto (deleteToNextPath inp ds) 1                                          420 -- {-DelErr-} 0/7
         | slStartsCorrect
         && (case (xs!!1) of IF PathAhead _ _ -> True; _ -> False ) 
-          = goto (deleteToNextPath inp ds) 1                                          223
+          = goto (deleteToNextPath inp ds) 1                                          421 -- {-DelErr-} 0/41
         | any onPath options 
-        -- && (not $ any (\x -> (contains S x)) xs) 
         && hist == [] 
-          = final (deleteToNextPath inp ds)                                           224
-        -- | any onPath options 
-        -- && (not $ any (\x -> (contains S x)) xs)
-          -- = final (deleteToNextShortDistance inp ds)                                  225
+          = final (deleteToNextPath inp ds)                                           43 -- DelErr 21
         | all leaf xs 
-          = final (deleteToNextShortDistance inp ds)                                  24
+          = final (deleteToNextShortDistance inp ds)                                  44  -- DelErr 11
         | slStartsCorrect
         && (not $ leaf $ xs!!1) 
-          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 1                       23  -- (Aux.safeLast ds (-2) + 1)
+          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 1                       440 -- {-DelErr-} 0/35
         | Aux.safeHead xs VOID == Forward 
         && (Aux.safeIndex xs 1 VOID == TurnLeft) 
         && (exprID (Aux.safeIndex xs 2 VOID) == I) 
         && contains S (Aux.safeIndex xs 2 VOID) 
-          = goto (deleteToNextPath inp ds) 2                                          245
+          = goto (deleteToNextPath inp ds) 2                                          441 -- {-DelErr-} 0/2
         | slStartsCorrect
         && (Aux.safeIndex xs 1 VOID == TurnLeft) 
         && (exprID (Aux.safeIndex xs 2 VOID) == W) 
-          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 2                       246
+          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 2                       442 -- {-DelErr-} 0/7
         | correctOrientation inp
         && (not.leaf) (last xs)
         && programStartsIncorrect
-          = goto (res $ flattenSEQ $ SEQ []) (findLocLastNonLeaf xs)                  247  
-        -- | (not . null) cctScan -- Contains a deletions that leads to the solution! <3 
-        --   = final (head $ cctScan)                                                    248
+          = goto (res $ flattenSEQ $ SEQ []) (findLocLastNonLeaf xs)                  443 -- {-DelErr-} 0/2
         | {-any leaf xs-} not $ leaf $ last xs  -- = contains a non-leaf
-          = final (res $ flattenSEQ $ SEQ (deleteLastLeaf xs))                        25
-        | all (not.leaf) xs -- = only contains non-leaf
-          = goto (res $ flattenSEQ $ SEQ []) (Aux.safeLast ds (-2) + 1)                   26
+          = final (res $ flattenSEQ $ SEQ (deleteLastLeaf xs))                        45 -- DelErr 25
         | otherwise 
-          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) (findLocLastNonLeaf xs) 27
+          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) (findLocLastNonLeaf xs) 450 -- {-DelErr-} 0
           where
             -- patterns
             programStartsCorrect   = first inp == W
@@ -327,11 +299,12 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
             options                = (delErrSEQ inp ds)
             loc                    = findLocX xs I
 
-    Empty       -> continue (WHILE Empty)                                             30
-    Forward     -> calcNext                                                           31
-    TurnRight   -> calcNext                                                           32
-    TurnLeft    -> calcNext                                                           33
-    -- x           -> error "Never occurs" -- continue (expr)
+    Empty       -> continue (WHILE Empty)                                             0 -- OnTrack 1
+    Forward     -> if inp == Forward 
+      then         final    Empty                                                     1 -- DelErr {-Forward-}  1
+      else         continue hint                                                      2 -- {-PREVIOUS-} 8/44
+    TurnRight   -> continue hint                                                      3 -- {-PREVIOUS-} 1/18
+    TurnLeft    -> continue hint                                                      4 -- {-PREVIOUS-} 2/42
 
 type Score = Expr -> Int 
 type Scores = [Score]
@@ -387,12 +360,12 @@ startsCorrect    (SEQ _)            = False
 startsCorrect    x                  = onPath x && correctOrientation x
 
 
-numbErrors :: Expr -> Directions -> Int
-numbErrors    inp     ds          = 
-  let crnt           = travE inp ds
-      nearestPartial = getClosestInterMedCorr (snd crnt)
-      errorsNumb     = distanceSp (snd crnt) nearestPartial
-  in errorsNumb
+-- numbErrors :: Expr -> Directions -> Int
+-- numbErrors    inp     ds          = 
+--   let crnt           = travE inp ds
+--       nearestPartial = getClosestInterMedCorr (snd crnt)
+--       errorsNumb     = distanceSp (snd crnt) nearestPartial
+--   in errorsNumb
 
 deleteLastLeaf :: [Expr] -> [Expr] 
 deleteLastLeaf    xs        = 
@@ -677,13 +650,41 @@ getHintFromSE     ((_, _, _, _, x, _), _)  = x
 getHintFromSE' :: (CompSE,[CompSE])      -> (Expr, Int)
 getHintFromSE'    ((_, _, _, _, x, y), _) = (x, y)
 
+mainHist :: String -> IO ()
+mainHist    infixS = do
+  let output   = mainPrintTrajectories
+      true     = length $ filter (\(a,(b, c), d, e) -> a==True) output
+      false    = length output - true
+      accuracy = ((fromIntegral true) / (fromIntegral $ length output))::Float
+  outh         <- openFile (outFile ++ "hPA"++ infixS ++ ".hs") WriteMode
+  sequence_   [hPutStrLn outh $ showoff x | x <- output]
+  hPutStrLn   outh $ (show true) ++ " / " ++ (show false) ++ " : " ++ (show accuracy)
+  hClose outh
+  putStrLn  $ (show true) ++ " / " ++ (show false) ++ " : " ++ (show accuracy) 
+  where
+    showoff (a,(b, c), d, e) = show (a, e,(b, c), d)
+    mainPrintTrajectories :: [(Bool, (String, String), String, [Int])]
+    mainPrintTrajectories  = 
+      let t x      = getHintFromSEinclID (sRun $ initCompSE (decodeExpr x)) 
+          dataSet  = Aux.hoc18SingleEdit
+          output   = {-remDups $-} Aux.zip4''
+                  equality 
+                  (dataSet) 
+                  (map (\(inp, gs)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)
+          equality = (zipWith (==) (map (decodeExpr . snd) dataSet) (map (\(inp, gs)-> fst $ t inp) dataSet) )
+
+          getHintFromSEinclID :: (CompSE,[CompSE])      -> (Expr, [Int])
+          getHintFromSEinclID ((_, _, _, _, x, y),z) = (x, concatMap (\(_, _, _, _, _, i) -> (i:[])) (init z))
+
+      in output
+
 
 -- PRINTING TAKES LONG
 mainResult :: [(Bool, (String, String), String, Int)]
 mainResult  = 
   let t x      = getHintFromSE' (sRun $ initCompSE (decodeExpr x)) 
       dataSet  = Aux.hoc18SingleEdit
-      output   = remDups $ Aux.zip4''
+      output   = {-remDups $-} Aux.zip4''
               equality 
               (dataSet) 
               (map (\(inp, gs)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)
@@ -709,7 +710,7 @@ main    infixS = do
   -- Aux.writeLines (d ++"/tmp" mapM_ (putStrLn.show) output 
   -- putStrLn  $ (show true) ++ " / " ++ (show false) ++ " : " ++ (show accuracy)
 
-remDups :: [(Bool,(String, String), String, Int)] -> [(Bool,(String, String), String, Int)]
+remDups :: [(Bool,(String, String), String, a)] -> [(Bool,(String, String), String, a)]
 remDups    []                                     = []
 remDups    [x]                                    = [x]
 remDups 

@@ -3,6 +3,7 @@
 import qualified Expressions as E
 import Auxiliary
 import Data.List
+import Data.List.Split
 
 import Data.Text (pack)
 import Text.LaTeX.Base
@@ -47,10 +48,10 @@ forestTMP = Node
 
 -- concat multiple Results 
 resultsPrinter :: [(Bool,Int,(String,String),String)] -> IO ()
-resultsPrinter xs = renderFile "tree.tex" $ mconcat $ map resultToTrees xs
+resultsPrinter xs = renderFile "tmp.tex" $ mconcat $ map resultToTrees xs
 
 resultPrinter :: (Bool,Int,(String,String),String) -> IO ()
-resultPrinter x = renderFile "tree.tex" (resultToTrees x)
+resultPrinter x = renderFile "tmp.tex" (resultToTrees x)
 
 resultToTrees :: (Bool,Int,(String,String),String) -> LaTeX
 resultToTrees (_,_,(a,b),c) = (ress) where
@@ -61,25 +62,35 @@ resultToTrees (_,_,(a,b),c) = (ress) where
 
 -- concat multiple Results 
 resultsDirPrinter :: [(Bool,Int,(String,String),String)] -> IO ()
-resultsDirPrinter xs = renderFile "dirtree.tex" $ mconcat $ map resultToDirtree xs
+resultsDirPrinter xs = renderFile "tmp-dir.tex" $ mconcat $ map resultToDirtree xs
 
 resultDirPrinter :: (Bool,Int,(String,String),String) -> IO ()
-resultDirPrinter x = renderFile "dirtree.tex" (resultToTrees x)
+resultDirPrinter x = renderFile "tmp-dir.tex" (resultToDirtree x)
 
 
 resultToDirtree :: (Bool,Int,(String,String),String) -> LaTeX
 resultToDirtree (_,_,(a,b),c) = (tableEnc) where
-  tableEnc = tablePre <> ress <> tablePost
+  tableEnc = ress -- tablePre <> ress <> tablePost
   ress :: LaTeX
-  ress = dirtree a <> raw "&" <> "\n"  <> dirtree b <> raw "&" <> "\n"  <> dirtree c <> (raw "&&\\\\") <> "\n\n" where
-    dirtree x = dtSetlength <> "\n" <> (encapsulateWith ["minipage", "[t]", raw ".15\\textwidth"] True $ raw "\\" <> "dirtree" <> raw "{%\\{" <> "\n" <> strExprTex' x <> raw "\n} ")
+  ress = dirtree a <> raw "&" <> "\n"  <> dirtree b <> raw "&" <> "\n"  <> dirtree c <> (raw "&&\\\\[1.5em]") <> "\n\n" where
+    dirtree x = raw "\\scriptsize\n" <>dtHeight <> "\n" <> dtSetlength <> "\n" <> (encapsulateWith ["minipage", "[t]", raw ".13\\textwidth"] True $ raw "\\" <> "dirtree" <> raw "{%\\{" <> "\n" <> strExprTex' x <> raw "\n} ")
 
+inconsistencies :: [(Bool,Int,(String,String),String)] -> IO ()
+inconsistencies xs = renderFile "inconsistencies.tex" $ mconcat $ map inconsistency xs
+
+inconsistency :: (Bool,Int,(String,String),String) -> LaTeX
+inconsistency (_,_,(a,b),c) = (ress) where
+  ress = dirtree a <> raw "&" <> "\n"  <> dirtree b <> raw "-->" <> "\n" where
+    dirtree x = raw "\\scriptsize\n" <> dtHeight <> "\n" <> dtSetlength <> "\n" <> (encapsulateWith ["minipage", "[t]", raw ".13\\textwidth"] True $ raw "\\" <> "dirtree" <> raw "{%\\{" <> "\n" <> strExprTex' x <> raw "\n} ")
+
+dtHeight :: LaTeX
+dtHeight = command ["setlength",raw "\\DTbaselineskip","1.2em"] False
 
 dtSetlength :: LaTeX
 dtSetlength = command ["DTsetlength","0.2em",".4em","0.1em",".3pt","1.5pt"] False
 
 tablePre :: LaTeX
-tablePre = raw "\\begin{table*}[t]\n\\centering\n\\caption{Internal inconsistencies}\n\\label{tab:ass8-internal-incons}\n% \n\\footnotesize\n\\begin{tabularx}{\\textwidth}{lllXS[table-format=2.0]}\n\\hspace{1em}\\textit{Input} & \\hspace{1em}\\textit{GS hint} & \\hspace{1em}\\textit{Our hint} & \\hspace{1em}\\textit{Comment} & \\hspace{1em}\\textit{Internal inconsistencies} \\\\[1ex] \\hline \\\\[-1.5ex]\n"
+tablePre = raw "\\begin{table*}[t]\n\\centering\n\\caption{Internal inconsistencies}\n\\label{tab:ass8-internal-incons}\n% \n\\scriptsize\n\\begin{tabularx}{\\textwidth}{lllp{.2\\textwidth}rr}\n\\hspace{1em}\\textit{Input} & \\hspace{1em}\\textit{GS hint} & \\hspace{1em}\\textit{Our hint} & \\hspace{1em}\\textit{Comment} & \\multicolumn{2}{l}{\\hspace{1em}\\textit{Internal inconsistencies}} \\\\[1ex] \\hline \\\\[-1.5ex]\n"
 
 tablePost :: LaTeX
 tablePost = raw "\\end{tabularx}\n\\end{table*}\n\n"

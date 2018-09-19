@@ -1,57 +1,61 @@
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 Empty.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 Empty.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &The experts suggest to correct the erroneous control flow statement. We correct the erroneous movement.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -67,10 +71,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -83,51 +86,58 @@
                 .4 Forward.
                 .4 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 Forward.
-		.2 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 Forward.
+        .2 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 Forward.
-		.2 TurnLeft.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 Forward.
+        .2 TurnLeft.
 } 
 \end{minipage}
 &{\color{red} The experts delete the erroneous rotation and stay on path. We make an error by deleting the wrong movement.}&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -139,10 +149,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -151,58 +160,106 @@
         .2 Forward.
         .2 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 list.
-				.4 Forward.
-				.4 if \textit{PathAhead}.
-					.5 TurnLeft.
-					.5 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 list.
+                .4 Forward.
+                .4 if \textit{PathAhead}.
+                    .5 TurnLeft.
+                    .5 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 list.
-				.4 Forward.
-				.4 repeat.
-					.5 if \textit{PathAhead}.
-						.6 TurnLeft.
-						.6 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 list.
+                .4 Forward.
+                .4 repeat.
+                    .5 if \textit{PathAhead}.
+                        .6 TurnLeft.
+                        .6 Forward.
 } 
 \end{minipage}
 &{\color{red} The experts favor a deletion over an insertion, which both lead to a correct solution.}&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 list.
+                .4 Forward.
+                .4 if \textit{PathLeft}.
+                    .5 TurnLeft.
+                    .5 Forward.
+} 
+\end{minipage}
+&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 list.
+                .4 Forward.
+                .4 if \textit{PathLeft}.
+                    .5 TurnLeft.
+                    .5 Forward.
+} 
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -219,7 +276,6 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -233,59 +289,25 @@
                     .5 TurnLeft.
                     .5 Forward.
 } 
-\end{minipage}\\[1.5em]
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 list.
-				.4 Forward.
-				.4 if \textit{PathLeft}.
-					.5 TurnLeft.
-					.5 Forward.
-} 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 list.
-				.4 Forward.
-				.4 if \textit{PathLeft}.
-					.5 TurnLeft.
-					.5 Forward.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 if \textit{PathLeft}.
-				.4 TurnLeft.
-				.4 Forward.
+    .1 list.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 if \textit{PathLeft}.
+                .4 TurnLeft.
+                .4 Forward.
 } 
 \end{minipage}
 &The experts delete the erroneous movement in the first statement list, whereas we delete the error in the deepest statement list.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -299,10 +321,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -312,46 +333,18 @@
                 .4 Forward.
                 .4 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 Forward.
-} 
 \end{minipage}
-&
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 TurnLeft.
-		.2 Forward.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 Forward.
-} 
-\end{minipage}
-&The experts delete the erroneous movement whereas we insert the correct start.&
-\scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -360,11 +353,20 @@
         .2 Forward.
         .2 if \textit{PathAhead}.
             .3 TurnLeft.
-            .3 TurnLeft.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 if \textit{PathAhead}.
+        .2 TurnLeft.
+        .2 Forward.
+} 
+\end{minipage}
+&
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -374,58 +376,90 @@
         .2 repeat.
             .3 if \textit{PathAhead}.
                 .4 TurnLeft.
+                .4 Forward.
+} 
+\end{minipage}
+&The experts delete the erroneous movement whereas we insert the correct start.&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 TurnLeft.
+} 
+\end{minipage}
+&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
                 .4 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 Forward.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 Forward.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 Empty.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 Empty.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 Forward.
-		.2 repeat.
-			.3 Empty.
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 Forward.
+        .2 repeat.
+            .3 Empty.
 } 
 \end{minipage}
 &The experts suggest to correct the conditional statement starting at the else block. We correct the last error.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 if \textit{PathAhead}.
@@ -436,10 +470,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 if \textit{PathAhead}.
@@ -448,51 +481,58 @@
         .2 repeat.
             .3 Empty.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 TurnRight.
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 TurnRight.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 TurnLeft.
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 TurnLeft.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 TurnRight.
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
+                .4 TurnRight.
 } 
 \end{minipage}
 &The experts substitute an error in the conditional statement, whereas we insert the correct start.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -502,10 +542,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -514,67 +553,74 @@
                 .4 TurnRight.
                 .4 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathLeft}.
-			.3 TurnLeft.
-			.3 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathLeft}.
+            .3 TurnLeft.
+            .3 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 if \textit{PathLeft}.
-			.3 TurnLeft.
-			.3 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 if \textit{PathLeft}.
+            .3 TurnLeft.
+            .3 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 Forward.
-		.2 TurnLeft.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 Forward.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 Forward.
+        .2 TurnLeft.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &The experts remove the individual erroneous movement first, we correct the first erroneous control flow statement.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -586,10 +632,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -599,49 +644,56 @@
         .2 repeat.
             .3 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 list.
-				.4 Forward.
-				.4 TurnLeft.
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 list.
+                .4 Forward.
+                .4 TurnLeft.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 Forward.
 } 
 \end{minipage}
 &The experts suggest to remove the first forward movement so that the student makes the corner. We remove the erroneous rotation.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -652,63 +704,69 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
         .2 repeat.
             .3 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 Forward.
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 Empty.
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
+                .4 Empty.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 Empty.
-				.4 Forward.
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 Empty.
+                .4 Forward.
 } 
 \end{minipage}
 &The experts suggest to remove the correct the errors in the conditional statement in last to first order. Whereas we suggest a correction in first to last order.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -719,7 +777,53 @@
 } 
 \end{minipage}
 &
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 Empty.
+                .4 TurnRight.
+} 
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 list.
+        .2 Forward.
+        .2 repeat.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
+                .4 TurnLeft.
+} 
+\end{minipage}
+&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 TurnLeft.
+} 
+\end{minipage}
+&
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -729,53 +833,13 @@
         .2 repeat.
             .3 if \textit{PathAhead}.
                 .4 Empty.
-                .4 TurnRight.
-} 
-\end{minipage}\\[1.5em]
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 TurnLeft.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 TurnLeft.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 list.
-		.2 Forward.
-		.2 repeat.
-			.3 if \textit{PathAhead}.
-				.4 Empty.
-				.4 TurnLeft.
+                .4 TurnLeft.
 } 
 \end{minipage}
 &The experts suggest to delete the first erroneous movement to make the student start correct. We suggest a deletion that makes the student turn the corner.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -786,10 +850,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 Forward.
@@ -798,46 +861,18 @@
                 .4 Empty.
                 .4 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 list.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 TurnLeft.
-		.2 Forward.
-} 
 \end{minipage}
-&
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 if \textit{PathAhead}.
-				.4 Forward.
-				.4 TurnLeft.
-			.3 Forward.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 Forward.
-		.2 TurnLeft.
-} 
-\end{minipage}
-&{\color{red} Our error. The experts suggest a single edit that leads to the goal. We make a detour by deleting the erroneous movement}&
-\scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -846,11 +881,23 @@
         .2 if \textit{PathAhead}.
             .3 Forward.
             .3 TurnLeft.
-        .2 TurnLeft.
+        .2 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 repeat.
+        .2 list.
+            .3 if \textit{PathAhead}.
+                .4 Forward.
+                .4 TurnLeft.
+            .3 Forward.
+} 
+\end{minipage}
+&
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -859,55 +906,84 @@
         .2 Forward.
         .2 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
-\scriptsize
+\end{minipage}
+&{\color{red} Our error. The experts suggest a single edit that leads to the goal. We make a detour by deleting the erroneous movement}&
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 TurnLeft.
-		.2 repeat.
-			.3 list.
-				.4 TurnLeft.
-				.4 Forward.
+    .1 list.
+        .2 if \textit{PathAhead}.
+            .3 Forward.
+            .3 TurnLeft.
+        .2 TurnLeft.
 } 
 \end{minipage}
 &
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 if \textit{PathAhead}.
+        .2 Forward.
+        .2 TurnLeft.
+} 
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 TurnLeft.
-		.2 repeat.
-			.3 Forward.
+    .1 list.
+        .2 if \textit{PathAhead}.
+            .3 Forward.
+            .3 TurnLeft.
+        .2 repeat.
+            .3 list.
+                .4 TurnLeft.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 list.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 TurnLeft.
-		.2 repeat.
-			.3 TurnLeft.
+    .1 list.
+        .2 if \textit{PathAhead}.
+            .3 Forward.
+            .3 TurnLeft.
+        .2 repeat.
+            .3 Forward.
+} 
+\end{minipage}
+&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 list.
+        .2 if \textit{PathAhead}.
+            .3 Forward.
+            .3 TurnLeft.
+        .2 repeat.
+            .3 TurnLeft.
 } 
 \end{minipage}
 &{\color{red} Our error. We should always direct to nearest partial solution if single edit is one.}&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 if \textit{PathAhead}.
@@ -920,10 +996,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 if \textit{PathAhead}.
@@ -932,45 +1007,52 @@
         .2 repeat.
             .3 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 TurnLeft.
-		.2 TurnRight.
+    .1 if \textit{PathAhead}.
+        .2 TurnLeft.
+        .2 TurnRight.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 Empty.
-		.2 TurnRight.
+    .1 if \textit{PathAhead}.
+        .2 Empty.
+        .2 TurnRight.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 TurnRight.
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 TurnRight.
 } 
 \end{minipage}
 &The experts suggest to delete the error in the conditional statement whereas we choose to insert the correct solution&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 if \textit{PathAhead}.
         .2 TurnRight.
@@ -978,7 +1060,47 @@
 } 
 \end{minipage}
 &
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 TurnRight.
+            .3 TurnLeft.
+} 
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 if \textit{PathAhead}.
+        .2 TurnRight.
+        .2 Forward.
+} 
+\end{minipage}
+&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 if \textit{PathAhead}.
+        .2 Empty.
+        .2 Forward.
+} 
+\end{minipage}
+&
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -986,47 +1108,13 @@
     .1 repeat.
         .2 if \textit{PathAhead}.
             .3 TurnRight.
-            .3 TurnLeft.
-} 
-\end{minipage}\\[1.5em]
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 TurnRight.
-		.2 Forward.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 Empty.
-		.2 Forward.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnRight.
-			.3 Forward.
+            .3 Forward.
 } 
 \end{minipage}
 &The experts suggest to delete the error in the conditional statement whereas we choose to insert the correct solution&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 if \textit{PathAhead}.
         .2 TurnLeft.
@@ -1034,60 +1122,66 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 if \textit{PathAhead}.
             .3 TurnLeft.
             .3 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 repeat.
-			.3 list.
-				.4 Forward.
-				.4 TurnLeft.
-		.2 Forward.
+    .1 if \textit{PathAhead}.
+        .2 repeat.
+            .3 list.
+                .4 Forward.
+                .4 TurnLeft.
+        .2 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
-		.2 Forward.
+    .1 if \textit{PathAhead}.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
+        .2 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 repeat.
-			.3 Forward.
-		.2 Forward.
+    .1 if \textit{PathAhead}.
+        .2 repeat.
+            .3 Forward.
+        .2 Forward.
 } 
 \end{minipage}
 &{\color{red}Experts remove the repeat-until block while we correct the erroneous rotation inside the repeat-until block (wF also removes WHILE) }&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 if \textit{PathAhead}.
@@ -1100,10 +1194,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 list.
         .2 if \textit{PathAhead}.
@@ -1112,57 +1205,64 @@
         .2 repeat.
             .3 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
-			.3 if \textit{PathAhead}.
-				.4 Forward.
-				.4 Forward.
-			.3 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
+            .3 if \textit{PathAhead}.
+                .4 Forward.
+                .4 Forward.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 Forward.
-				.4 Forward.
-			.3 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 Forward.
+                .4 Forward.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
-			.3 if \textit{PathAhead}.
-				.4 Forward.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
+            .3 if \textit{PathAhead}.
+                .4 Forward.
+                .4 Forward.
 } 
 \end{minipage}
 &The experts suggest to delete an inner erroneous rotation, whereas we delete the last erroneous rotation that keeps the student longer on path.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1175,10 +1275,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1188,55 +1287,62 @@
                 .4 Forward.
                 .4 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
-			.3 if \textit{PathAhead}.
-				.4 TurnRight.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
+            .3 if \textit{PathAhead}.
+                .4 TurnRight.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
-			.3 if \textit{PathAhead}.
-				.4 Empty.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
+            .3 if \textit{PathAhead}.
+                .4 Empty.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 TurnRight.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 TurnRight.
+                .4 Forward.
 } 
 \end{minipage}
 &The experts suggest to handle the errors in the conditional statement first, whereas we remove the erroneous rotation inside the statement list.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1248,10 +1354,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1260,55 +1365,62 @@
                 .4 TurnLeft.
                 .4 TurnRight.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
-			.3 if \textit{PathLeft}.
-				.4 Forward.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
+            .3 if \textit{PathLeft}.
+                .4 Forward.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 TurnLeft.
-			.3 if \textit{PathAhead}.
-				.4 Forward.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 TurnLeft.
+            .3 if \textit{PathAhead}.
+                .4 Forward.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 Forward.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 Forward.
+                .4 Forward.
 } 
 \end{minipage}
 &The experts suggest to handle the errors in the conditional statement first, whereas we remove the erroneous rotation inside the statement list.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1320,10 +1432,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1332,63 +1443,70 @@
                 .4 TurnLeft.
                 .4 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 list.
-					.5 TurnLeft.
-					.5 Forward.
-				.4 list.
-					.5 TurnRight.
-					.5 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 list.
+                    .5 TurnLeft.
+                    .5 Forward.
+                .4 list.
+                    .5 TurnRight.
+                    .5 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 list.
-					.5 TurnLeft.
-					.5 Forward.
-				.4 list.
-					.5 TurnLeft.
-					.5 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 list.
+                    .5 TurnLeft.
+                    .5 Forward.
+                .4 list.
+                    .5 TurnLeft.
+                    .5 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 Forward.
-				.4 list.
-					.5 TurnRight.
-					.5 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 Forward.
+                .4 list.
+                    .5 TurnRight.
+                    .5 Forward.
 } 
 \end{minipage}
 &The expers' suggest a substitution in the else-block of the conditional statement, which leads the student around the corner. We suggest to handle the error in the true-block&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1403,10 +1521,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1417,48 +1534,104 @@
                     .5 TurnLeft.
                     .5 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 TurnRight.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
+                .4 TurnRight.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnLeft.
-			.3 TurnRight.
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 TurnLeft.
+            .3 TurnRight.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 Empty.
-				.4 TurnRight.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 Empty.
+                .4 TurnRight.
 } 
 \end{minipage}
 &The experts suggest to remove the erroneous forward movement, we correct the error in the true-block of the conditional statement.&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 TurnRight.
+                .4 TurnLeft.
+} 
+\end{minipage}
+&
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 Empty.
+                .4 TurnLeft.
+} 
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 TurnRight.
+                .4 TurnRight.
+} 
+\end{minipage}
+&
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -1472,7 +1645,6 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -1482,55 +1654,13 @@
             .3 Forward.
             .3 if \textit{PathAhead}.
                 .4 Empty.
-                .4 TurnLeft.
-} 
-\end{minipage}\\[1.5em]
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 TurnRight.
-				.4 TurnRight.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 TurnRight.
-				.4 TurnLeft.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 Empty.
-				.4 TurnRight.
+                .4 TurnRight.
 } 
 \end{minipage}
 &The experts suggest to substitute the error in the else-block, whereas we correct the error in the true-block.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1541,10 +1671,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1553,51 +1682,58 @@
                 .4 Empty.
                 .4 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 Forward.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 Forward.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathLeft}.
-			.3 Forward.
-			.3 Forward.
+    .1 repeat.
+        .2 if \textit{PathLeft}.
+            .3 Forward.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 Forward.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 Forward.
+                .4 Forward.
 } 
 \end{minipage}
 &The experts suggest to remove the erroneous forward movement, we correct the error in the true-block of the conditional statement.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1608,10 +1744,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1620,57 +1755,64 @@
                 .4 Forward.
                 .4 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 TurnLeft.
-				.4 list.
-					.5 Forward.
-					.5 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 TurnLeft.
+                .4 list.
+                    .5 Forward.
+                    .5 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 TurnLeft.
-				.4 list.
-					.5 Forward.
-					.5 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 TurnLeft.
+                .4 list.
+                    .5 Forward.
+                    .5 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 TurnLeft.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 TurnLeft.
+                .4 Forward.
 } 
 \end{minipage}
 &The experts substitute the erroneous condition, whereas we suggest a deletion that leads to a partial &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1683,7 +1825,29 @@
 } 
 \end{minipage}
 &
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.12\textwidth}
+\dirtree{%\{
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 TurnLeft.
+                .4 Forward.
+} 
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
@@ -1694,56 +1858,41 @@
             .3 if \textit{PathLeft}.
                 .4 TurnLeft.
                 .4 Forward.
-} 
-\end{minipage}\\[1.5em]
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 TurnLeft.
-				.4 Forward.
-			.3 if \textit{PathLeft}.
-				.4 TurnLeft.
-				.4 Forward.
+            .3 if \textit{PathLeft}.
+                .4 TurnLeft.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 TurnLeft.
-				.4 Forward.
-			.3 if \textit{PathLeft}.
-				.4 Empty.
-				.4 Forward.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 TurnLeft.
+                .4 Forward.
+            .3 if \textit{PathLeft}.
+                .4 Empty.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
+    .1 repeat.
+        .2 list.
+
 } 
 \end{minipage}
 &{\color{red}ERROR in our model}&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1757,10 +1906,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1772,53 +1920,60 @@
                 .4 Empty.
                 .4 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 TurnRight.
-				.4 TurnRight.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 TurnRight.
+                .4 TurnRight.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathLeft}.
-				.4 TurnLeft.
-				.4 TurnRight.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathLeft}.
+                .4 TurnLeft.
+                .4 TurnRight.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 Forward.
-			.3 if \textit{PathAhead}.
-				.4 TurnRight.
-				.4 TurnRight.
+    .1 repeat.
+        .2 list.
+            .3 Forward.
+            .3 if \textit{PathAhead}.
+                .4 TurnRight.
+                .4 TurnRight.
 } 
 \end{minipage}
 &The experts suggest to correct the true-statement and lead the student around the corner. We suggest to correct the condition in the if-then-else statement.&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1829,10 +1984,9 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1841,51 +1995,58 @@
                 .4 TurnRight.
                 .4 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 if \textit{PathAhead}.
-				.4 TurnRight.
-				.4 TurnLeft.
-			.3 Forward.
+    .1 repeat.
+        .2 list.
+            .3 if \textit{PathAhead}.
+                .4 TurnRight.
+                .4 TurnLeft.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 list.
-			.3 if \textit{PathAhead}.
-				.4 Empty.
-				.4 TurnLeft.
-			.3 Forward.
+    .1 repeat.
+        .2 list.
+            .3 if \textit{PathAhead}.
+                .4 Empty.
+                .4 TurnLeft.
+            .3 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 TurnRight.
-			.3 TurnLeft.
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 TurnRight.
+            .3 TurnLeft.
 } 
 \end{minipage}
 &{\color{red}The experts suggest a correction that leads the student directly to the goal}&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 list.
@@ -1896,61 +2057,67 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 if \textit{PathLeft}.
             .3 TurnLeft.
             .3 Forward.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Internal inconsistencies}
+\label{tab:ass8-internal-incons}
+% 
 \scriptsize
+\begin{tabularx}{\textwidth}{lllp{.2\textwidth}rr}
+\hspace{1em}\textit{Input} & \hspace{1em}\textit{GS hint} & \hspace{1em}\textit{Our hint} & \hspace{1em}\textit{Comment} & \multicolumn{2}{l}{\hspace{1em}\textit{Internal inconsistencies}} \\[1ex] \hline \\[-1.5ex]
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 list.
-				.4 TurnRight.
-				.4 Forward.
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 Forward.
+            .3 list.
+                .4 TurnRight.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 list.
-				.4 TurnLeft.
-				.4 Forward.
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 Forward.
+            .3 list.
+                .4 TurnLeft.
+                .4 Forward.
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 repeat.
-		.2 if \textit{PathAhead}.
-			.3 Forward.
-			.3 TurnRight.
+    .1 repeat.
+        .2 if \textit{PathAhead}.
+            .3 Forward.
+            .3 TurnRight.
 } 
 \end{minipage}
 &{\color{red}The experts suggest a substitution that directly leads the student to the goal}&
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 if \textit{PathAhead}.
@@ -1961,14 +2128,16 @@
 } 
 \end{minipage}
 &
-\scriptsize
 \setlength{\DTbaselineskip}{1.2em}
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
+\begin{minipage}[t]{.12\textwidth}
 \dirtree{%\{
     .1 repeat.
         .2 if \textit{PathAhead}.
             .3 Forward.
             .3 TurnLeft.
 } 
-\end{minipage}\\[1.5em]
+\end{minipage}
+\end{tabularx}
+\end{table*}
+

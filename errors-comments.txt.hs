@@ -6,7 +6,7 @@
 & [(True,224,("(F,L,F,F,F,L)","(F,L,F,F,F)"),"(F,L,F,F,F)")]
 (False,115 ,("(F,L,w(F,aLF))","(F,L,waLF)"),"(F,L,w(F,waLF))")                       
 -> {\color{red} The experts favor a deletion over an insertion, which both lead to a correct solution.}
-& [(False,221 ,("(F,L,w(F,lLF))","(F,w(F,lLF))"),"(F,L,wlLF)") ZIE VOLGENDE]
+& [(False,221 ,("(F,L,w(F,lLF))","(F,w(F,lLF))"),"(F,L,wlLF)") {-ZIE VOLGENDE-}]
 (False,221 ,("(F,L,w(F,lLF))","(F,w(F,lLF))"),"(F,L,wlLF)")                          
 -> The experts delete the erroneous movement in the first statement list, whereas we delete the error in the deepest statement list.
 & [(True,221,("(F,L,w(F,aFL))","(F,L,waFL)"),"(F,L,waFL)")]
@@ -35,10 +35,10 @@
 & [(True,33,("(F,waRL)","(F,waEL)"),"(F,waEL)")]
 ((False,224,("(aFL,F)","w(aFL,F)"),"aFL"),(9,0,9))                                   
 -> {\color{red} Our error. The experts suggest a single edit that leads to the goal. We make a detour by deleting the erroneous movement}
-& []
+& [(True,224,("(aFL,L)","aFL"),"aFL")]
 ((False,20,("(aFL,w(L,F))","(aFL,wF)"),"(aFL,wL)"),(8,9,9))                          
 -> {\color{red} Our error. We should always direct to nearest partial solution if single edit is one.}
-& []
+& [(True,20,("(aFL,w(F,L))","(aFL,wF)"),"(aFL,wF)")]
 ((False,11,("aLR","aER"),"waLR"),(10,10,10))                                         
 -> The experts suggest to delete the error in the conditional statement whereas we choose to insert the correct solution
 & [(True,11,("aRL","waRL"),"waRL")]
@@ -48,7 +48,7 @@
 
 ((False,20,("aw(F,L)F","a(F,L)F"),"awFF"),(8,9,9))                                   
 -> {\color{red}Experts remove the repeat-until block while we correct the erroneous rotation inside the repeat-until block (wF also removes WHILE) }
-& []
+& [(True,20,("(aFL,w(F,L))","(aFL,wF)"),"(aFL,wF)")]
 (False,20  ,("w(F,L,aFF,F)","w(F,aFF,F)"),"w(F,L,aFF)")                              
 -> The experts suggest to delete an inner erroneous rotation, whereas we delete the last erroneous rotation that keeps the student longer on path.
 & [(True,20,("w(F,L,aFL,F)","w(F,L,aFL)"),"w(F,L,aFL)")]
@@ -76,7 +76,7 @@
 & [(True,107,("w(F,lL(F,R))","w(F,lLF)"),"w(F,lLF)"), (True,107,("w(F,l(L,R)F)","w(F,lLF)"),"w(F,lLF)")]
 (False,31  ,("w(F,lLF,lLF)","w(F,lLF,lEF)"),"w()")                                   
 -> {\color{red}ERROR in our model}
-& [{-Still working on it-}]
+& [(True,31,("w(F,lLF,aLF)","w(F,lLF,aEF)"),"w(F,lLF,aEF)")]
 
 (False,13  ,("w(F,lRR)","w(F,lLR)"),"w(F,aRR)")                                      
 -> The experts suggest to correct the true-statement and lead the student around the corner. We suggest to correct the condition in the if-then-else statement.
