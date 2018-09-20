@@ -1,4 +1,4 @@
-# master-thesis
+# Use expert knowledge instead of data: generating hints for hour of code exercises
 Autonomous hint generation model in Haskell
 
 This model contains various Haskell files. Below you will find a description per file what it does. The list is in order of importance.
