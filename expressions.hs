@@ -26,7 +26,7 @@ import qualified Math.Geometry.GridMap      as G
 import qualified Test.QuickCheck            as QC
 import           JsonReader
 import           GridHandler
-import qualified Edit                       as Ed
+-- import qualified Edit                       as Ed
 import qualified Auxiliary                  as Aux
 
 import           Text.ParserCombinators.Parsec hiding ((<|>), many, State, getState)

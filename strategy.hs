@@ -667,7 +667,7 @@ mainHist    infixS = do
     mainPrintTrajectories  = 
       let t x      = getHintFromSEinclID (sRun $ initCompSE (decodeExpr x)) 
           dataSet  = Aux.hoc18SingleEdit
-          output   = {-remDups $-} Aux.zip4''
+          output   = remDups $ Aux.zip4''
                   equality 
                   (dataSet) 
                   (map (\(inp, gs)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)
