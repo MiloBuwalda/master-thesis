@@ -6,6 +6,7 @@ module Expressions where
 
 import           System.IO
 import           Control.Monad
+import           Control.Monad.Identity
 
 import           Data.List
 import qualified Data.List.Split            as L
@@ -19,17 +20,17 @@ import qualified Data.Tree                  as T
 import           ListZipper
 import           Text.Printf (printf)
 
-import qualified Math.Geometry.Grid         as G
-import qualified Math.Geometry.Grid.Square  as G
-import qualified Math.Geometry.GridMap.Lazy as G
-import qualified Math.Geometry.GridMap      as G
+-- import qualified Math.Geometry.Grid         as G
+-- import qualified Math.Geometry.Grid.Square  as G
+-- import qualified Math.Geometry.GridMap.Lazy as G
+-- import qualified Math.Geometry.GridMap      as G
 import qualified Test.QuickCheck            as QC
 import           JsonReader
 import           GridHandler
 -- import qualified Edit                       as Ed
 import qualified Auxiliary                  as Aux
 
-import           Text.ParserCombinators.Parsec hiding ((<|>), many, State, getState)
+import           Text.ParserCombinators.Parsec hiding ((<|>), many, Character, getcharacter)
 import           Control.Applicative
 
 data Expr = IF Condition Expr Expr
@@ -41,7 +42,16 @@ data Expr = IF Condition Expr Expr
           | TERMINATE
           | Empty 
           | VOID 
-            deriving (Show, Eq, Ord)
+            deriving (Show, Eq{-, Ord-})
+
+instance Ord Expr where
+  compare (SEQ _) (IF _ _ _) = LT 
+  compare (WHILE _) _ = GT
+  compare (IF _ _ _) (SEQ _) = GT
+  compare Forward _   = GT
+
+
+
 
 -- data ExprID = ExprID { expr::Expr, idT::IDTag} deriving (Show, Eq, Ord)
 
@@ -117,21 +127,17 @@ type Forward   = String
 type TurnLeft  = String
 type TurnRight = String
 
-type StateExpr = (State,[Expr])
+type StateExpr = (Character,[Expr])
 
-type Depth    = Int
-type Distance = Int
-type Length   = Int
+-- type Depth    = Int
+-- type Distance = Int
+-- type Length   = Int
 
-data State = State {
-    pL :: (Int,Int), -- 
-    pO :: (Int,Int) -- playerOrientation
-    -- grid :: GridMapType --[((Int,Int), GridType)]
-    } deriving (Show, Eq)
-
-
-getState :: State -- (loc) (or) (grid)
-getState = State (playerLocation gridMap18) (0,1) --gridMap
+-- data Character = Character {
+--     location :: (Int,Int), -- 
+--     orientation :: (Int,Int) -- playerOrientation
+--     -- grid :: GridMapType --[((Int,Int), GridType)]
+--     } deriving (Show, Eq)
 
 
 --------------------------------------------
@@ -190,19 +196,22 @@ leaf    Empty      = True
 leaf    _          = False
 
 contains :: IDTag -> Expr -> Bool
-contains    x        xs    = containsID x (map exprID $ tokenizer xs) where
-  containsID :: IDTag -> [IDTag] -> Bool
-  containsID    x        xs       = x `elem` xs
+contains i e = elemOf i (exprToTree e)
+
+-- contains :: IDTag -> Expr -> Bool
+-- contains    x        xs    = containsID x (map exprID $ tokenizer xs) where
+--   containsID :: IDTag -> [IDTag] -> Bool
+--   containsID    x        xs       = x `elem` xs
 
 
-tokenizer :: Expr      -> [Expr]
-tokenizer    (WHILE x)  = (WHILE VOID) : tokenizer x
-tokenizer    (IF c l r) = (IF c VOID r) : (tokenizer l) ++ (IF c l VOID) : (tokenizer r)
-tokenizer    (SEQ xs)   = tk xs where
-  tk []                = [SEQ []]
-  tk [x]               = (SEQ [] ) : tokenizer (x)
-  tk (x:xs)            = (SEQ [] ) : tokenizer (x) ++ tk (xs)
-tokenizer    x          = [x]
+-- tokenizer :: Expr      -> [Expr]
+-- tokenizer    (WHILE x)  = (WHILE VOID) : tokenizer x
+-- tokenizer    (IF c l r) = (IF c VOID r) : (tokenizer l) ++ (IF c l VOID) : (tokenizer r)
+-- tokenizer    (SEQ xs)   = tk xs where
+--   tk []                = [SEQ []]
+--   tk [x]               = (SEQ [] ) : tokenizer (x)
+--   tk (x:xs)            = (SEQ [] ) : tokenizer (x) ++ tk (xs)
+-- tokenizer    x          = [x]
 
 flattenSEQ :: Expr        -> Expr
 flattenSEQ    (SEQ (x:[])) = flattenSEQ x
@@ -341,6 +350,9 @@ idInExpr    i        e     = elemOf i (exprToTree e)
 pathsToNode :: Eq a => a -> Tree a     -> [[a]]
 pathsToNode            x    (Node y ns) = [[x] | x == y] ++ map (y:) (pathsToNode x =<< ns)
 
+countOccurences :: IDTag -> Expr -> Int
+countOccurences i e = length $ pathsToNode i $ exprToTree e
+
 -- treeSplit :: Eq a => a -> Tree a -> (Tree a, Tree a)
 -- treeSplit input crnt@(Node x xs)
 --   where nextNode c = case c of
@@ -434,6 +446,9 @@ stripEncoding :: String -> String
 stripEncoding    s       = stripChars "(,)" s where
   stripChars :: String -> String -> String
   stripChars                      = filter . flip notElem
+
+encodes :: [Expr] -> [String]
+encodes = map encodeExpr
 
 encodeExpr :: Expr      -> String
 encodeExpr    Forward    = "F"
@@ -564,225 +579,237 @@ parseCondition    AST{astID, children, typeM}
 
 
 -------------------- Printing --------------------
-class Display a where
-    display :: a -> IO ()
+-- class Display a where
+--     display :: a -> IO ()
 
-instance Display State where
-    display State{pL, pO} = mapM_ putStrLn $ L.chunksOf 5 (map printGridTile (G.toList $gridMap ) ) 
+-- instance Display Character where
+--     display Character{location, orientation} = mapM_ putStrLn $ L.chunksOf 5 (map printGridTile (G.toList $gridMap18 ) ) 
 
-displayTiles :: State        -> IO ()
-displayTiles    State{pL, pO} = mapM_ (putStrLn . concat) (L.chunksOf 8 (map showTile (getAllTiles gridMap)))
--- displayTiles State{pL, pO} = mapM_ putStrLn $ map concat $ L.chunksOf 5 (map showTile (getAllTiles gridMap))
+-- displayTiles :: Character        -> IO ()
+-- displayTiles    Character {location, orientation} = mapM_ (putStrLn . concat) (L.chunksOf 8 (map showTile (getAllTiles gridMap)))
+-- displayTiles Character{location, orientation} = mapM_ putStrLn $ map concat $ L.chunksOf 5 (map showTile (getAllTiles gridMap))
 
 
 -------------------- grid fn --------------------
 
 
-getGrid :: GridMapType-- State -> GridMapType
-getGrid  = gridMap
+-- getGrid :: GridMapType-- Character -> GridMapType
+-- getGrid  = gridMap
 
 
--- moveForwardState :: State -> State 
+-- -- moveForwardCharacter :: Character -> Character 
 
-moveForward :: State -> Maybe State
-moveForward    (State pL pO)
-    | G.lookup (addPoints pL pO) gridMap == Just Path = Just (State (addPoints pL pO) pO)
-    | G.lookup (addPoints pL pO) gridMap == Just Goal = Just (State (addPoints pL pO) pO)
-    | otherwise = Nothing
+-- moveForward :: Character -> Maybe Character
+-- moveForward    (Character location orientation)
+--     | G.lookup (addPoints location orientation) gridMap18 == Just Path = Just (Character (addPoints location orientation) orientation)
+--     | G.lookup (addPoints location orientation) gridMap18 == Just Goal = Just (Character (addPoints location orientation) orientation)
+--     | otherwise = Nothing
 
-moveForwardState :: State -> State
-moveForwardState    (State pL pO) 
-    | G.lookup (addPoints pL pO) gridMap == Just Path = State (addPoints pL pO) pO
-    | G.lookup (addPoints pL pO) gridMap == Just Goal = State (addPoints pL pO) pO
-    | otherwise = State pL pO
+-- moveForwardCharacter :: Character -> Character
+-- moveForwardCharacter    (Character location orientation) 
+--     | G.lookup (addPoints location orientation) gridMap18 == Just Path = Character (addPoints location orientation) orientation
+--     | G.lookup (addPoints location orientation) gridMap18 == Just Goal = Character (addPoints location orientation) orientation
+--     | otherwise = Character location orientation
 
-moveForwardState' :: State -> State
-moveForwardState'    (State pL pO)  = State (addPoints pL pO) pO
-
-
-rotateLeft :: Point     -> Point
-rotateLeft    (pOx, pOy) = (-pOy,pOx)
-
-rotateRight :: Point     -> Point
-rotateRight    (pOx, pOy) = (pOy,-pOx)
-
-turnLeft :: State                 -> State
-turnLeft    (State pl (pOx, pOy) ) = State pl (newX, newY) where
-    newX = -pOy
-    newY = pOx
-
-turnRight :: State                 -> State
-turnRight    (State pl (pOx, pOy) ) = State pl (newX, newY) where
-    newX = pOy
-    newY = -pOx
+-- moveForwardCharacter' :: Character -> Character
+-- moveForwardCharacter'    (Character location orientation)  = Character (addPoints location orientation) orientation
 
 
-pathLeft :: State                -> Bool
-pathLeft    (State pl (pox,poy) ) = G.lookup (addPoints pl (-poy,pox)) gridMap == Just Path
+-- rotateLeft :: Point     -> Point
+-- rotateLeft    (orientationx, orientationy) = (-orientationy,orientationx)
 
-pathRight :: State                -> Bool
-pathRight    (State pl (pox,poy) ) = G.lookup (addPoints pl (poy,-pox)) gridMap == Just Path
+-- rotateRight :: Point     -> Point
+-- rotateRight    (orientationx, orientationy) = (orientationy,-orientationx)
 
-goalReached :: State        -> Bool
-goalReached    (State pl _ ) = G.lookup pl gridMap == Just Goal
+-- turnLeft :: Character                 -> Character
+-- turnLeft    (Character pl (orientationx, orientationy) ) = Character pl (newX, newY) where
+--     newX = -orientationy
+--     newY = orientationx
+
+-- turnRight :: Character                 -> Character
+-- turnRight    (Character pl (orientationx, orientationy) ) = Character pl (newX, newY) where
+--     newX = orientationy
+--     newY = -orientationx
 
 
-addPoints :: (Int, Int) -> (Int,Int) -> (Int,Int)
-addPoints    (x1, y1)      (x2, y2)   = (x1+x2, y1+y2) 
+-- pathLeft :: Character                -> Bool
+-- pathLeft    (Character pl (pox,poy) ) = G.lookup (addPoints pl (-poy,pox)) gridMap18 == Just Path
 
-subtractPoints :: (Int, Int) -> (Int,Int) -> (Int,Int)
-subtractPoints    (x1, y1)      (x2, y2)   = (x1-x2, y1-y2) 
+-- pathRight :: Character                -> Bool
+-- pathRight    (Character pl (pox,poy) ) = G.lookup (addPoints pl (poy,-pox)) gridMap18 == Just Path
 
----------------------Conversion-----------------------------------
-fromChar :: Char -> Expr
-fromChar    'f'   = Forward
-fromChar    'r'   = TurnRight 
-fromChar    'l'   = TurnLeft 
-fromChar     _    = Empty
+-- goalReached :: Character        -> Bool
+-- goalReached    (Character pl _ ) = G.lookup pl gridMap18 == Just Goal
 
-toChar :: Expr     -> Char
-toChar    Forward   = 'f'
-toChar    TurnRight = 'r'
-toChar    TurnLeft  = 'l'
-toChar    _         = 'e'
 
-fromString :: String -> Expr
-fromString    []      = Empty
-fromString    xs      = SEQ $ map fromChar xs
+-- addPoints :: (Int, Int) -> (Int,Int) -> (Int,Int)
+-- addPoints    (x1, y1)      (x2, y2)   = (x1+x2, y1+y2) 
 
-toString :: Expr -> String
-toString    Empty = ""
-toString    xs    = case xs of
-    SEQ x -> map toChar x
-    -- _ -> map toChar xs
+-- subtractPoints :: (Int, Int) -> (Int,Int) -> (Int,Int)
+-- subtractPoints    (x1, y1)      (x2, y2)   = (x1-x2, y1-y2) 
+
+-- ---------------------Conversion-----------------------------------
+-- fromChar :: Char -> Expr
+-- fromChar    'f'   = Forward
+-- fromChar    'r'   = TurnRight 
+-- fromChar    'l'   = TurnLeft 
+-- fromChar     _    = Empty
+
+-- toChar :: Expr     -> Char
+-- toChar    Forward   = 'f'
+-- toChar    TurnRight = 'r'
+-- toChar    TurnLeft  = 'l'
+-- toChar    _         = 'e'
+
+-- fromString :: String -> Expr
+-- fromString    []      = Empty
+-- fromString    xs      = SEQ $ map fromChar xs
+
+-- toString :: Expr -> String
+-- toString    Empty = ""
+-- toString    xs    = case xs of
+--     SEQ x -> map toChar x
+--     -- _ -> map toChar xs
 
 -------------------------------------------------------------------------------
 
-solutionFinder :: Expr
-solutionFinder  = exprSeq ( findPathToGoal gridMap18 (playerLocation gridMap18) ) getState  
+-- solutionFinder :: Expr
+-- solutionFinder  = exprSeq ( findPathToGoal gridMap18 (playerLocation gridMap18) ) initializeCharacter  
 
-currentState = State (3,2) (-1,0) -- (G.lazyGridMap (G.rectSquareGrid 5 5) [Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Path,Goal,Wall,Wall,Start,Path,Wall,Wall,Wall,Wall,Wall,Wall,Wall]) )
+-- currentCharacter = Character (3,2) (-1,0) -- (G.lazyGridMap (G.rectSquareGrid 5 5) [Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Wall,Path,Goal,Wall,Wall,Start,Path,Wall,Wall,Wall,Wall,Wall,Wall,Wall]) )
 
 -- verifiedPart :: [Expr] -> [Expr] -> [Expr]
 -- verifiedPart [] _ = []
 -- verifiedPart [x] y = if (elem x head y) then [x] else []
 -- verifiedPart (x:xs) _ = (x:xs)
 
--- stateToExpr :: State -> Expr
+-- stateToExpr :: Character -> Expr
 
 
 -- next :: Expr ->  Expr
--- next x = evalState x getState   -- get state
+-- next x = evalCharacter x initializeCharacter   -- get state
                         -- convert state to [Expr]
-currentStateExpr = evalState (SEQ [Forward,TurnLeft,TurnRight,Forward]) (getState, [])
+-- currentStateExpr = evalCharacter (SEQ [Forward,TurnLeft,TurnRight,Forward]) (initializeCharacter, [])
 
-hintE :: StateExpr -> StateExpr -- -> StateExpr --[Expr]
-hintE cS = if cmpr then ((nextExpr gridMap18) . nxtPrune) cS else nxtPrune cS 
--- :: StateExpr -- (getState, [nextExpr getState]) :: StateExpr
-        where   cmpr = fstT $ compareLists (snd $ nxtPrune cS) (snd cS)
-                nxtPrune = (nextExpr gridMap18) . (prune gridMap18)
+-- hintE :: StateExpr -> StateExpr -- -> StateExpr --[Expr]
+-- hintE cS = if cmpr then ((nextExpr gridMap18) . nxtPrune) cS else nxtPrune cS 
+-- -- :: StateExpr -- (initializeCharacter, [nextExpr initializeCharacter]) :: StateExpr
+--         where   cmpr = fstT $ compareLists (snd $ nxtPrune cS) (snd cS)
+--                 nxtPrune = (nextExpr gridMap18) . (prune gridMap18)
 
 -- compare two lists and return if equal and if not what differs
     -- first list is first input, second list second input
-compareLists :: (Eq a) => [a] -> [a] -> (Bool,[a],[a])
-compareLists [] [] = (True, [], [])
-compareLists [] y  = (True, [], y)
-compareLists x [] = (False, x, [])
--- compareLists [x] [y] = if x == y then True else False
-compareLists (x:xs) (y:ys) = if x==y then compareLists xs ys else (False, x : xs, y : ys) 
+-- compareLists :: (Eq a) => [a] -> [a] -> (Bool,[a],[a])
+-- compareLists [] [] = (True, [], [])
+-- compareLists [] y  = (True, [], y)
+-- compareLists x [] = (False, x, [])
+-- -- compareLists [x] [y] = if x == y then True else False
+-- compareLists (x:xs) (y:ys) = if x==y then compareLists xs ys else (False, x : xs, y : ys) 
 
-exprLocation :: [Expr] -> State -> Point
-exprLocation [] s = (0,0)
-exprLocation ls@(e:es) s = case eval (SEQ ls) s of
-                            Just s' -> pL s'
-                            Nothing -> (0,0) --init ls
-              -- | case eval (hintE e s) s of
-              --       Just s' -> (e:[hintE (es) s']
-              --       Nothing -> (e:es)
-                        -- Just s' -> SEQ (e:[hintE (SEQ es) s'])
-                        -- Nothing -> SEQ (e:es)
+-- exprLocation :: [Expr] -> Character -> Location
+-- exprLocation [] s = (0,0)
+-- exprLocation ls@(e:es) s = location $ Aux.fromEither $ eval (SEQ ls) s
+-- -- exprLocation ls@(e:es) s = case eval (SEQ ls) s of
+-- --                             Just s' -> location s'
+-- --                             Nothing -> (0,0) --init ls
+--               -- | case eval (hintE e s) s of
+--               --       Just s' -> (e:[hintE (es) s']
+--               --       Nothing -> (e:es)
+--                         -- Just s' -> SEQ (e:[hintE (SEQ es) s'])
+--                         -- Nothing -> SEQ (e:es)
 
-fstT :: (a,b,c) -> a
-fstT (a,_,_) = a
+-- fstT :: (a,b,c) -> a
+-- fstT (a,_,_) = a
 
-sndT :: (a,b,c) -> b
-sndT (_,b,_) = b
+-- sndT :: (a,b,c) -> b
+-- sndT (_,b,_) = b
 
-thrdT :: (a,b,c) -> c
-thrdT (_,_,c) = c
+-- thrdT :: (a,b,c) -> c
+-- thrdT (_,_,c) = c
 
-prune :: GRID -> StateExpr -> StateExpr --[Expr] -> [Expr]
-prune g (state, expr) = evalState (SEQ exl) (getState,[]) 
-    where   exl = exprList (findPathTo g (pL getState) (exprLocation expr getState)) getState
+-- prune :: GRID -> StateExpr -> StateExpr --[Expr] -> [Expr]
+-- prune g (state, expr) = evalCharacter (SEQ exl) (initializeCharacter,[]) 
+--     where   exl = exprList (findPathTo g (location initializeCharacter) (exprLocation expr initializeCharacter)) initializeCharacter
 
 
--- filterTurns [F,L,R] -> [F]
--- filterTurns [F,L,R,L] -> [F,L]
-filterTurns :: [Expr] -> [Expr] -- -> [Expr]
-filterTurns [] = [] 
-filterTurns [x] = [x]
-filterTurns (e1:e2:es) = 
-    if (e1 == TurnLeft && e2 == TurnRight) 
-        || (e1 ==TurnRight && e2 ==TurnLeft) 
-    then filterTurns (e2:es)
-    else filterTurns (e1:es)
+-- -- filterTurns [F,L,R] -> [F]
+-- -- filterTurns [F,L,R,L] -> [F,L]
+-- filterTurns :: [Expr] -> [Expr] -- -> [Expr]
+-- filterTurns [] = [] 
+-- filterTurns [x] = [x]
+-- filterTurns (e1:e2:es) = 
+--     if (e1 == TurnLeft && e2 == TurnRight) 
+--         || (e1 ==TurnRight && e2 ==TurnLeft) 
+--     then filterTurns (e2:es)
+--     else filterTurns (e1:es)
 
-checkIfTurnInRightDirection :: StateExpr -> Bool
-checkIfTurnInRightDirection (s,e) = case moveForward s of
-    Just _ -> True
-    Nothing -> False
+-- checkIfTurnInRightDirection :: StateExpr -> Bool
+-- checkIfTurnInRightDirection (s,e) = 
+--   let s' = walk s in if s' == s then False else True
 
-onWalkable :: Maybe State -> Bool
-onWalkable (Just (State pL pO)) = case G.lookup pL gridMap of
-  Just Path  -> True
-  Just Goal  -> True
-  _          -> False
-onWalkable Nothing = False
+-- onWalkable :: Maybe Character -> Bool
+-- onWalkable (Just (Character location orientation)) = case G.lookup location gridMap18 of
+--   Just Path  -> True
+--   Just Goal  -> True
+--   _          -> False
+-- onWalkable Nothing = False
 
 onPath :: Expr -> Bool
-onPath x = (not.null) (eval x getState)
+onPath x = (not.null) (eval x)
 
 
+
+-- pathDistanceToGoal :: Expr -> Int
+-- pathDistanceToGoal x = length (pathToGoal x) - 1
 
 pathDistanceToGoal :: Expr -> Int
-pathDistanceToGoal x = length (pathToGoal x) - 1
+pathDistanceToGoal x = distanceToGoal gridMap18 (location $ Aux.fromEither $ eval x)
 
 pathToGoal :: Expr -> [(Int,Int)]
-pathToGoal x = findPathToGoal gridMap (pL $ eva x getState)
+pathToGoal x = findPathToGoal gridMap18 (location $ Aux.fromEither $ eval x)
 
-
+-- Does not detect if the character is facing the path towards the goal. For instance looking back also is counted as correct.
 correctOrientation :: Expr -> Bool
-correctOrientation x = correctOrientation' $ eval x getState where
-  correctOrientation' :: Maybe State -> Bool
-  correctOrientation' (Just (State pL pO)) = let
-    stepForward = addPoints pL pO 
-    in case G.lookup stepForward gridMap of
-    Just Path  -> True
-    Just Goal  -> True
-    _          -> False
-  correctOrientation' _ = False
+correctOrientation x = 
+  case eval x of
+    Left y -> False
+    Right y -> 
+      let z = walk y
+          facingGoal y = distanceToGoal18 (location z) < distanceToGoal18 (location y)
+      in onWalkable (walk y) && facingGoal y
 
-corOr :: Expr -> Bool
-corOr xp = corOr' $ eva xp getState where
-  crntState = eva xp getState
-  crntDist y = findPathToGoal gridMap (pL y)
-  corOr' :: State -> Bool
-  corOr' (crnt@(State pL pO)) =
-    let stepForward = addPoints pL pO
-        forwardState = moveForwardState crnt
-    in  case G.lookup stepForward gridMap of
-      Just Path -> (if ((crntDist crntState) > (crntDist forwardState)) then True else False)
-      Just Goal -> True
-      _         -> False
+-- correctOrientation :: Expr -> Bool
+-- correctOrientation x = correctOrientation' $ eval x initializeCharacter where
+--   correctOrientation' :: Maybe Character -> Bool
+--   correctOrientation' (Just (Character location orientation)) = let
+--     stepForward = addPoints location orientation 
+--     in case G.lookup stepForward gridMap18 of
+--     Just Path  -> True
+--     Just Goal  -> True
+--     _          -> False
+--   correctOrientation' _ = False
 
-optimalPaths = map reverse $ getOptimalPath gridMap [[(pL getState)]] (goalLocation gridMap)
+-- corOr :: Expr -> Bool
+-- corOr xp = corOr' $ eva xp initializeCharacter where
+--   crntCharacter = eva xp initializeCharacter
+--   crntDist y = findPathToGoal gridMap18 (location y)
+--   corOr' :: Character -> Bool
+--   corOr' (crnt@(Character location orientation)) =
+--     let stepForward = addPoints location orientation
+--         forwardCharacter = moveForwardCharacter crnt
+--     in  case G.lookup stepForward gridMap18 of
+--       Just Path -> (if ((crntDist crntCharacter) > (crntDist forwardCharacter)) then True else False)
+--       Just Goal -> True
+--       _         -> False
+
+optimalPaths = map reverse $ getOptimalPath gridMap18 [[(location initializeCharacter)]] (goalLocation gridMap18)
 
 isTurn :: Expr -> Bool
 isTurn x = x == TurnLeft || x == TurnRight
 
 -- pruning werkt nog niet, want hij neemt de TurnLeft en TurnRight niet mee. Dus hij moet kijken of er nog een TurnLeft of TurnRight is gedaan en die mag hij niet prunen.
     -- case eval (SEQ expr) of
-    --     Just s' -> exprList (findPathTo (pL getState) (hintE expr getState)) s'
+    --     Just s' -> exprList (findPathTo (location initializeCharacter) (hintE expr initializeCharacter)) s'
     --     Nothing -> [Forward] 
 
 -- hintE move s =   case ( moveForward s ) of
@@ -791,18 +818,18 @@ isTurn x = x == TurnLeft || x == TurnRight
 -- hintE step s = case (eval step s) of
                     -- Just s' -> exprSeq
 
--- checkForward :: State -> [Expr]
+-- checkForward :: Character -> [Expr]
 -- checkForward x s = case     moveForward s of 
 --                         True ->    moveForward s
 --                         otherwise ->  moveForward s 
 
-nextExpr :: GRID -> StateExpr -> StateExpr-- State -> Expr
-nextExpr g (s,e) =    if goalReached s then (s,e) else evalState (calcExpr s) (s,e) where --calcExpr :: State -> Expr
-    calcExpr s = head $ exprList (findPathToGoal g $ pL s) s
-                    -- hintE maintain current.
-                    -- remove walls
+-- nextExpr :: GRID -> StateExpr -> StateExpr-- Character -> Expr
+-- nextExpr g (s,e) =    if goalReached s then (s,e) else evalCharacter (calcExpr s) (s,e) where --calcExpr :: Character -> Expr
+--     calcExpr s = head $ exprList (findPathToGoal g $ location s) s
+--                     -- hintE maintain current.
+--                     -- remove walls
 
-x = evalState Forward (getState, [])
+-- x = evalCharacter Forward (initializeCharacter, [])
 
 
 -------------------- EVAL --------------------
@@ -811,39 +838,112 @@ x = evalState Forward (getState, [])
 
 
 
-evalState :: Expr ->  StateExpr -> StateExpr -- State -> [Expr] -> (State,[Expr])
-evalState (SEQ []) (s, [])      = (s,[])
-evalState (SEQ []) (s, x)       = (s,x)
-evalState (SEQ (e:es)) (s,y)    = 
-    case eval e s of
-    Just s' -> evalState (SEQ es) (s', y ++ [e])
-    Nothing -> (s, y)
-evalState Forward (s,y)         = 
-    case moveForward s of
-        Just s' -> (s', y++[Forward]) -- Forward:y)
-        Nothing -> (s, y)
-evalState TurnRight (s,y)       = (turnRight s, y++[TurnRight]) --TurnRight:y)
-evalState TurnLeft (s,y)        = (turnLeft s, y++[TurnLeft]) --TurnLeft:y)
-evalState Empty (s,y)           = (s,[])
+-- evalCharacter :: Expr ->  StateExpr -> StateExpr -- Character -> [Expr] -> (Character,[Expr])
+-- evalCharacter (SEQ []) (s, [])      = (s,[])
+-- evalCharacter (SEQ []) (s, x)       = (s,x)
+-- evalCharacter (SEQ (e:es)) (s,y)    = 
+--     case eval e s of
+--       Left _ -> (s,y) 
+--       Right z -> evalCharacter (SEQ es) (z, y ++ [e])
+--     -- Nothing -> (s, y)
+-- evalCharacter Forward (s,y)         = 
+--   let s' = walk s
+--   in if onWalkable s' 
+--       then (s,y) 
+--       else (s', y++[Forward]) -- Forward:y)
+--         -- Nothing -> (s, y)
+-- evalCharacter TurnRight (s,y)       = (turnRight s, y++[TurnRight]) --TurnRight:y)
+-- evalCharacter TurnLeft (s,y)        = (turnLeft s, y++[TurnLeft]) --TurnLeft:y)
+-- evalCharacter Empty (s,y)           = (s,[])
 
--- evalState :: Expr -> State -> State
--- evalState (SEQ []) s = s
--- evalState (SEQ (e:es)) s = case (eval e s) of
---                         Just s' -> evalState (SEQ es) s'
+eval :: Expr -> Either Character Character
+eval expression = ev expression initializeCharacter 14 where
+  ev :: Expr -> Character -> Int -> Either Character Character
+  ev _            char 0 = Left char
+  ev x            char _ | goalReached char = Right char
+  ev x            char _ | not (isWalkable $ location char)  = Left $ stepBack char
+  ev Forward      char _ = Right $ walk char
+  ev TurnLeft     char _ = Right $ turnLeft char
+  ev TurnRight    char _ = Right $ turnRight char
+  ev (IF c l r)   char i = if evalCondition c char then ev l char (i-1) else ev r char (i-1)
+  --
+  ev (SEQ [])     char _ = Right char  
+  ev (SEQ (x:xs)) char i = case ev x char i of
+      Left y  -> Left y
+      Right y -> ev (SEQ xs) y (i-1)
+  -- 
+  ev (WHILE x)    char i =
+      if (evalCondition GoalReached char) 
+          then Right char
+          else if not (isWalkable $ location char)
+                  then Left $ stepBack char
+                  else case (ev x char) i of
+                      Left y  -> Left y
+                      Right y -> ev (WHILE x) y (i-1)
+  ev VOID         char _ = Right char
+  ev Empty        char _ = Right char
+  ev TERMINATE    char _ = Right char
+
+evalCondition :: Condition -> Character -> Bool
+evalCondition PathAhead char
+    | characterTile (walk char) == Path = True
+    | characterTile (walk char) == Goal = True
+    | otherwise                                         = False
+evalCondition PathLeft      s = pathLeft s
+evalCondition PathRight     s = pathRight s
+evalCondition GoalReached   s = goalReached s  
+
+
+-- eval :: Expr -> Character -> Character
+-- eval x            char | goalReached char = char
+-- eval x            char | not (isWalkable $ location char)  = stepBack char
+-- eval Forward      char = walk char
+-- eval TurnLeft     char = turnLeft char
+-- eval TurnRight    char = turnRight char
+-- eval (IF c l r)   char = if evalCondition c char then eval l char else eval r char
+-- --
+-- eval (SEQ [])     char = char  
+-- eval (SEQ (x:xs)) char = eval (SEQ xs) (eval x char )
+-- -- 
+-- eval (WHILE x)    char =
+--     if (evalCondition GoalReached char) 
+--         then char
+--         else if not (isWalkable $ location char)
+--                 then stepBack char
+--                 else eval (WHILE x) (eval x char)  
+-- eval VOID         char = char
+-- eval Empty        char = char
+-- eval TERMINATE    char = char
+
+-- evalCondition :: Condition -> Character -> Bool
+-- evalCondition PathAhead char
+--     | characterTile (walk char) == Path = True
+--     | characterTile (walk char) == Goal = True
+--     | otherwise                                         = False
+-- evalCondition PathLeft      s = pathLeft s
+-- evalCondition PathRight     s = pathRight s
+-- evalCondition GoalReached   s = goalReached s  
+
+
+
+-- evalCharacter :: Expr -> Character -> Character
+-- evalCharacter (SEQ []) s = s
+-- evalCharacter (SEQ (e:es)) s = case (eval e s) of
+--                         Just s' -> evalCharacter (SEQ es) s'
 --                         Nothing -> s
--- evalState Forward s = case moveForward s of
+-- evalCharacter Forward s = case moveForward s of
 --                         Just s' -> s'
 --                         Nothing -> s
--- evalState TurnRight s = turnRight s
--- evalState TurnLeft s = turnLeft s
+-- evalCharacter TurnRight s = turnRight s
+-- evalCharacter TurnLeft s = turnLeft s
 
 -- may go if path distance works-------------
--- eval' :: Expr -> State -> Maybe State
+-- eval' :: Expr -> Character -> Maybe Character
 -- eval' (SEQ []) s     = Just s
 -- eval' (SEQ (e:es)) s = case eval' e s of
 --     Just s' -> eval' (SEQ es) s'
 --     Nothing -> Just s
--- eval' Forward s      = Just (moveForwardState s) -- case moveForward s of
+-- eval' Forward s      = Just (moveForwardCharacter s) -- case moveForward s of
 --   -- Nothing -> Just s
 --   -- Just x  -> Just x
 -- eval' TurnRight s    = Just $ turnRight s
@@ -853,107 +953,191 @@ evalState Empty (s,y)           = (s,[])
 -- eval' Empty s        = Just s
 -- eval' _ s            = Just s
 
--- evalWhile' :: Expr -> Int -> Condition -> State -> Maybe State
+-- evalWhile' :: Expr -> Int -> Condition -> Character -> Maybe Character
 -- evalWhile' e i c s    
 --     | (i == 0) = Just s
 --     | evalCondition c s = Just s
 --     -- | otherwise = evalWhile' e (i-1) c (eval e s)
 --     | otherwise = 
 --       let 
---          dist x = length $ findPathToGoal gridMap (pL x) 
+--          dist x = length $ findPathToGoal gridMap18 (location x) 
 --       in case eval' e s of
 --         Just s' | s == s' -> Just s
 --         -- Just s' | dist s' > dist s -> Just s
---         -- Just s' | pL s' == pL s && pO s' == pO s -> Just s 
+--         -- Just s' | location s' == location s && orientation s' == orientation s -> Just s 
 --         Just s' -> evalWhile' e (i - 1) c s'
 --         Nothing -> Just s 
 
-eva :: Expr -> State -> State
-eva (SEQ []) s     = s
-eva (SEQ (e:es)) s = 
-  let s' = (eva e s)
-  in  if isWalkable (pL s')
-        then eva (SEQ es) s'
-        else s
-eva Forward s      = moveForwardState' s
-  -- in  if isWalkable (pL s')
-  --       then s'
-  --       else s
-eva TurnRight s    = turnRight s
-eva TurnLeft s     = turnLeft s
-eva (IF c t f) s   = if evalCondition c s then eva t s else eva f s
-eva (WHILE e) s    = evaWhile e s
-eva Empty s        = s
-eva _ s            = s
+-- eva :: Expr -> Character -> Character
+-- eva (SEQ []) s     = s
+-- eva (SEQ (e:es)) s = 
+--   let s' = (eva e s)
+--   in  if isWalkable (location s')
+--         then eva (SEQ es) s'
+--         else s
+-- eva Forward s      = moveForwardCharacter' s
+--   -- in  if isWalkable (location s')
+--   --       then s'
+--   --       else s
+-- eva TurnRight s    = turnRight s
+-- eva TurnLeft s     = turnLeft s
+-- eva (IF c t f) s   = if evalCondition c s then eva t s else eva f s
+-- eva (WHILE e) s    = let f = evaWhile e s in if f == Character (-1,0) (0,0) || f == (Character (-1,0) (0,0)) then Character (0,0) (0,0) else f
+-- eva Empty s        = s
+-- eva _ s            = s
 
-evaWhile :: Expr -> State -> State
-evaWhile e s = go e s (False) 0 14 where
-  go e s True i _ = (State (-1,0) (0,0))   -- s
-  go e s _ 4 _ = s 
-  go e s _ _ 0 = s 
-  go e s b i c
-    -- | (i == 0) = Just s
-    | not $ isWalkable (pL s) = (State (0,0) (0,0))
-    | not $ isWalkable (pL s') = s -- (State (0,0) (0,0))
-    | evalCondition GoalReached s = s
-    -- | otherwise = evaWhile e (i-1) c (eval e s)
-    | otherwise = 
-      if isWalkable (pL s')
-        then if (pL s' == pL s) then (go e s' b (i+1) (c-1)) else (go e s' b 0 (c-1))
-        else go e s' (True) (-1) c
-    where s' = eva e s
+-- evaWhile :: Expr -> Character -> Character
+-- evaWhile e s = go e s (False) 0 14 where
+--   go e s True i _ = (Character (-1,0) (0,0))   -- s
+--   go e s _ 4 _ = s 
+--   go e s _ _ 0 = s 
+--   go e s b i c
+--     -- | (i == 0) = Just s
+--     | not $ isWalkable (location s) = (Character (0,0) (0,0))
+--     | not $ isWalkable (location s') = s -- (Character (0,0) (0,0))
+--     | evalCondition GoalReached s = s
+--     -- | otherwise = evaWhile e (i-1) c (eval e s)
+--     | otherwise = 
+--       if isWalkable (location s')
+--         then if (location s' == location s) then (go e s' b (i-1) (c-1)) else (go e s' b 0 (c-1))
+--         else go e s' (True) (-1) c
+--     where s' = eva e s
+
+-- eva'' :: Expr -> Character -> Character
+-- eva'' x s = eva' x True s
 
 
+-- eva' :: Expr -> Bool -> Character -> Character
+-- -- eva' x _ s | evalCondition GoalReached s = s
+-- eva' (SEQ [])     b s = s
+-- eva' (SEQ (e:es)) b s =
+--   let s' = (eva' e b s)
+--   in  if isWalkable (location s')
+--         then eva' (SEQ es) b s'
+--         else s
+-- eva' Forward b s      = moveForwardCharacter' s
+--   -- in  if isWalkable (location s')
+--   --       then s'
+--   --       else s
+-- eva' TurnRight b s    = turnRight s
+-- eva' TurnLeft b s     = turnLeft s
+-- eva' (IF c t f) b s   = if evalCondition c s then eva' t b s else eva' f b s
+-- eva' (WHILE e) b s    = if b then evaWhile' e s else s
+-- eva' Empty b s        = s
+-- eva' _ b s            = s
+
+-- evaWhile' :: Expr -> Character -> Character
+-- evaWhile' e s = go e s (True) 0 14 where
+--   go e s False i _ = s -- (Character (-1,0) (0,0))   -- s
+--   go e s _ 4 _     = s
+--   go e s _ _ 0     = s
+--   go e s b i c
+--     -- | (i == 0) = Just s
+--     | not $ isWalkable (location s)         = (Character (0,0) (0,0))
+--     | not $ isWalkable (location (s' True)) = s -- (Character (0,0) (0,0))
+--     | evalCondition GoalReached s     = s
+--     -- | otherwise = evaWhile' e (i-1) c (eval e s)
+--     | otherwise                       = 
+--       if isWalkable (location (s' True))
+--         then if (location (s' True) == location s) then (go e (s' True) b (i-1) (c-1)) else (go e (s' False) b 0 (c-1))
+--         else go e (s' False) (False) (-1) 0
+--     where s' x = eva' e x s
+
+
+-- loop action = do
+--   condition <- action
+--   when condition (loop action)
+
+-- while = return
+
+-- start e s b i c = let action = do {
+--       if 
+--         | not $ isWalkable (location s)         -> (Character (0,0) (0,0))
+--         | not $ isWalkable (location (s' True)) -> s -- (Character (0,0) (0,0))
+--         | evalCondition GoalReached s     -> s
+--         -- | otherwise = evaWhile' e (i-1) c (eval e s)
+--         | otherwise                       -> 
+--           let s' x = eva' e x s in if isWalkable (location (s' True))
+--             then if (location (s' True) == location s) then (start e (s' True) b (i-1) (c-1)) else (start e (s' False) b 0 (c-1))
+--             else start e (s' False) (False) (-1) 0
+            
+--       while (goGlenn /= "start");
+--     }
+--     in loop action
+
+-- type Eval1 alpha = Identity alpha
+
+-- runEval1 :: Eval1 alpha -> alpha
+-- runEval1 ev = runIdentity ev
+
+-- eval1 :: Expr -> Character -> Eval1 Character
+-- eval1 Forward s = return $ moveForwardCharacter' s
+-- eval1 TurnLeft s = return $ turnLeft s
+-- eval1 TurnRight s = return $ turnRight s
+-- eval1 (SEQ xs) s = foldM (\x -> eval1 x s) xs
+
+-- keepWalking :: Expr -> Character -> Character
+-- keepWalking e s = do 
+--   whileM_ (LiftM (isWalkable (location s))) $ do
+--     return (eval e s)
+
+-- logIn5 :: IO ()
+-- logIn5 = do
+--   putStrLn "% Enter password:"
+--   whileM_ ((/= "secret") <$> getLine) $ do
+--     putStrLn "% Wrong password!"
+--     putStrLn "% Try again:"
+--   putStrLn "$ Congratulations!"
 
 ----------------------------------------------
-eval :: Expr -> State -> Maybe State
-eval (SEQ []) s     = Just s
-eval (SEQ (e:es)) s = case eval e s of
-    Just s' -> eval (SEQ es) s'
-    Nothing -> Nothing
-eval Forward s      = moveForward s
-eval TurnRight s    = Just $ turnRight s
-eval TurnLeft s     = Just $ turnLeft s
+-- eval :: Expr -> Character -> Maybe Character
+-- eval (SEQ []) s     = Just s
+-- eval (SEQ (e:es)) s = case eval e s of
+--     Just s' -> eval (SEQ es) s'
+--     Nothing -> Nothing
+-- eval Forward s      = moveForward s
+-- eval TurnRight s    = Just $ turnRight s
+-- eval TurnLeft s     = Just $ turnLeft s
 
-----------------------------------------------
-eval (IF c t f) s   = if evalCondition c s then eval t s else eval f s
-eval (WHILE e) s    = evalWhile e 14 GoalReached s
-eval _ s            = Nothing
+-- ----------------------------------------------
+-- eval (IF c t f) s   = if evalCondition c s then eval t s else eval f s
+-- eval (WHILE e) s    = evalWhile e 14 GoalReached s
+-- eval _ s            = Nothing
 
-evalCondition :: Condition -> State -> Bool
-evalCondition PathAhead   State{pL, pO}
-    | G.lookup (addPoints pL pO) gridMap18 == Just Path = True
-    | G.lookup (addPoints pL pO) gridMap18 == Just Goal = True
-    | otherwise                                         = False
-evalCondition PathLeft      s = pathLeft s
-evalCondition PathRight     s = pathRight s
-evalCondition GoalReached   s = goalReached s  -- or max depth -- or hit wall
--- eval nothing terminate
+-- evalCondition :: Condition -> Character -> Bool
+-- evalCondition PathAhead   Character{location, orientation}
+--     | G.lookup (addPoints location orientation) gridMap18 == Just Path = True
+--     | G.lookup (addPoints location orientation) gridMap18 == Just Goal = True
+--     | otherwise                                         = False
+-- evalCondition PathLeft      s = pathLeft s
+-- evalCondition PathRight     s = pathRight s
+-- evalCondition GoalReached   s = goalReached s  -- or max depth -- or hit wall
+-- -- eval nothing terminate
 
-evalWhile :: Expr -> Int -> Condition -> State -> Maybe State
-evalWhile e i c s    
-    | (i == 0) = Nothing
-    | evalCondition c s = Just s
-    -- | otherwise = evalWhile e (i-1) c (eval e s)
-    | otherwise = case eval e s of
-        Just s' -> evalWhile e (i - 1) c s'
-        Nothing -> Nothing
+-- evalWhile :: Expr -> Int -> Condition -> Character -> Maybe Character
+-- evalWhile e i c s    
+--     | (i == 0) = Nothing
+--     | evalCondition c s = Just s
+--     -- | otherwise = evalWhile e (i-1) c (eval e s)
+--     | otherwise = case eval e s of
+--         Just s' -> evalWhile e (i - 1) c s'
+--         Nothing -> Nothing
 
--- getExpr [(1,3)] getState
-exprList :: [Point] -> State -> [Expr]
-exprList [] _ = []
-exprList (pN:ps) (State pL (pOx,pOy))  
-    | pL == pN = exprList ps (State pN (pOx, pOy))
-    | stepForward   == pN = Forward : exprList ps (State pN (pOx, pOy))
-    | stepLeft      == pN = [TurnLeft, Forward] ++ exprList ps (State pN (-pOy,pOx))
-    | stepRight     == pN = [TurnRight, Forward] ++ exprList ps (State pN (pOy,-pOx))
-    | stepBackwards == pN = [TurnRight, TurnRight, Forward] ++ exprList ps (State pN (-pOx,-pOy))
-    | otherwise = TERMINATE : exprList ps (State pL (pOx, pOy))
-    where stepForward     = addPoints pL (pOx,pOy)
-          stepLeft        = addPoints pL (-pOy,pOx) -- moveforward rotateLeft
-          stepRight       = addPoints pL (pOy,-pOx) -- moveforward rotateRight
-          stepBackwards   = addPoints pL (-pOx,-pOy) 
+-- getExpr [(1,3)] initializeCharacter
+-- exprList :: [Location] -> Character -> [Expr]
+-- exprList [] _ = []
+-- exprList (pN:ps) crnt@(Character loc orient)  
+--     | loc == pN = exprList ps (Character pN orient)
+--     | stepForward   == pN = Forward : exprList ps (Character pN orient)
+--     | stepLeft      == pN = [TurnLeft, Forward] ++ (exprList ps (turnLeft (Character pN orient)))
+--     | stepRight     == pN = [TurnRight, Forward] ++ (exprList ps $ turnRight (Character pN orient))
+--     | stepBackwards == pN = [TurnRight, TurnRight, Forward] ++ (exprList ps $ stepBack (Character pN orient))
+--     | otherwise = TERMINATE : exprList ps (Character loc orient)
+--     where stepForward     = location (walk crnt)
+--           stepLeft        = location (walk $ turnLeft crnt) -- moveforward rotateLeft
+--           stepRight       = location (walk $ turnRight crnt) -- moveforward rotateRight
+--           stepBackwards   = location (stepBack crnt)
 
-exprSeq :: [Point] -> State -> Expr
-exprSeq ps s = SEQ (exprList ps s)
+-- exprSeq :: [Location] -> Character -> Expr
+-- exprSeq ps s = SEQ (exprList ps s)
 

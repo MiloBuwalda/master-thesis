@@ -1,44 +1,46 @@
 {-# LANGUAGE MultiWayIf #-}
+{-# OPTIONS -Wall #-} 
 
 module Strategy where
 
-import              Debug.Trace
+-- import              Debug.Trace
 
-import qualified    System.Directory      as SD
+-- import qualified    System.Directory      as SD
 
 import              Prelude
 import              Data.List             as L
 import              Data.List.Split       as L
 
-import              Data.Map (Map)
+-- import              Data.Map (Map)
 import qualified    Data.Map              as Map
-import qualified    Data.Tuple            as T
-import qualified    Data.Set              as S
-import qualified    Data.Ord              as O
+-- import qualified    Data.Tuple            as T
+-- import qualified    Data.Set              as S
+-- import qualified    Data.Ord              as O
 import qualified    Data.MultiSet         as MultiSet
 
 import qualified    Data.Maybe            as MB
 
 -- import qualified Expressions           as E
 import              Expressions
-import qualified    JsonReader            as J
+-- import qualified    JsonReader            as J
 import qualified    Auxiliary             as Aux
 
-import qualified    Data.Vector           as V
-import qualified    Data.Vector.Distance  as Vd
+-- import qualified    Data.Vector           as V
+-- import qualified    Data.Vector.Distance  as Vd
 
 import              System.IO
-import qualified    Data.ByteString.Char8 as B
+-- import qualified    Data.ByteString.Char8 as B
 
-laptopDropboxPath, pcDropboxPath :: String
+laptopDropboxPath, pcDropboxPath, smallProjectPath, masterProjectPath :: String
 laptopDropboxPath = "C:\\Users\\Milo\\"
 pcDropboxPath = "H:\\Documents\\"
 smallProjectPath = "Dropbox\\Study\\E-Learning\\Small project\\"
 masterProjectPath = "Dropbox\\Study\\E-Learning\\Master Thesis\\Project\\Assignment 18\\"
 
+outFile :: String
 outFile = pcDropboxPath++ masterProjectPath ++ "output\\"
 
-data Strategy = 
+data Heuristic = 
     OnTrack
   | SingleEdit
   | DelErr
@@ -61,8 +63,10 @@ type ExprPair = (Expr, Expr) -- (in, out)
 nonOccurring :: [IDTag]
 nonOccurring = [S, F, L, R, PR]
 
+solution :: Expr
 solution = WHILE (IF PathAhead Forward TurnLeft)
 
+solutionPaths :: [Expr]
 solutionPaths = [Empty, WHILE Empty, WHILE (IF PathAhead Empty Empty), WHILE (IF PathAhead Forward Empty), WHILE (IF PathAhead Empty TurnLeft)] 
 
 type Direction    = Int
@@ -82,11 +86,11 @@ type ExprState = (Parent,(Current, Child), Hint, Crumb)
 showES :: ExprState           -> String
 showES    (x,(y1, y2), z, cs) =  show x ++ "\n(" ++ show y1 ++", " ++show y2 ++ ")\n" ++ show z ++ "\n" ++ show (cs)
 
-type CompSE = (Expr, Expr, Directions, History, Hint, Int)
+type CompSE = (Expr, Expr, Directions, History, Hint, [Int])
 
 initCompSE :: Expr -> (CompSE,[CompSE])
 initCompSE    x     = (c,[c]) where
-  c = (x, x,[],[], VOID,-2)
+  c = (x, x,[],[], VOID,[-2])
 
 showSRun :: [CompSE] -> IO ()
 showSRun    xs        = do
@@ -97,42 +101,42 @@ showSRun    xs        = do
      in encodeExpr (gf $ head xs)) $ Map.fromList Aux.hoc18SingleEdit) 
   where
     showS :: CompSE                          -> IO ()
-    showS    (inp, expr, ds, hist, hint, idf) = do
+    showS    (inp, expr, ds, hist, hint, idfs) = do
       let encEx     = encodeExpr expr
-          sizum     = length encEx
+          -- sizum     = length encEx
           rect x y  = if (length x) < y then x ++ "\t\t" else x ++ "\t"
       putStr ((encodeExpr inp)   ++ " | " ++ rect encEx 6 ++ "@ ")
       putStr (rect (show ds) 6   ++ ", ")
       putStr (rect (show hist) 6 ++ "| ")
       putStr $ (encodeExpr hint) ++ " | "
-      putStrLn (rect (show idf) 6)
+      putStrLn (rect (show $ head idfs) 6)
 
 -- | Main function that traverse the input program.
 {-   CompSE consists of:
       input, currentExpr, directions, history, current hint, function identifier
 -}
 sRun :: (CompSE,[CompSE])                                 -> (CompSE,[CompSE])
-sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) = 
+sRun    se@(crnt@(inp, expr, ds, hist, hint, _), trace) = 
   let 
-    (_, child, ds', hist', hint', idf') = ssE crnt
-    crntID                              = exprID expr
-    crntParent                          = Aux.safeHead hist V
+    (_, child, ds', hist', _hint', idfs) = ssE crnt
+    -- crntID                              = exprID expr
+    -- crntParent                          = Aux.safeHead hist V
     (parentID, parentExpr)              =
       if ds == [] 
         then (exprID expr, expr) 
         else travE inp (init ds) 
     
-    nearSol inp                         = filter (\x-> distance inp x ==1 ) intermediaryCorrect
+    -- nearSol inp                         = filter (\x-> distance inp x ==1 ) intermediaryCorrect
 
     -- continue another cycle and take the hint with you
-    continue h c                        = sRun (new, new:trace) 
+    continue h c                        = if elem c idfs then (head trace, trace) else sRun (new, new:trace) 
       where
-        new = (inp, child, ds', hist', h, c)
+        new = (inp, child, ds', hist', h, c:idfs)
     
     -- select hint based on selectBetterHint
-    continueSBH h c                        = sRun (new, new:trace) 
-      where
-        new = (inp, child, ds', hist', sba [hint,h], c)
+    -- continueSBH h c                        = sRun (new, new:trace) 
+      -- where
+        -- new = (inp, child, ds', hist', sba [hint,h], c)
     
     -- goto is a specifix form of continue where you skip some cycles and go to a specific location
     goto h i c                          =
@@ -141,13 +145,13 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
         else sRun (new, new:trace) 
           where
             newDs                              = {-error $ show  $ -} ds ++ [i]
-            (_, expr'', newDs'', hist'', _, _) = stepWhile (inp, expr, newDs, hist, hint, c) newDs
-            new                                = (inp, expr'', newDs'', hist'', h, c)
+            (_, expr'', newDs'', hist'', _, _) = stepWhile (inp, expr, newDs, hist, hint, c:idfs) newDs
+            new                                = (inp, expr'', newDs'', hist'', h, c:idfs)
 
     -- final exits the loop and outputs the hint. 
     final h c                           = (new, new:trace) 
       where
-        new = (inp, child, ds', hist', h, c)
+        new = (inp, child, ds', hist', h, c:idfs)
 
     -- final' h c                           = (new, new:trace) 
     --   where
@@ -157,18 +161,17 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
 
 
     res x                               = updateE inp (ds) x
-    hintRes h x                         = updateE h ds x
+    -- hintRes h x                         = updateE h ds x
 
     k                                   = length trace
 
   -- there is sweetspot at max 15 cycles. There exist cases of infinite loops, which is a bit probablematic. 
   in if k > 15 then se else case expr of
     VOID        -> (crnt, trace)  -- end of run produces the output
-    
     -- x | distanceSp solution inp == 1 -> final solution (-1)
 
 
-    WHILE wExpr -> handleWHILE wExpr where 
+    WHILE wX -> handleWHILE wX where 
       handleWHILE :: Expr -> (CompSE,[CompSE])
       handleWHILE    wExpr
        | wExpr == Forward 
@@ -178,11 +181,11 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
           = final (res $ WHILE Empty)                                                 11 -- DelErr 8
         | otherwise 
           = continue (res (WHILE Empty))                                              110 -- {-DelErr-} 0/167
-          where sel x = selectSingleEdit $ genPoss x
+          -- where sel x = selectSingleEdit $ genPoss x
    
-    IF c l r    -> handleIF expr where
-      handleIF :: Expr -> (CompSE,[CompSE])
-      handleIF    crntIF@(IF c l r) 
+    IF _c _l _r -> handleIF expr where
+      handleIF  :: Expr -> (CompSE,[CompSE])
+      handleIF     crntIF@(IF c l r) 
         | parentID == W 
         && condID c /= PA 
         && condID c /= PR
@@ -207,7 +210,9 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
           = final (res (IF PathAhead l r))                                            24 -- SubstErr 9
         | contains S l && contains S r 
           = final (deleteToNextShortDistance inp (ds++[0]) )                          25 -- DelErr 3
-        | parentID == S && partialCorrect crntIF 
+        | parentID == S 
+        && partialCorrect crntIF 
+        && (countOccurences I inp) < 2
           = continue (hint)                                                           250 -- {-PREVIOUS-} 0/16
         | c == PathRight
           = final (res $ IF PathAhead l r )                                           26 -- SubstErr 10
@@ -217,6 +222,11 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
         && not (contains W expr) -- && notElem W (map exprID $ tokenizer expr) 
         && (not $ contains S crntIF)
           = final (res $ WHILE (crntIF))                                              28 -- InsStart 8
+       | first inp == S
+        && startsCorrect inp
+        && (size parentExpr) == 2
+        && (contains W inp)
+          = final (tmp (res $ WHILE (crntIF)))                                              295 -- DelErr when it obtains the result "wa.." 1
         | (first inp == S 
         && startsCorrect inp) 
         && (size parentExpr) == 2
@@ -226,8 +236,16 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
         && (Aux.xor (contains S l) (contains S r))
         && contains R crntIF 
           = final (deleteToNextShortDistance inp (ds ++ [findInIF crntIF S]))         30 -- DelErr 3
+        | l /= Forward 
+        && not ( partialCorrect l )
+        && partialCorrect crntIF
+        && (countOccurences I inp) >= 2
+          = final (selectDeletion)                                                    305 -- DelErr 
 {-spcl-}| not $ idInExpr (condID c) solution 
           = final (res (IF PathAhead l r))                                            31 -- SubstErr 12
+        | l /= Forward 
+        && (countOccurences I inp) >= 2
+          = final (selectDeletion)                                                    309 -- DelErr 
         | l /= Forward 
         && not ( partialCorrect l )
           = continue (res (IF PathAhead Empty r))                                     310 -- {-DelErr-} <- actually does 11/57
@@ -238,15 +256,36 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
           = continue (res (IF PathAhead Forward Empty))                               320 -- {DelErr} 2 /16
         | otherwise 
           = final (res (IF PathAhead Forward TurnLeft) )                              33 -- DelErr awFL -> aFL 1
+        where
+          tmp x = if null deletionToCorrectStart then x else fst $ head deletionToCorrectStart
+          deletionToCorrectStart = Aux.getMaxFromTuple $  zip (delErrSEQ inp (init ds)) $ map (isInfixOf "wa" . encodeExpr) (delErrSEQ inp (init ds)) -- check if there is a delErr that leads to "wa...." without an InsStart
+          selectDeletion = selectBetterHint (deletions inp ds) [pathDistanceToGoal]
 
-    (SEQ xs)    -> handleSEQonebyone expr where
+      handleIF _ = final hint (-1)
+    (SEQ _xs)    -> handleSEQonebyone expr where
       handleSEQonebyone :: Expr -> (CompSE,[CompSE])
       handleSEQonebyone    (SEQ xs)
+
+        | programStartsCorrect -- programStartsCorrect-- starts correct 
+        -- && any (not . leaf) xs
+        -- && (not . leaf ) (last xs) 
+        && singleEditToSol /= VOID
+          = final (singleEditToSol)                                           401  -- SingleEdit 
+        | Aux.safeHead hist V == W -- programStartsCorrect-- starts correct 
+        && all leaf xs 
+        && length xs == 2
+          = final (deleteToNextShortDistance inp ds)                                           402  -- DelErr 49
         | Aux.safeHead hist V == W -- programStartsCorrect-- starts correct 
         && leaf (last xs) 
-          = final (deleteToNextPath inp ds)                                           40  -- DelErr 49
+          = final (deleteToNextPath inp ds)                                           403  -- DelErr 49
+        | (countOccurences I inp) >= 2 
+          = goto (res $ flattenSEQ $ SEQ []) (findLocLastNonLeaf xs) 408
+          -- = final (selectBetterHint (deletions inp (ds++[(findLocLastNonLeaf xs)])) [pathDistanceToGoal])                 408 -- 
+        | length (filter (not.leaf) xs) == 2
+        && onPath inp 
+          = goto (res $ flattenSEQ $ SEQ []) (findLocLastNonLeaf xs)                 4085
         | length (filter (not.leaf) xs) == 2 
-          = goto (res $ flattenSEQ $ SEQ []) (findLocFirstNonLeaf xs)                 400 -- {-DelErr-} 0/23
+          = goto (res $ flattenSEQ $ SEQ []) (findLocFirstNonLeaf xs)                 409 -- {-DelErr-} 0/23
         | slStartsCorrect
         && first inp == W
         && not (startsCorrect (xs!!1))
@@ -262,42 +301,49 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
         | slStartsCorrect
         && (case (xs!!1) of IF PathAhead _ _ -> True; _ -> False ) 
           = goto (deleteToNextPath inp ds) 1                                          421 -- {-DelErr-} 0/41
+        | (not . contains W) inp
+        && contains PA inp
+        -- && hist == [] 
+        && (pathDistanceToGoal (WHILE inp) == 0)
+          = final (WHILE inp)                                           43 -- InsStart 1
         | any onPath options 
         && hist == [] 
-          = final (deleteToNextPath inp ds)                                           43 -- DelErr 21
+          = final (deleteToNextPath inp ds)                                           44 -- DelErr 20
         | all leaf xs 
-          = final (deleteToNextShortDistance inp ds)                                  44  -- DelErr 11
+          = final (deleteToNextShortDistance inp ds)                                  45  -- DelErr 11
         | slStartsCorrect
         && (not $ leaf $ xs!!1) 
-          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 1                       440 -- {-DelErr-} 0/35
+          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 1                       450 -- {-DelErr-} 0/35
         | Aux.safeHead xs VOID == Forward 
         && (Aux.safeIndex xs 1 VOID == TurnLeft) 
         && (exprID (Aux.safeIndex xs 2 VOID) == I) 
         && contains S (Aux.safeIndex xs 2 VOID) 
-          = goto (deleteToNextPath inp ds) 2                                          441 -- {-DelErr-} 0/2
+          = goto (deleteToNextPath inp ds) 2                                          451 -- {-DelErr-} 0/2
         | slStartsCorrect
         && (Aux.safeIndex xs 1 VOID == TurnLeft) 
         && (exprID (Aux.safeIndex xs 2 VOID) == W) 
-          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 2                       442 -- {-DelErr-} 0/7
+          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) 2                       452 -- {-DelErr-} 0/7
         | correctOrientation inp
         && (not.leaf) (last xs)
         && programStartsIncorrect
-          = goto (res $ flattenSEQ $ SEQ []) (findLocLastNonLeaf xs)                  443 -- {-DelErr-} 0/2
+          = goto (res $ flattenSEQ $ SEQ []) (findLocLastNonLeaf xs)                  453 -- {-DelErr-} 0/2
         | {-any leaf xs-} not $ leaf $ last xs  -- = contains a non-leaf
-          = final (res $ flattenSEQ $ SEQ (deleteLastLeaf xs))                        45 -- DelErr 25
+          = final (res $ flattenSEQ $ SEQ (deleteLastLeaf xs))                        46 -- DelErr 25
         | otherwise 
-          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) (findLocLastNonLeaf xs) 450 -- {-DelErr-} 0
+          = goto (res $ flattenSEQ $ SEQ (deleteLastLeaf xs)) (findLocLastNonLeaf xs) 460 -- {-DelErr-} 0
           where
             -- patterns
             programStartsCorrect   = first inp == W
             programStartsIncorrect = not programStartsCorrect
             slStartsCorrect        = Aux.safeHead xs VOID == Forward
-            
+            singleEditToSol        = selectSingleEdit (genPoss inp)
             -- cctScan = filter (\x -> pathDistanceToGoal x ==0) ({-(WHILE inp):-}{-(res (WHILE expr)):-}{-substs-} genSESs)
             -- genSESs                = genSES inp
-            substs                 = map (res . SEQ) $ findSubs xs
+            -- substs                 = map (res . SEQ) $ findSubs xs
             options                = (delErrSEQ inp ds)
-            loc                    = findLocX xs I
+            -- loc                    = findLocX xs I
+            -- deletionToCorrectStart = fst $ head $ Aux.getMaxFromTuple $  zip options $ map (isInfixOf "wa" . encodeExpr) (options) -- Check if there is a deletion such that wa
+      handleSEQonebyone _ = final hint (-1)
 
     Empty       -> continue (WHILE Empty)                                             0 -- OnTrack 1
     Forward     -> if inp == Forward 
@@ -305,6 +351,7 @@ sRun    se@(crnt@(inp, expr, ds, hist, hint, idf), trace) =
       else         continue hint                                                      2 -- {-PREVIOUS-} 8/44
     TurnRight   -> continue hint                                                      3 -- {-PREVIOUS-} 1/18
     TurnLeft    -> continue hint                                                      4 -- {-PREVIOUS-} 2/42
+    TERMINATE -> final hint (-1)
 
 type Score = Expr -> Int 
 type Scores = [Score]
@@ -316,21 +363,32 @@ selectBetterHint :: [Expr] -> Scores -> Expr
 selectBetterHint xs fs = snd $ Aux.safeHead (sort $ zip (map (\x -> sum $ map ($ x) fs) xs) xs) (0,VOID)
 
 selectSingleEdit :: [Expr] -> Expr
-selectSingleEdit xs = snd $ Aux.safeHead (sort $ zip (map (distanceSp solution) toppers) $ filter ((==0) . pathDistanceToGoal) xs) (0,VOID)
+selectSingleEdit xs = snd $ Aux.safeHead (sort $ zip (map (distance solution) toppers) $ toppers) (0,VOID)
   where
     toppers = filter ((==0) . pathDistanceToGoal) xs
 
+-- genPoss' :: Expr -> Directions -> Heuristic -> [(Expr,Directions,Heuristic)]
+-- genPoss' x ds OnTrack    = 
+--   let tracks = [Empty, WHILE Empty, WHILE (IF PathAhead Empty Empty), WHILE (IF PathAhead Forward Empty), WHILE (IF PathAhead Forward TurnLeft) ]
+--   in case Aux.next (Just x) tracks of
+--     Nothing -> []
+--     Just y  -> [(y,[],OnTrack)]
+-- -- genPoss' x ds SingleEdit =
+-- genPoss' x ds DelErr     = map (\x-> (x,ds,DelErr)) (delErrSEQ x ds)
+-- genPoss' x ds InsStart   = [(WHILE x, ds, InsStart)]
+-- genPoss' x ds SubstErr   = 
+
 genPoss :: Expr -> [Expr]
-genPoss crnt@(SEQ _) = findSubs' crnt ++ concatMap (\(xs,d) -> (map (\x-> updateE crnt [d] x) xs)) ifss
+genPoss crnt@(SEQ _) = reverse $ findSubs' crnt ++ delErrSEQ crnt [] ++ concatMap (\(xs,d) -> (map (\x-> updateE crnt [d] x) xs)) ifss
   where
     ifss     = map (\(x, y) -> (genPoss x, y)) ifers
     ifers    = filtLocsX I $ findLocNonLeaf $ childrenSEQ crnt
-genPoss crnt@(IF c l r) = allPoss
+genPoss (IF c l r) = allPoss ++ map (\x-> IF c x r) (genPoss l) ++ map (\x-> IF c l x) (genPoss r)
   where
     -- possCond = [PathAhead .. PathRight] 
     -- possSubst = [Empty,Forward,TurnLeft,TurnRight]
     allPoss   = ({-possIns:-}possSubst++possDels)
-    possIns   = WHILE crnt
+    -- possIns   = WHILE crnt
     possDels  = if exprID l /= S 
       then IF c Empty r : (if exprID r /= S then [IF c l Empty] else [] )
       else []
@@ -338,14 +396,24 @@ genPoss crnt@(IF c l r) = allPoss
 genPoss (WHILE x) = map WHILE $ genPoss x
 genPoss _ = [] 
 
+
+deletions :: Expr -> Directions -> [Expr]
+deletions inp ds = 
+  let (_crntID, crntE) = travE inp ds
+      siz = size crntE
+      dels = map (\y -> deleteE inp (ds ++ [y] )) ([0..(siz-1)])
+  in dels
+
+
 getDecidingHeuristic :: CompSE            -> Int
-getDecidingHeuristic    (_, _, _, _, _, x) = x
+getDecidingHeuristic    (_, _, _, _, _, []) = -1
+getDecidingHeuristic    (_, _, _, _, _, x:_xs) = x
 
 first :: Expr -> IDTag
 first    x     = exprID $ fst $ headExpr x 
 
 fixStartIF :: Expr      -> Expr
-fixStartIF    (IF c l r) = IF PathAhead l r
+fixStartIF    (IF _ l r) = IF PathAhead l r
 fixStartIF    (WHILE x)  = WHILE (fixStartIF x)
 fixStartIF    (SEQ xs )  = SEQ (fixStartIF (head xs):tail xs)
 fixStartIF    x          = x
@@ -355,7 +423,7 @@ startsCorrect    (IF PathAhead _ _) = True
 startsCorrect    (IF _ _ _)         = False
 startsCorrect    (WHILE Forward)    = True
 startsCorrect    (WHILE x)          = startsCorrect x
-startsCorrect    (SEQ (Forward:xs)) = True
+startsCorrect    (SEQ (Forward:_xs)) = True
 startsCorrect    (SEQ _)            = False
 startsCorrect    x                  = onPath x && correctOrientation x
 
@@ -395,16 +463,17 @@ deleteLastLeaf    xs        =
 --     (SEQ xs)                    -> map (`go` idT) xs
 
 findInIF :: Expr ->    IDTag -> Direction
-findInIF    (IF c l r) idT
+findInIF    (IF _c l r) idT
   | exprID l == idT = 0
   | exprID r == idT = 1
   | otherwise       = -1
+findInIF    _ _ = -1
 
 filtLocsX :: IDTag -> [(Expr, Direction)] -> [(Expr, Direction)]
 filtLocsX i = filter ((==i) . exprID . fst)
 
 findLocNonLeaf :: [Expr] -> [(Expr, Direction)]
-findLocNonLeaf    xs      = concat $ splitWhen (\(x, y) -> leaf x) $ zip xs [0..]
+findLocNonLeaf    xs      = concat $ splitWhen (\(x, _) -> leaf x) $ zip xs [0..]
 
 findLocX :: [Expr] -> IDTag -> Maybe Direction
 findLocX    xs        idT    = elemIndex idT  $ map exprID xs
@@ -426,9 +495,9 @@ findLocFirstNonLeaf    xs = if null result then error "-5" else snd $ head resul
 applyAffected :: (Expr -> Bool) -> [(Bool,(String, String), String)]
 applyAffected    f               = 
   let t x      = getHintFromSE (sRun $ initCompSE (decodeExpr x)) 
-      tmp      = filter (\(x, y) -> (f . decodeExpr) x) Aux.hoc18SingleEdit
-      equality = (zipWith (==) (map (decodeExpr . snd) tmp) (map (\(inp, gs)-> t inp) tmp) )
-      res      = (map (\(inp, gs)-> encodeExpr $ t inp) tmp)
+      tmp      = filter (\(x, _) -> (f . decodeExpr) x) Aux.hoc18SingleEdit
+      equality = (zipWith (==) (map (decodeExpr . snd) tmp) (map (\(inp, _gs)-> t inp) tmp) )
+      res      = (map (\(inp, _gs)-> encodeExpr $ t inp) tmp)
   in zip3 equality tmp res
 
 cA :: Expr -> Bool
@@ -436,17 +505,17 @@ cA    xpr   = checkAffectedSEQ (\x -> movementsOnTrack (x) && any (not.leaf) (x)
 
 checkAffected :: (Expr -> Bool) -> Expr -> Bool -- [(String, String)]
 checkAffected    f                 x     = case x of
-  x | f x     -> True           
-  (WHILE x)   -> checkAffected f x
-  (IF c l r)  -> checkAffected f l || checkAffected f r
+  y | f y     -> True           
+  (WHILE y)   -> checkAffected f y
+  (IF _ l r)  -> checkAffected f l || checkAffected f r
   (SEQ xs )   -> any (checkAffected f) xs
   _           -> False
 
 checkAffectedSEQ :: ([Expr] -> Bool) -> Expr -> Bool
 checkAffectedSEQ    fs                  x     = case x of
   (SEQ xs)    -> fs xs || any (checkAffectedSEQ fs) xs 
-  (WHILE x)   -> checkAffectedSEQ fs x
-  (IF c l r)  -> checkAffectedSEQ fs l || checkAffectedSEQ fs r
+  (WHILE y)   -> checkAffectedSEQ fs y
+  (IF _ l r)  -> checkAffectedSEQ fs l || checkAffectedSEQ fs r
   _           -> False
 
 
@@ -458,18 +527,18 @@ stepWhile    crnt@(inp, expr, ds, hist, hint, idf) newDs
   | otherwise     = stepWhile (ssE crnt) newDs
 
 ssE :: CompSE                          -> CompSE
-ssE    (inp, expr, ds, hist, hint, idf) = (i, e, d, his, hint, idf) where
-  addC (i, e, p, d, ptr, pSs, h) = (i, e, p, d, ptr, pSs, h, c)
-  (i, e, p, d, pp, psp, his, c)  = 
+ssE    (inp, expr, ds, hist, hint, idfs) = (i, e, d, his, hint, idfs) where
+  addC (i', e', p', d', ptr', pSs', h') = (i', e', p', d', ptr', pSs', h', c)
+  (i, e, _p, d, _pp, _psp, his, c)  = 
     if ds == [-1] 
       then (inp, VOID, VOID, ds, 0,[], hist, c) 
       else addC $ sE (inp, expr, VOID, ds, 0,[], hist)
 
 sE :: SE                                         -> SE
-sE    (inp, expr, parent, ds, pointer, pSs, hist) = 
+sE    (inp, _expr, _parent, ds, _pointer, _pSs, hist) = 
   let (crntID, crntExpr)     = travE inp (ds) 
-      (nextID, nextExpr)     = travE inp (fst nextDir)
-      (parentID, parentExpr) =
+      (_nextID, nextExpr)     = travE inp (fst nextDir)
+      (_parentID, parentExpr) =
         if ds == [] 
           then (crntID, crntExpr) 
           else travE inp (init (fst nextDir))
@@ -494,7 +563,7 @@ depths :: Expr -> Directions -> [Int]
 depths    inp     []          = [size inp]
 depths    inp     xs          = go inp xs 0 where
   go :: Expr -> Directions -> Int -> [Int]
-  go    x       ds            i
+  go    _x      ds            i
     | i == (length ds)  = [] 
     | otherwise         = (size (getToCrnt (take i ds)):go inp ds (i+1))  
     where
@@ -516,7 +585,7 @@ backProp    ds            sizes  =
   in newDs
 
 showSE :: SE                    -> IO ()
-showSE    (x, y, z, ds, d, i, h) = do
+showSE    (_x, y, z, ds, d, i, h) = do
   prettyPrint y
   prettyPrint z
   print h
@@ -528,13 +597,13 @@ initSE    x       = (x, x, VOID,[], 0,[],[])
 
 stepE :: Expr ->    Direction -> (IDTag, Expr)
 stepE    x          (-2)       = (exprID x, x) 
-stepE    (WHILE x) y           = (exprID x, x)
+stepE    (WHILE x)  _          = (exprID x, x)
 -- stepE (IF x l r) 0          = (condID x, IF x l r)
-stepE    (IF x l r) 0          = (exprID l, l)
-stepE    (IF x l r) 1          = (exprID r, r)
-stepE    (SEQ xs)   (-1)       = (V,   VOID)
+stepE    (IF _ l _) 0          = (exprID l, l)
+stepE    (IF _ _ r) 1          = (exprID r, r)
+stepE    (SEQ _)    (-1)       = (V,   VOID)
 stepE    (SEQ xs)   y          = if (length xs) < (y+1) then (V, VOID) else (exprID (xs!!y), xs!!y)
-stepE    x          _          = (V, VOID)
+stepE    _x         _          = (V, VOID)
 
 travE :: Expr -> Directions -> (IDTag, Expr)
 travE    e       []          = (exprID e, e)
@@ -542,10 +611,10 @@ travE    e       [dir]       = stepE e dir
 travE    e       (dir:dirs)  = travE (snd $ stepE e dir) dirs
 
 updateE :: Expr ->    Directions -> Expr        -> Expr
-updateE    x          []            new          = new
+updateE    _          []            new          = new
 -- updateE [d] x                new    = snd $ stepE x d
-updateE    (WHILE x)  (d:ds)        new          = WHILE (updateE x ds new)
-updateE    (IF c l r) (-1:ds)       (IF c' _ _)  = IF c' l r
+updateE    (WHILE x)  (_:ds)        new          = WHILE (updateE x ds new)
+updateE    (IF _ l r) (-1:_)        (IF c' _ _)  = IF c' l r
 updateE    (IF c l r) (0:ds)        new          = IF c (updateE l ds new) r
 updateE    (IF c l r) (1:ds)        new          = IF c l (updateE r ds new)
 updateE    (SEQ xs )  (d:ds)        new          = SEQ mergins 
@@ -553,7 +622,7 @@ updateE    (SEQ xs )  (d:ds)        new          = SEQ mergins
     splitted = splitAt d xs
     altered  = updateE (head $ snd $ splitted) ds new
     mergins  = (fst splitted)++(altered:(tail $ snd splitted))
-updateE     x         ds            new          = error "Beyond a leaf"
+updateE     _x        _ds          _new          = error "Beyond a leaf"
   -- SEQ (updateE ds (xs!!d))
 
 -- upE :: Expr -> Direction -> Expr -> Expr
@@ -568,12 +637,12 @@ updateE     x         ds            new          = error "Beyond a leaf"
 
 
 delE :: Expr ->    Direction -> Expr
-delE    (WHILE x)  _          = (WHILE Empty)
-delE    (IF c l r) (-1)       = (IF GoalReached l r)
-delE    (IF c l r) 0          = (IF c Empty r)
-delE    (IF c l r) 1          = (IF c l Empty)
+delE    (WHILE _)  _          = (WHILE Empty)
+delE    (IF _ l r) (-1)       = (IF GoalReached l r)
+delE    (IF c _ r) 0          = (IF c Empty r)
+delE    (IF c l _) 1          = (IF c l Empty)
 delE    (SEQ xs )  d          = (SEQ ( remAt d xs) )
-delE    x          _          = Empty
+delE    _          _          = Empty
 
 -- deleteE :: Expr -> Directions -> Expr
 -- deleteE x           []     = Empty
@@ -583,17 +652,17 @@ delE    x          _          = Empty
 -- deleteE x           ds     = error "Beyond a leaf"
 
 deleteE :: Expr ->    Directions -> Expr
-deleteE    x          []     = Empty
+deleteE    _          []     = Empty
 deleteE    x          [d]    = delE x d
-deleteE    (WHILE x)  (d:ds) = WHILE (deleteE x ds)
+deleteE    (WHILE x)  (_:ds) = WHILE (deleteE x ds)
 -- deleteE (IF c l r) (-1:ds)= IF c' l r
 deleteE    (IF c l r) (0:ds) = IF c (deleteE l ds) r
 deleteE    (IF c l r) (1:ds) = IF c l (deleteE r ds)
 deleteE    (SEQ xs )  (d:ds) = SEQ mergins where
   splitted = splitAt d xs
-  altered = deleteE (head $ snd $ splitted) ds
-  mergins = (fst splitted)++(altered:(tail $ snd splitted))
-deleteE    x           ds    = error "Beyond a leaf"
+  altered  = deleteE (head $ snd $ splitted) ds
+  mergins  = (fst splitted)++(altered:(tail $ snd splitted))
+deleteE    _           _     = error "Beyond a leaf"
 
 remAt :: Int -> [a]   -> [a]
 remAt   _       []     = []
@@ -603,22 +672,22 @@ remAt   i       (a:as)
 
 elemAt :: Directions -> Expr      -> Expr
 elemAt    [] x                     = x
-elemAt    (d:ds)        (WHILE x)  = (elemAt ds x)
+elemAt    (_:ds)        (WHILE x)  = (elemAt ds x)
 elemAt    (d:ds)        (IF c l r) = case d of
   0 -> IF c VOID VOID
   1 -> elemAt ds l
   2 -> elemAt ds r
   _ -> error ""
 elemAt    (d:ds)        (SEQ xs )  = if (length xs) < (d+1) then error "2" else elemAt ds (xs!!d)
-elemAt    ds            x          = x -- error beyond leaf
+elemAt    _             x          = x -- error beyond leaf
 
 intermediaryCorrect :: [Expr]
 intermediaryCorrect = [WHILE Forward, IF PathLeft TurnLeft Forward, IF PathAhead Forward TurnLeft]
 
 getClosestInterMedCorr :: Expr              -> Expr
-getClosestInterMedCorr    (IF PathLeft l r)  = IF PathLeft TurnLeft Forward
-getClosestInterMedCorr    (IF PathAhead l r) = IF PathAhead Forward TurnLeft
-getClosestInterMedCorr    (WHILE x)          = WHILE Forward
+getClosestInterMedCorr    (IF PathLeft _ _)  = IF PathLeft TurnLeft Forward
+getClosestInterMedCorr    (IF PathAhead _ _) = IF PathAhead Forward TurnLeft
+getClosestInterMedCorr    (WHILE _)          = WHILE Forward
 getClosestInterMedCorr    inp                = fst $ head $ Aux.getMinFromTuple scores 
   where
     scores = zip intermediaryCorrect $ map (distance inp) intermediaryCorrect
@@ -639,21 +708,22 @@ partialCorrect    _                  = False
 deleteLastNonOccurring :: [Expr] -> [Expr]
 deleteLastNonOccurring    xs      = reverse $ go (reverse xs) where
   go [] = []
-  go (x:xs)
-    | (elem (exprID x) nonOccurring) = xs
-    | otherwise                      = x:go xs
+  go (x:ys)
+    | (elem (exprID x) nonOccurring) = ys
+    | otherwise                      = x:go ys
  
 getHintFromSE :: (CompSE,[CompSE])        -> Expr
 getHintFromSE     ((_, _, _, _, x, _), _)  = x
  
 -- | Get hint and getDecidingHeuristic
 getHintFromSE' :: (CompSE,[CompSE])      -> (Expr, Int)
-getHintFromSE'    ((_, _, _, _, x, y), _) = (x, y)
+getHintFromSE'    ((_, _, _, _, x, []), _) = (x, -1)
+getHintFromSE'    ((_, _, _, _, x, y:_ys), _) = (x, y)
 
 mainHist :: String -> IO ()
 mainHist    infixS = do
   let output   = mainPrintTrajectories
-      true     = length $ filter (\(a,(b, c), d, e) -> a==True) output
+      true     = length $ filter (\(a,(_, _), _, _) -> a==True) output
       false    = length output - true
       accuracy = ((fromIntegral true) / (fromIntegral $ length output))::Float
   outh         <- openFile (outFile ++ "hPA"++ infixS ++ ".hs") WriteMode
@@ -670,11 +740,11 @@ mainHist    infixS = do
           output   = remDups $ Aux.zip4''
                   equality 
                   (dataSet) 
-                  (map (\(inp, gs)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)
-          equality = (zipWith (==) (map (decodeExpr . snd) dataSet) (map (\(inp, gs)-> fst $ t inp) dataSet) )
+                  (map (\(inp, _)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)
+          equality = (zipWith (==) (map (decodeExpr . snd) dataSet) (map (\(inp, _)-> fst $ t inp) dataSet) )
 
           getHintFromSEinclID :: (CompSE,[CompSE])      -> (Expr, [Int])
-          getHintFromSEinclID ((_, _, _, _, x, y),z) = (x, concatMap (\(_, _, _, _, _, i) -> (i:[])) (init z))
+          getHintFromSEinclID ((_, _, _, _, x, ii),_z) = (x, init ii) --concatMap (\(_, _, _, _, _, i) -> (i:[])) (init z))
 
       in output
 
@@ -687,14 +757,14 @@ mainResult  =
       output   = {-remDups $-} Aux.zip4''
               equality 
               (dataSet) 
-              (map (\(inp, gs)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)
-      equality = (zipWith (==) (map (decodeExpr . snd) dataSet) (map (\(inp, gs)-> fst $ t inp) dataSet) )
+              (map (\(inp, _)-> (encodeExpr $ fst $ t inp, snd $ t inp)) dataSet)
+      equality = (zipWith (==) (map (decodeExpr . snd) dataSet) (map (\(inp, _)-> fst $ t inp) dataSet) )
   in output
 
 main :: String -> IO ()
 main    infixS = do
   let output   = mainResult
-      true     = length $ filter (\(a,(b, c), d, e) -> a==True) output
+      true     = length $ filter (\(a,(_, _), _, _) -> a==True) output
       false    = length output - true
       accuracy = ((fromIntegral true) / (fromIntegral $ length output))::Float
   outh         <- openFile (outFile ++ "hPA"++ infixS ++ ".hs") WriteMode
@@ -714,8 +784,8 @@ remDups :: [(Bool,(String, String), String, a)] -> [(Bool,(String, String), Stri
 remDups    []                                     = []
 remDups    [x]                                    = [x]
 remDups 
-  (outp1@(eqOutHint1,(inp1, hnt1), out1, i1):
-  outp2@(eqOutHint2,(inp2, hnt2), out2, i2):xs)   =
+  (outp1@(eqOutHint1,(inp1, _hnt1), _out1, _i1):
+  outp2@(eqOutHint2,(inp2, _hnt2), _out2, _I2):xs)   =
     if inp1 == inp2 
       then if eqOutHint1 
             then remDups (outp1 : xs) 
@@ -726,18 +796,18 @@ remDups
       else outp1 : remDups (outp2:xs)
 
 -- | Given current input, calculate the next hint based on Expr calculations
-applyExpressionEvaluation :: String -> String
-applyExpressionEvaluation    s       =
-  let e = fromString s 
-  in toString $ SEQ $ snd $ hintE $ evalState e (getState,[])
+-- applyExpressionEvaluation :: String -> String
+-- applyExpressionEvaluation    s       =
+--   let e = fromString s 
+--   in toString $ SEQ $ snd $ hintE $ evalCharacter e (getCharacter,[])
 
 
 
-onPathSEQ :: [Expr] -> [Bool]
-onPathSEQ    xs      =
-  let l    = length xs
-      calc = map (\x -> SEQ (take x xs) ) [1..l] 
-{--}  in map onPath calc
+-- onPathSEQ :: [Expr] -> [Bool]
+-- onPathSEQ    xs      =
+--   let l    = length xs
+--       calc = map (\x -> SEQ (take x xs) ) [1..l] 
+-- {--}  in map onPath calc
 
 -- onOrientationSEQ xs =
   -- let l = length xs
@@ -795,9 +865,9 @@ findSubs inp = go inp [] where
 
 delErrSEQ :: Expr -> Directions -> [Expr]
 delErrSEQ    inp     ds          = 
-  let (crntID, crntE) = travE inp ds
-      crntSize        = size crntE
-      newDels         = filter ((leaf.snd.stepE crntE.last)) $
+  let (_crntID, crntE) = travE inp ds
+      crntSize         = size crntE
+      newDels          = filter ((leaf.snd.stepE crntE.last)) $
         map (\x -> ds ++ [x]) [0..(crntSize-1)]
 
   in map (flattenSEQ . deleteE inp) newDels
@@ -834,10 +904,12 @@ deleteToNextPath inp ds =
   let poss                 = delErrSEQ inp ds 
       options              = map (\x -> snd $ travE x ds) poss
       onPathScores         = zip poss (map onPath options)
-      rightDirectionScores = zip poss $ map (\(x, y) -> correctOrientation (snd $ travE x ds) && startsCorrect (snd $ travE x ds)) $ filter (\(x, y) -> y) onPathScores
+      onPathFilt           = filter snd onPathScores
+      rightDirectionScores = zip (map fst onPathFilt) $ map (\(x, _) -> correctOrientation (snd $ travE x ds) && startsCorrect (snd $ travE x ds)) $ onPathFilt
+      -- calcNearest          = [(deleteToNextShortDistance inp ds,True)]
       -- allFalse = all (\(x, y) not y) scores 
   in fst $ head $ Aux.getMaxFromTuple 
-    (if not (all snd onPathScores) || null rightDirectionScores 
+    (if all (not . snd) rightDirectionScores
       then onPathScores 
       else rightDirectionScores )
 
@@ -845,16 +917,16 @@ applyGlobalSEQ :: ([Expr] -> [Expr]) -> Expr -> Directions -> Expr
 applyGlobalSEQ    f                     inp     ds          = applyGlobalSEQ' inp ds $ applyLocalSEQ f inp ds where
   -- | take output of an applied function and update the expression
   applyGlobalSEQ' :: Expr -> Directions -> [Expr] -> Expr
-  applyGlobalSEQ'    x       ds            new     = updateE x ds (SEQ new) 
+  applyGlobalSEQ'    x       ds'            new     = updateE x ds' (SEQ new) 
   
   -- | Traverse to a specific location in the tree and apply the function there.
   applyLocalSEQ :: ([Expr] -> [Expr]) -> Expr -> Directions -> [Expr]
-  applyLocalSEQ    f                     x       ds          = 
-    let (_, crntE)  = travE x ds
+  applyLocalSEQ    f'                     x       ds'          = 
+    let (_, crntE)  = travE x ds'
         target      = case crntE of 
           (SEQ xs)  -> xs
           _         -> error "Not A SEQ!"
-    in f target
+    in f' target
 
 
 movementsOnTrack :: [Expr] -> Bool
@@ -868,7 +940,7 @@ deleteToNextPath_S :: [Expr] -> [Expr]
 deleteToNextPath_S    xs      = 
   let poss      = delErrSEQ_S xs
       scores    = zip (poss) (map movementsOnTrack poss)
-      lastL ys  = head $ getLastLeaf_S ys
+      -- lastL ys  = head $ getLastLeaf_S ys
   in fst $ head $ Aux.getMaxFromTuple $ scores
 
 delErrSEQ_S :: [Expr] -> [[Expr]]
@@ -876,7 +948,8 @@ delErrSEQ_S    xs      =
   let crntSize = length xs
 
       newDels = filter (not.null) (map (\x -> join $ splitAt x xs) [0..crntSize-1])
-      join (xs, c@(y:ys)) = if leaf y then concat [xs, ys] else []
+      join (xs', (y:ys)) = if leaf y then concat [xs', ys] else []
+      join (_, []) = []
 
   in newDels
 
@@ -893,16 +966,13 @@ getLastLeaf_S    xs      = (dropWhile (not.leaf) (reverse xs)) -- leaf is in hea
 
 accMeasure :: [(Double, Int, (MultiSet.Occur, MultiSet.Occur))]
 accMeasure =
-  let results         = {-MultiSet.toOccurList $-} MultiSet.fromList $ map extract mainResult
-      extract (b
-              ,(inp, gs)
-              ,hint
-              ,i)  = (i, b)
-      elemz           = nub $ map (fst . fst) $ MultiSet.toOccurList results
-      trues x xs      = MultiSet.occur (x, True) xs
-      falses x xs     = MultiSet.occur (x, False) xs
-      accur (x, y)    = rounder $ (fromIntegral x) / ((fromIntegral x)+(fromIntegral y))
-      rounder x       = (fromInteger $ round $ x * (10^3)) / (10.0^^3)
+  let results            = {-MultiSet.toOccurList $-} MultiSet.fromList $ map extract mainResult
+      extract (b,_,_,i)  = (i, b)
+      elemz              = nub $ map (fst . fst) $ MultiSet.toOccurList results
+      trues x xs         = MultiSet.occur (x, True) xs
+      falses x xs        = MultiSet.occur (x, False) xs
+      accur (x, y)       = rounder $ (fromIntegral x) / ((fromIntegral x)+(fromIntegral y)::Double)::Double
+      rounder x          = ((fromInteger $ round $ x * 1000) / 1000.0)::Double
 
   in map (\x -> (accur (trues x results, falses x results)
                 ,x
@@ -915,10 +985,10 @@ accMeasure =
 type AnalysisScore = (Bool,Integer,(String,String),String)
 type AnalysisScores = [AnalysisScore]
 
--- scoreMeasurer :: {-AnalysisScores -> -}[Int]
+scoreMeasurer :: [(AnalysisScore, (Int, Int, Int))]
 scoreMeasurer {-xs-} {-((b, i, (inp, gs), my):xs) -} = 
   let res = Aux.analysisResults
-  in scoreMeasureFilter (\(a,(x,y,z)) -> x==0||y==0||z==0 ) $ map (applyScore $ pathDistanceToGoal) res
+  in scoreMeasureFilter (\(_,(x,y,z)) -> x==0||y==0||z==0 ) $ map (applyScore $ pathDistanceToGoal) res
       
 applyScore :: (Expr -> a) -> (AnalysisScore) -> (AnalysisScore,(a,a,a))
 applyScore f (b,i,(inp,gs),my) = ((b,i,(inp,gs),my),(g inp, g gs, g my)) where

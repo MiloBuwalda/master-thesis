@@ -248,6 +248,13 @@ applX                     f           x    n =  go f x n where
 --			(Efficient) List Manipulation
 -----------------------------------------------------------
 
+next :: Eq a => Maybe a -> [a] -> Maybe a
+next _ []             = Nothing
+next Nothing    (x:_) = Just x
+next (Just e) l@(x:_) = case dropWhile (/= e) l of
+                          (_:y:_) -> Just y
+                          _       -> Nothing
+
 -- From Maybe tuples
 catMaybesTuple :: [(b, Maybe a)] -> [(b,a)]
 catMaybesTuple    ls             =  [(y,x) | (y, Just x) <- ls]
@@ -311,6 +318,11 @@ safeIndex    inp    i      a  =
       if i < (length inp) 
         then inp!!i 
         else a
+
+-- | Take an Either, and return the value inside it
+fromEither :: Either a a -> a
+fromEither (Left a) = a
+fromEither (Right a) = a
 
 
 safeTail' :: String -> String
