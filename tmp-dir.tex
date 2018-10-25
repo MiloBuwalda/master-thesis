@@ -3,20 +3,15 @@
 \DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
-	.1 if \textit{PathAhead}.
-		.2 Forward.
-		.2 TurnLeft.
-} 
-\end{minipage}
-&
-\scriptsize
-\setlength{\DTbaselineskip}{1.2em}
-\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
-\begin{minipage}[t]{.13\textwidth}
-\dirtree{%\{
-	.1 if \textit{PathLeft}.
-		.2 TurnLeft.
-		.2 Forward.
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+			.3 if \textit{PathRight}.
+				.4 TurnRight.
+				.4 Forward.
 } 
 \end{minipage}
 &
@@ -26,9 +21,31 @@
 \begin{minipage}[t]{.13\textwidth}
 \dirtree{%\{
 	.1 repeat.
-		.2 if \textit{PathAhead}.
+		.2 list.
 			.3 Forward.
-			.3 TurnLeft.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+			.3 if \textit{PathAhead}.
+				.4 TurnRight.
+				.4 Forward.
+} 
+\end{minipage}
+&
+\scriptsize
+\setlength{\DTbaselineskip}{1.2em}
+\DTsetlength{0.2em}{.4em}{0.1em}{.3pt}{1.5pt}
+\begin{minipage}[t]{.13\textwidth}
+\dirtree{%\{
+	.1 repeat.
+		.2 list.
+			.3 Forward.
+			.3 if \textit{PathLeft}.
+				.4 TurnLeft.
+				.4 Forward.
+			.3 if \textit{PathRight}.
+				.4 TurnRight.
+				.4 Empty.
 } 
 \end{minipage}
 &&\\[1.5em]

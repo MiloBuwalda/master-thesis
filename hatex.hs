@@ -47,13 +47,13 @@ forestTMP = Node
 
 
 -- concat multiple Results 
-resultsPrinter :: [(Bool,Int,(String,String),String)] -> IO ()
+resultsPrinter :: [(Bool,[Int],(String,String),String)] -> IO ()
 resultsPrinter xs = renderFile "tmp.tex" $ mconcat $ map resultToTrees xs
 
-resultPrinter :: (Bool,Int,(String,String),String) -> IO ()
+resultPrinter :: (Bool,[Int],(String,String),String) -> IO ()
 resultPrinter x = renderFile "tmp.tex" (resultToTrees x)
 
-resultToTrees :: (Bool,Int,(String,String),String) -> LaTeX
+resultToTrees :: (Bool,[Int],(String,String),String) -> LaTeX
 resultToTrees (_,_,(a,b),c) = (ress) where
   ress :: LaTeX
   ress = forest (strExprTex a) <> raw "&" <> "\n"  <> forest (strExprTex b) <> raw "&" <> "\n"  <> forest (strExprTex c) <> (raw "&&\\\\") <> "\n\n" where
@@ -61,24 +61,24 @@ resultToTrees (_,_,(a,b),c) = (ress) where
 
 
 -- concat multiple Results 
-resultsDirPrinter :: [(Bool,Int,(String,String),String)] -> IO ()
+resultsDirPrinter :: [(Bool,[Int],(String,String),String)] -> IO ()
 resultsDirPrinter xs = renderFile "tmp-dir.tex" $ mconcat $ map resultToDirtree xs
 
-resultDirPrinter :: (Bool,Int,(String,String),String) -> IO ()
+resultDirPrinter :: (Bool,[Int],(String,String),String) -> IO ()
 resultDirPrinter x = renderFile "tmp-dir.tex" (resultToDirtree x)
 
 
-resultToDirtree :: (Bool,Int,(String,String),String) -> LaTeX
+resultToDirtree :: (Bool,[Int],(String,String),String) -> LaTeX
 resultToDirtree (_,_,(a,b),c) = (tableEnc) where
   tableEnc = ress -- tablePre <> ress <> tablePost
   ress :: LaTeX
   ress = dirtree a <> raw "&" <> "\n"  <> dirtree b <> raw "&" <> "\n"  <> dirtree c <> (raw "&&\\\\[1.5em]") <> "\n\n" where
     dirtree x = raw "\\scriptsize\n" <>dtHeight <> "\n" <> dtSetlength <> "\n" <> (encapsulateWith ["minipage", "[t]", raw ".13\\textwidth"] True $ raw "\\" <> "dirtree" <> raw "{%\\{" <> "\n" <> strExprTex' x <> raw "\n} ")
 
-inconsistencies :: [(Bool,Int,(String,String),String)] -> IO ()
+inconsistencies :: [(Bool,[Int],(String,String),String)] -> IO ()
 inconsistencies xs = renderFile "inconsistencies.tex" $ mconcat $ map inconsistency xs
 
-inconsistency :: (Bool,Int,(String,String),String) -> LaTeX
+inconsistency :: (Bool,[Int],(String,String),String) -> LaTeX
 inconsistency (_,_,(a,b),c) = (ress) where
   ress = dirtree a <> raw "&" <> "\n"  <> dirtree b <> raw "-->" <> "\n" where
     dirtree x = raw "\\scriptsize\n" <> dtHeight <> "\n" <> dtSetlength <> "\n" <> (encapsulateWith ["minipage", "[t]", raw ".13\\textwidth"] True $ raw "\\" <> "dirtree" <> raw "{%\\{" <> "\n" <> strExprTex' x <> raw "\n} ")
